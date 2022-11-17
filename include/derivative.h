@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <windows.h>
-#include <Mmsystem.h>
 #include <string.h>
 #include <stdarg.h>
 
@@ -67,25 +66,17 @@ struct node
     mciSendString("play mp3", NULL, 0, NULL);                                       
 
 
-void StartGame (node* root);
-
-int GetAnswer ();
-
 bool isNegativeAns (node* cur_node);
 
 node* GetNodeFromUser (node* root);
 
 node* GetTreeRoot ();
 
-void SaveProgress (node* root);
-
 node* InsertNode (char name[], node* parent, Positions position = LEFT);
 
 node* CreateNewNode ();
 
 node* InitTreeRoot (char name[]);
-
-void GuessNode (node* cur_node);
 
 char* GetInput (char* buffer);
 
@@ -95,9 +86,9 @@ void DumpTree (node* root);
 
 void DrawTree (node* root);
 
-void SayWords (char* templ, ...);
-
 void PrintPreOrder (node* node, FILE* tree_data);
+
+void PrintInOrder (node* node, FILE* tree_data);
 
 void PrintPostOrder (node* node, FILE* tree_data);
 
@@ -106,8 +97,6 @@ void PrintObject (node* node_to_print);
 Stack BuildAncestorsStack (node* cur_node);
 
 void AddAncestor (node* cur_node, Stack* ancestors);
-
-void CompareObjects (node* obj1, node* obj2);
 
 void InitGraphvisNode (node* node, FILE* dot_file);
 

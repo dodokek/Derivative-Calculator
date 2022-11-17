@@ -106,10 +106,16 @@ void trim_left (Text *MainText)
 
     for (int i = 0; i < (MainText->lines_amount); i++)
     {
-        while (*(MainText->objects[i].begin) == ' ' || *(MainText->objects[i].begin) == '\n')
+        char* cur_line = MainText->objects[i].begin;
+        while (!isalpha(*cur_line))
         {
-            MainText->objects[i].begin++;
+            if (*cur_line == '{' || *cur_line == '}') break;
+
+            cur_line++;
+            printf ("Trimming left\n");
         }
+        
+        MainText->objects[i].begin = cur_line;
     }
 }
 

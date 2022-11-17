@@ -5,10 +5,6 @@ int main()
 {
     node* root = GetTreeRoot();
 
-    StartGame (root);
-
-    SaveProgress (root);
-
     DestructTree (root);
 }
 
@@ -178,29 +174,18 @@ node* RecBuildNode (Text* input, int* obj_counter)
 
 char* GetInput (char* buffer)
 {
-    char* check_input = fgets(buffer, MAX_NAME_LEN, stdin);
+    fflush (stdin);
 
-    if (check_input == NULL) 
-    {
-        printf ("Bad input");
-        return NULL;
+    gets (buffer);
+
+    if (strlen (buffer) == 0)
+    {    
+        gets (buffer);
     }
-
-    buffer[strlen(buffer) - 1] = '\0';
-
-    while (strlen(buffer) == 0) 
-    {
-        printf("\n Invalid name, write it again. \n\n");
-
-        check_input = fgets(buffer, MAX_NAME_LEN, stdin);
-
-        if (check_input == NULL) return NULL;
-
-        buffer[strlen(buffer)] = '\0';
-    }
-
+    
     return buffer;
 }
+
 
 //------------------------Guessing mode. End-----------------------
 
@@ -218,28 +203,13 @@ void PrintObject (node* node_to_print)
     while (ancestors.size != 0)
     {
         tmp_node = (node*) StackPop (&ancestors);
-        if (isNegativeAns (tmp_node)) SayWords ("NOT %s - ", tmp_node->name);
+        if (isNegativeAns (tmp_node)) printf ("NOT %s - ", tmp_node->name);
         else   
         {                    
             printf ("%s - ", tmp_node->name);
         }
     }
 
-    // tmp_node = (node*) StackPop (&ancestors);
-    // SayWords ("%s.\n", tmp_node->name);
-}
-
-
-bool isNegativeAns (node* cur_node)
-{
-    if (!(cur_node->parent)) return false;
-
-    // printf ("I am %s, %p My parent is %p he calls %p\n",
-    //         cur_node->name, cur_node, cur_node->parent, cur_node->parent->left);
-
-    if (cur_node->parent->right == cur_node) return true;
-
-    return false;
 }
 
 
@@ -264,16 +234,6 @@ void AddAncestor (node* cur_node, Stack* ancestors)
 
 //------------------------Dump----------------------------
 
-void SaveProgress (node* root)
-{
-    FILE* tree_data = get_file ("data/tree.txt", "w+");
-
-    PrintPreOrder (root, tree_data);
-    fclose (tree_data);
-    DrawTree (root);
-}
-
-
 void DumpTree (node* node)
 {
     assert (node);
@@ -295,6 +255,18 @@ void PrintPreOrder (node* node, FILE* tree_data)
     if (node->right) PrintPreOrder (node->right, tree_data);
     fprintf (tree_data, "}\n");
 }
+
+
+void PrintInOrder (node* node, FILE* tree_data)
+{
+    fprintf (tree_data, "{ ");
+    if (node->left)  PrintPreOrder (node->left,  tree_data);
+
+    fprintf (tree_data, "%s ", node->name);
+    
+    if (node->right) PrintPreOrder (node->right, tree_data);
+    fprintf (tree_data, "} ");
+} 
 
 
 void PrintPostOrder (node* node, FILE* tree_data)
