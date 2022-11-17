@@ -3,6 +3,12 @@
 
 int main()
 {
+    char kek[] = "(bebra)";
+
+    char lol[100] = "";
+    sscanf (kek, "(%s)", lol);
+    printf ("%s\n", lol);
+
     node* root = GetTreeRoot();
 
     DestructTree (root);
@@ -113,61 +119,59 @@ node* FindNode (node* cur_node, const char name[])
 
 node* BuildTree (FILE* tree_info)
 {
-    Text input = {};
-    GetTreeObjects (&input, tree_info);
-    int obj_counter = 1;
+    char* buffer = GetTextBuffer (tree_info);
+    char* buffer_begin = buffer;
 
-    for (int i = 0; i < input.lines_amount; i++)
-    {
-        printf ("Got line %s \n ", input.objects[i].begin);
-    }
+    buffer += OFFSET;  // skipping '{ '
 
     node* root = CreateNewNode();
-    root->name = input.objects[obj_counter].begin;
-    printf ("Root: %s \n ", root->name);
-    obj_counter++;
+    sscanf (buffer, "%s", root->name);
 
-    if (*input.objects[obj_counter].begin == '}') return root;
+    printf ("Root: %s\n", root->name);
 
-    obj_counter++;
-    root->left  = RecBuildNode (&input, &obj_counter);
+    buffer += strlen (root->name) + 1; // skipping name and space
+    
+    if (*buffer == '}') return root;
+    
+    root->left  = RecBuildNode (&buffer);
     root->left->parent = root;
 
-    root->right = RecBuildNode (&input, &obj_counter);
+    root->right = RecBuildNode (&buffer);
     root->right->parent = root;
+
+    free (buffer_begin);
 
     return root;
 }
 
 
-node* RecBuildNode (Text* input, int* obj_counter)
+node* RecBuildNode (char** buffer)
 {
-    while (*input->objects[*obj_counter].begin == '{' || *input->objects[*obj_counter].begin == '}')
-    {
-        (*obj_counter)++; // skips all unneeded brackets
-    }
-    
+    while (**buffer == '{' || **buffer == '}') *buffer += OFFSET;
+
     node* new_node = CreateNewNode();
-    new_node->name = input->objects[*obj_counter].begin;
+    sscanf (*buffer, "%s", new_node->name);
 
-    printf ("Got node %s \n ", new_node->name);
+    printf ("Got node %s, cur sign %c\n", new_node->name, **buffer);
 
-    (*obj_counter)++;
+    *buffer += strlen (new_node->name) + 1;
 
-    if (*input->objects[*obj_counter].begin == '}')
+    if (**buffer == '}')
     {
-        (*obj_counter)++; // skips '}'
+        *buffer += OFFSET; // Skipping ' { '
+
         return new_node;
     }
 
-    new_node->left = RecBuildNode (input, obj_counter);
+    new_node->left  = RecBuildNode (buffer);
     new_node->left->parent = new_node;
 
-    new_node->right = RecBuildNode (input, obj_counter);
+    new_node->right = RecBuildNode (buffer);
     new_node->right->parent = new_node;
 
     return new_node;
 }
+
 
 //------------------------Tree builder--------------------
 
@@ -191,27 +195,6 @@ char* GetInput (char* buffer)
 
 
 //------------------------Object find mode----------------
-
-void PrintObject (node* node_to_print)
-{
-    printf ("Characteristics of object %s:", node_to_print->name);
-    
-    Stack ancestors = BuildAncestorsStack (node_to_print);    
-
-    node* tmp_node = nullptr;
-
-    while (ancestors.size != 0)
-    {
-        tmp_node = (node*) StackPop (&ancestors);
-        if (isNegativeAns (tmp_node)) printf ("NOT %s - ", tmp_node->name);
-        else   
-        {                    
-            printf ("%s - ", tmp_node->name);
-        }
-    }
-
-}
-
 
 Stack BuildAncestorsStack (node* cur_node)
 {
