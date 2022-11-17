@@ -106,7 +106,11 @@ node* FindNode (node* cur_node, const char name[]);
 
 node* BuildTree (FILE* tree_info);
 
-node* RecBuildNode (Text* input, int* obj_counter);
+void AddRightChild (node* cur_node);
+
+void AddLeftChild (node* cur_node);
+
+int FillCurrNode(node* currnode, char* buffer);
 
 node* DestructTree (node* root);
 

@@ -3,13 +3,10 @@
 
 int main()
 {
-    char kek[] = "(bebra)";
-
-    char lol[100] = "";
-    sscanf (kek, "(%s)", lol);
-    printf ("%s\n", lol);
 
     node* root = GetTreeRoot();
+
+    DrawTree (root);
 
     DestructTree (root);
 }
@@ -120,56 +117,105 @@ node* FindNode (node* cur_node, const char name[])
 node* BuildTree (FILE* tree_info)
 {
     char* buffer = GetTextBuffer (tree_info);
-    char* buffer_begin = buffer;
-
-    buffer += OFFSET;  // skipping '{ '
+    int size = strlen(buffer);
 
     node* root = CreateNewNode();
-    sscanf (buffer, "%s", root->name);
 
-    printf ("Root: %s\n", root->name);
+    node* currnode = root;
 
-    buffer += strlen (root->name) + 1; // skipping name and space
-    
-    if (*buffer == '}') return root;
-    
-    root->left  = RecBuildNode (&buffer);
-    root->left->parent = root;
+    for (int counter = 0; counter < size; counter++)
+    {
+        while(isspace(*(buffer + counter)))
+            counter += 1;
 
-    root->right = RecBuildNode (&buffer);
-    root->right->parent = root;
+        if (*(buffer + counter) == ')')
+        {
+            if (currnode != root) currnode = currnode->parent;
+            continue;
+        }
+        else if (*(buffer + counter) == '(')
+        {
+            if (currnode->left)
+            {
+                AddRightChild(currnode);
+                currnode = currnode->right;
+                continue;
+            }
+            else
+            {
+                AddLeftChild(currnode);
+                currnode = currnode->left;
+                continue;
+            }
+        }
+        else
+        {
+            counter += FillCurrNode(currnode, buffer + counter);
+        }
+    }
 
-    free (buffer_begin);
+    // difftree.anchor = difftree.anchor->leftchild;
+    // free(difftree.anchor->ancestor);
+    // difftree.anchor->ancestor = NULL;
+    // difftree.size--;
 
     return root;
 }
+    
 
-
-node* RecBuildNode (char** buffer)
+void AddRightChild (node* cur_node)
 {
-    while (**buffer == '{' || **buffer == '}') *buffer += OFFSET;
-
     node* new_node = CreateNewNode();
-    sscanf (*buffer, "%s", new_node->name);
 
-    printf ("Got node %s, cur sign %c\n", new_node->name, **buffer);
+    new_node->parent = cur_node;
 
-    *buffer += strlen (new_node->name) + 1;
+    cur_node->right = new_node;
+}
 
-    if (**buffer == '}')
+
+void AddLeftChild (node* cur_node)
+{
+    node* new_node = CreateNewNode();
+
+    new_node->parent = cur_node;
+
+    cur_node->left = new_node;
+}
+
+
+int FillCurrNode(node* currnode, char* buffer)
+{
+    double val = 0;
+    char* str = (char*) calloc(MAX_NAME_LEN, sizeof(char));
+    int len = 0;
+
+    // if (sscanf(input, "%lg%n", &val, &len) == 1)
+    // {
+    //     currnode->type = NUM_TYPE;
+    //     currnode->val = val;
+
+    //     return len - 1;
+    // }
+
+    if (sscanf(buffer, "%[^() ]%n", str, &len) == 1)
     {
-        *buffer += OFFSET; // Skipping ' { '
+        // if (OperType optype = IsOper(str))
+        // {
+        //     currnode->type = OP_TYPE;
+        //     currnode->optype = optype;
+        // }
+        // else
+        // {
+        //     currnode->type = VAR_TYPE;
+        //     currnode->varvalue = str;
+        // }
 
-        return new_node;
+        currnode->name = str;
+
+        return len - 1;
     }
 
-    new_node->left  = RecBuildNode (buffer);
-    new_node->left->parent = new_node;
-
-    new_node->right = RecBuildNode (buffer);
-    new_node->right->parent = new_node;
-
-    return new_node;
+    return len;
 }
 
 
