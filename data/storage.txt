@@ -1,0 +1,19 @@
+{
+    Animal
+    {
+        Bebra
+        {
+            Amongus
+        }
+        {
+            Sus
+        }
+        NotBebra
+        {
+            Sanya
+        }
+        {
+            Vlados
+        }
+    }
+}

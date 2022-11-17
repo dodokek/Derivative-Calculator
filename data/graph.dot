@@ -1,0 +1,37 @@
+
+    digraph g {
+        dpi      = 200;
+        fontname = "Comic Sans MS";
+        fontsize = 20;
+        rankdir   =  TB;
+        edge [color = darkgrey, arrowhead = onormal, arrowsize = 1, penwidth = 1.2]
+        graph[fillcolor = lightgreen, ranksep = 1.3, nodesep = 0.5,
+        style = "rounded, filled",color = green, penwidth = 2]
+
+    Node0000021969e53f80[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="Animal"] 
+ 
+Node0000021969e53940[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="Bebra"] 
+ 
+Node0000021969e7d860[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="TurboLol"] 
+ 
+Node0000021969e7d7d0[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="Kek"] 
+ 
+Node0000021969e53970[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="Amongus"] 
+ 
+Node0000021968697b10[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="Sus"] 
+ 
+Node0000021968697bb0[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="NotBebra"] 
+ 
+Node0000021968697c50[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="Sanya"] 
+ 
+Node0000021968697cf0[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="Vlados"] 
+ 
+Node0000021969e53f80->Node0000021969e53940
+Node0000021969e53940->Node0000021969e7d860
+Node0000021969e7d860->Node0000021969e7d7d0
+Node0000021969e7d860->Node0000021969e53970
+Node0000021969e53940->Node0000021968697b10
+Node0000021969e53f80->Node0000021968697bb0
+Node0000021968697bb0->Node0000021968697c50
+Node0000021968697bb0->Node0000021968697cf0
+}
