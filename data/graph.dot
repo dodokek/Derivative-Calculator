@@ -8,15 +8,18 @@
         graph[fillcolor = lightgreen, ranksep = 1.3, nodesep = 0.5,
         style = "rounded, filled",color = green, penwidth = 2]
 
-    Node00000187d74614a0[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label=""] 
+    Node00000153b0d61550[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="+"] 
  
-Node00000187d7461540[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="bebra"] 
+Node00000153b0d615f0[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="bebra"] 
  
-Node00000187d74615e0[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="dick"] 
+Node00000153b0d61690[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="dick"] 
  
-Node00000187d7461760[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="suck"] 
+Node00000153b0d61810[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="suck"] 
  
-Node00000187d74614a0->Node00000187d7461540
-Node00000187d7461540->Node00000187d74615e0
-Node00000187d7461540->Node00000187d7461760
+Node00000153b0d61990[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="cock"] 
+ 
+Node00000153b0d61550->Node00000153b0d615f0
+Node00000153b0d615f0->Node00000153b0d61690
+Node00000153b0d615f0->Node00000153b0d61810
+Node00000153b0d61550->Node00000153b0d61990
 }

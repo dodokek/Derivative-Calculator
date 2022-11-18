@@ -3,8 +3,7 @@
 
 int main()
 {
-
-    node* root = GetTreeRoot();
+    TreeNode* root = GetTreeRoot();
 
     DrawTree (root);
 
@@ -12,11 +11,11 @@ int main()
 }
 
 
-node* GetTreeRoot ()
+TreeNode* GetTreeRoot ()
 {
     FILE* tree_data = get_file ("data/tree.txt", "r");
     
-    node* root = BuildTree (tree_data);
+    TreeNode* root = BuildTree (tree_data);
 
     DumpTree (root);
     
@@ -26,9 +25,9 @@ node* GetTreeRoot ()
 }
 
 
-node* InitTreeRoot (char name[])
+TreeNode* InitTreeRoot (char name[])
 {
-    node* root = CreateNewNode();
+    TreeNode* root = CreateNewNode();
 
     root->name = name;
 
@@ -36,9 +35,9 @@ node* InitTreeRoot (char name[])
 }
 
 
-node* CreateNewNode ()
+TreeNode* CreateNewNode ()
 {
-    node* new_node = (node*) calloc (1, sizeof (node));
+    TreeNode* new_node = (TreeNode*) calloc (1, sizeof (TreeNode));
     if (!new_node) return nullptr;
 
     new_node->left   = nullptr;
@@ -51,7 +50,7 @@ node* CreateNewNode ()
 }
 
 
-node* DestructTree (node* root)
+TreeNode* DestructTree (TreeNode* root)
 {
     if (root->left)  DestructTree (root->left);
     if (root->right) DestructTree (root->right);
@@ -66,9 +65,9 @@ node* DestructTree (node* root)
 
 
 // Positions 
-node* InsertNode (char name[], node* parent, Positions position)
+TreeNode* InsertNode (char name[], TreeNode* parent, Positions position)
 {
-    node* new_node = CreateNewNode();
+    TreeNode* new_node = CreateNewNode();
     
     new_node->name = name;
     new_node->parent = parent;
@@ -98,14 +97,14 @@ node* InsertNode (char name[], node* parent, Positions position)
 }
 
 
-node* FindNode (node* cur_node, const char name[])
+TreeNode* FindNode (TreeNode* cur_node, const char name[])
 {
     if (!cur_node) return nullptr;
 
-    if (strcmp (cur_node->name, name) == 0) return cur_node;
+    if (strcmp (cur_node->value, name) == 0) return cur_node;
 
-    node* find_left = FindNode (cur_node->left, name);
-    node* find_right = FindNode (cur_node->right, name);
+    TreeNode* find_left = FindNode (cur_node->left, name);
+    TreeNode* find_right = FindNode (cur_node->right, name);
 
     if (find_left) return find_left;
     if (find_right) return find_right;
@@ -114,18 +113,18 @@ node* FindNode (node* cur_node, const char name[])
 }
 
 
-node* BuildTree (FILE* tree_info)
+TreeNode* BuildTree (FILE* tree_info)
 {
     char* buffer = GetTextBuffer (tree_info);
-    int size = strlen(buffer);
+    int size     = (int)strlen(buffer);
 
-    node* root = CreateNewNode();
+    TreeNode* root = CreateNewNode();
 
-    node* currnode = root;
+    TreeNode* currnode = root;
 
     for (int counter = 0; counter < size; counter++)
     {
-        while(isspace(*(buffer + counter)))
+        while(isspace (*(buffer + counter)))
             counter += 1;
 
         if (*(buffer + counter) == ')')
@@ -137,13 +136,13 @@ node* BuildTree (FILE* tree_info)
         {
             if (currnode->left)
             {
-                AddRightChild(currnode);
+                AddRightChild (currnode);
                 currnode = currnode->right;
                 continue;
             }
             else
             {
-                AddLeftChild(currnode);
+                AddLeftChild (currnode);
                 currnode = currnode->left;
                 continue;
             }
@@ -154,18 +153,17 @@ node* BuildTree (FILE* tree_info)
         }
     }
 
-    // difftree.anchor = difftree.anchor->leftchild;
-    // free(difftree.anchor->ancestor);
-    // difftree.anchor->ancestor = NULL;
-    // difftree.size--;
+    root = root->left;
+    free(root->parent);
+    root->parent = NULL;
 
     return root;
 }
     
 
-void AddRightChild (node* cur_node)
+void AddRightChild (TreeNode* cur_node)
 {
-    node* new_node = CreateNewNode();
+    TreeNode* new_node = CreateNewNode();
 
     new_node->parent = cur_node;
 
@@ -173,9 +171,9 @@ void AddRightChild (node* cur_node)
 }
 
 
-void AddLeftChild (node* cur_node)
+void AddLeftChild (TreeNode* cur_node)
 {
-    node* new_node = CreateNewNode();
+    TreeNode* new_node = CreateNewNode();
 
     new_node->parent = cur_node;
 
@@ -183,7 +181,7 @@ void AddLeftChild (node* cur_node)
 }
 
 
-int FillCurrNode(node* currnode, char* buffer)
+int FillCurrNode(TreeNode* currnode, char* buffer)
 {
     double val = 0;
     char* str = (char*) calloc(MAX_NAME_LEN, sizeof(char));
@@ -242,7 +240,8 @@ char* GetInput (char* buffer)
 
 //------------------------Object find mode----------------
 
-Stack BuildAncestorsStack (node* cur_node)
+
+Stack BuildAncestorsStack (TreeNode* cur_node)
 {
     Stack ancestors = {0};
     StackCtor (&ancestors, 10);
@@ -254,7 +253,7 @@ Stack BuildAncestorsStack (node* cur_node)
 }
 
 
-void AddAncestor (node* cur_node, Stack* ancestors)
+void AddAncestor (TreeNode* cur_node, Stack* ancestors)
 {
     StackPush (ancestors, cur_node);
 
@@ -263,7 +262,7 @@ void AddAncestor (node* cur_node, Stack* ancestors)
 
 //------------------------Dump----------------------------
 
-void DumpTree (node* node)
+void DumpTree (TreeNode* node)
 {
     assert (node);
 
@@ -277,7 +276,7 @@ void DumpTree (node* node)
 }
 
 
-void PrintPreOrder (node* node, FILE* tree_data)
+void PrintPreOrder (TreeNode* node, FILE* tree_data)
 {
     fprintf (tree_data, "{\n%s\n", node->name);
     if (node->left)  PrintPreOrder (node->left,  tree_data);
@@ -286,7 +285,7 @@ void PrintPreOrder (node* node, FILE* tree_data)
 }
 
 
-void PrintInOrder (node* node, FILE* tree_data)
+void PrintInOrder (TreeNode* node, FILE* tree_data)
 {
     fprintf (tree_data, "{ ");
     if (node->left)  PrintPreOrder (node->left,  tree_data);
@@ -298,7 +297,7 @@ void PrintInOrder (node* node, FILE* tree_data)
 } 
 
 
-void PrintPostOrder (node* node, FILE* tree_data)
+void PrintPostOrder (TreeNode* node, FILE* tree_data)
 {
     if (node->left)  PrintPreOrder (node->left,  tree_data);
     if (node->right) PrintPreOrder (node->right, tree_data);
@@ -309,7 +308,7 @@ void PrintPostOrder (node* node, FILE* tree_data)
 
 #define _print(...) fprintf (dot_file, __VA_ARGS__)
 
-void DrawTree (node* root)
+void DrawTree (TreeNode* root)
 {
     FILE* dot_file = get_file ("data/graph.dot", "w+");
     
@@ -344,7 +343,7 @@ void DrawTree (node* root)
 }
 
 
-void InitGraphvisNode (node* node, FILE* dot_file)   // Recursivly initialises every node 
+void InitGraphvisNode (TreeNode* node, FILE* dot_file)   // Recursivly initialises every node 
 {
     _print ("Node%p[shape=rectangle, color=\"red\", width=0.2, style=\"filled\","
             "fillcolor=\"lightblue\", label=\"%s\"] \n \n",
@@ -357,7 +356,7 @@ void InitGraphvisNode (node* node, FILE* dot_file)   // Recursivly initialises e
 }
 
 
-void RecursDrawConnections (node* node, FILE* dot_file)
+void RecursDrawConnections (TreeNode* node, FILE* dot_file)
 {
     if (node->left)
     {

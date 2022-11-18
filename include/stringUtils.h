@@ -53,8 +53,6 @@ int count_lines (char *buffer, int symbols_read);
 
 void InputDtor(Text *self);
  
-void GetTreeObjects (Text* MainText, FILE* input_file);
-
 void ClearBuffer (char stop_sym);
 
 char* GetTextBuffer (FILE* file);

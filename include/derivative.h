@@ -20,12 +20,6 @@ enum Positions
     RIGHT,
 };
 
-enum Answers
-{
-    NO,
-    YES,
-};
-
 
 enum Sizes
 {
@@ -46,73 +40,96 @@ enum PlayMode
 
 const int OFFSET = 2;
 
+
+
 //-----------------------------------------------
 
-
-struct node
+enum Types
 {
-    node* parent;
-
-    node* left;
-    node* right;
-    // 
-
-    char* name;
+    NUM,
+    VAR,
+    OP,
 };
 
 
-#define $YES                                                                        \
-    mciSendString("open \"data/yes.mp3\" type mpegvideo alias mp3", NULL, 0, NULL); \
-    mciSendString("play mp3", NULL, 0, NULL);                                       
+enum Operations
+{
+    ADD,
+    SUB,
+    DIV,
+    MUL,
+    SQR,
+    POW,
+};
 
 
-bool isNegativeAns (node* cur_node);
+union Values
+{
+    double dbl_val;
+    Operations op_val;
+    const char* var_name;
+};
 
-node* GetNodeFromUser (node* root);
+struct TreeNode
+{
+    Types type; 
+    
+    TreeNode* parent;
 
-node* GetTreeRoot ();
+    TreeNode* left;
+    TreeNode* right;
 
-node* InsertNode (char name[], node* parent, Positions position = LEFT);
+    Values value;
+};
 
-node* CreateNewNode ();
 
-node* InitTreeRoot (char name[]);
+bool isNegativeAns (TreeNode* cur_node);
+
+TreeNode* GetNodeFromUser (TreeNode* root);
+
+TreeNode* GetTreeRoot ();
+
+TreeNode* InsertNode (char name[], TreeNode* parent, Positions position = LEFT);
+
+TreeNode* CreateNewNode ();
+
+TreeNode* InitTreeRoot (char name[]);
 
 char* GetInput (char* buffer);
 
-void AddNode (node* cur_node);
+void AddNode (TreeNode* cur_node);
 
-void DumpTree (node* root);
+void DumpTree (TreeNode* root);
 
-void DrawTree (node* root);
+void DrawTree (TreeNode* root);
 
-void PrintPreOrder (node* node, FILE* tree_data);
+void PrintPreOrder (TreeNode* node, FILE* tree_data);
 
-void PrintInOrder (node* node, FILE* tree_data);
+void PrintInOrder (TreeNode* node, FILE* tree_data);
 
-void PrintPostOrder (node* node, FILE* tree_data);
+void PrintPostOrder (TreeNode* node, FILE* tree_data);
 
-void PrintObject (node* node_to_print);
+void PrintObject (TreeNode* node_to_print);
 
-Stack BuildAncestorsStack (node* cur_node);
+Stack BuildAncestorsStack (TreeNode* cur_node);
 
-void AddAncestor (node* cur_node, Stack* ancestors);
+void AddAncestor (TreeNode* cur_node, Stack* ancestors);
 
-void InitGraphvisNode (node* node, FILE* dot_file);
+void InitGraphvisNode (TreeNode* node, FILE* dot_file);
 
-void RecursDrawConnections (node* node, FILE* dot_file);
+void RecursDrawConnections (TreeNode* node, FILE* dot_file);
 
-node* FindNode (node* cur_node, const char name[]);
+TreeNode* FindNode (TreeNode* cur_node, const char name[]);
 
-node* BuildTree (FILE* tree_info);
+TreeNode* BuildTree (FILE* tree_info);
 
-void AddRightChild (node* cur_node);
+void AddRightChild (TreeNode* cur_node);
 
-void AddLeftChild (node* cur_node);
+void AddLeftChild (TreeNode* cur_node);
 
-int FillCurrNode(node* currnode, char* buffer);
+int FillCurrNode(TreeNode* currnode, char* buffer);
 
-node* DestructTree (node* root);
+TreeNode* DestructTree (TreeNode* root);
 
 
 
