@@ -7,6 +7,8 @@ int main()
 
     DrawTree (root);
 
+    PrintInFile (root);
+
     DestructTree (root);
 }
 
@@ -17,7 +19,7 @@ TreeNode* GetTreeRoot ()
     
     TreeNode* root = BuildTree (tree_data);
 
-    DumpTree (root);
+    // DumpTree (root);
     
     fclose (tree_data);
 
@@ -174,29 +176,31 @@ void AddLeftChild (TreeNode* cur_node)
 int FillCurrNode(TreeNode* currnode, char* buffer)
 {
     double val = 0;
-    char* str = (char*) calloc(MAX_NAME_LEN, sizeof(char));
-    int len = 0;
+    char*  str = (char*) calloc(MAX_NAME_LEN, sizeof(char));
+    int    len = 0;
 
-    // if (sscanf(input, "%lg%n", &val, &len) == 1)
-    // {
-    //     currnode->type = NUM_TYPE;
-    //     currnode->val = val;
+    if (sscanf(buffer, "%lg%n", &val, &len) == 1)
+    {
+        currnode->type = NUM_T;
+        currnode->value.dbl_val = val;
 
-    //     return len - 1;
-    // }
+        return len - 1;
+    }
 
     if (sscanf(buffer, "%[^() ]%n", str, &len) == 1)
     {
-        // if (OperType optype = IsOper(str))
-        // {
-        //     currnode->type = OP_TYPE;
-        //     currnode->optype = optype;
-        // }
-        // else
-        // {
-        //     currnode->type = VAR_TYPE;
-        //     currnode->varvalue = str;
-        // }
+        Operations op_type = UNKNOWN;
+
+        if (op_type = GetOpType (str))
+        {
+            currnode->type = OP_T;
+            currnode->value.op_val = op_type;
+        }
+        else
+        {
+            currnode->type = VAR_T;
+            currnode->value.var_name = str;
+        }
 
         currnode->value.var_name = str;
 
@@ -205,6 +209,23 @@ int FillCurrNode(TreeNode* currnode, char* buffer)
 
     return len;
 }
+
+
+#define CMP(operation) strcmp (str, #operation) == 0
+
+Operations GetOpType (const char str[])
+{
+    if      (CMP (+)) return ADD;
+    else if (CMP (-)) return SUB;
+    else if (CMP (/)) return SUB;
+    else if (CMP (*)) return SUB;
+    else if (CMP (^)) return POW;
+    else if (CMP (sqr)) return SQR;
+
+    else return UNKNOWN;
+}
+
+#undef CMP
 
 
 //------------------------Tree builder--------------------
@@ -257,43 +278,54 @@ void DumpTree (TreeNode* node)
     assert (node);
 
     printf ("Ptr[%p] : \n", node);
-    printf ("\t Node %s: left %p, right %p, parent %p, %s\n",
-            node->value, node->left,
-            node->right, node->parent, node->value);
+    
+    if (node->type == NUM_T)
+        printf ("\t Node %s: left %p, right %p, parent %p, %d\n",
+                node->value, node->left,
+                node->right, node->parent, node->value);
+
+    else
+        printf ("\t Node %s: left %p, right %p, parent %p, %d\n",
+                node->value, node->left,
+                node->right, node->parent, node->value);
 
     if (node->left)  DumpTree (node->left);
     if (node->right) DumpTree (node->right);
 }
 
 
-void PrintPreOrder (TreeNode* node, FILE* tree_data)
+void PrintInFile (TreeNode* root)
 {
-    fprintf (tree_data, "{\n%s\n", node->value);
-    if (node->left)  PrintPreOrder (node->left,  tree_data);
-    if (node->right) PrintPreOrder (node->right, tree_data);
-    fprintf (tree_data, "}\n");
+    FILE* out_file = get_file ("data/output.txt", "w+");
+
+    PrintInOrder (root, out_file);
+
+    fclose (out_file);
 }
 
 
-void PrintInOrder (TreeNode* node, FILE* tree_data)
+void PrintInOrder (TreeNode* node, FILE* out_file)
 {
-    fprintf (tree_data, "{ ");
-    if (node->left)  PrintPreOrder (node->left,  tree_data);
+    fprintf (out_file, "(");
+    if (node->left)  PrintInOrder (node->left,  out_file);
 
-    fprintf (tree_data, "%s ", node->value);
+    if (node->type == NUM_T)
+        fprintf (out_file, "%lg", node->value);
+    else
+        fprintf (out_file, "%s", node->value);
     
-    if (node->right) PrintPreOrder (node->right, tree_data);
-    fprintf (tree_data, "} ");
+    if (node->right) PrintInOrder (node->right, out_file);
+    fprintf (out_file, ")");
 } 
 
 
-void PrintPostOrder (TreeNode* node, FILE* tree_data)
-{
-    if (node->left)  PrintPreOrder (node->left,  tree_data);
-    if (node->right) PrintPreOrder (node->right, tree_data);
-    fprintf (tree_data, "{\n%s\n", node->value);
-    fprintf (tree_data, "}\n");
-} 
+// void PrintPostOrder (TreeNode* node, FILE* out_file)
+// {
+//     if (node->left)  PrintPostOrder (node->left,  out_file);
+//     if (node->right) PrintPostOrder (node->right, out_file);
+//     fprintf (out_file, "{\n%s\n", node->value);
+//     fprintf (out_file, "}\n");
+// } 
 
 
 #define _print(...) fprintf (dot_file, __VA_ARGS__)
@@ -335,10 +367,28 @@ void DrawTree (TreeNode* root)
 
 void InitGraphvisNode (TreeNode* node, FILE* dot_file)   // Recursivly initialises every node 
 {
-    _print ("Node%p[shape=rectangle, color=\"red\", width=0.2, style=\"filled\","
-            "fillcolor=\"lightblue\", label=\"%s\"] \n \n",
-            node, node->value);
-    
+    if (node->type == NUM_T)
+        _print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+                "label=\" {Type: number | value: %lg}\"] \n \n",
+                node, node->value.dbl_val);
+
+    else if (node->type == OP_T)
+        _print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+                "label=\" {Type: operation | value: %s}\"] \n \n",
+                node, node->value);
+
+    else if (node->type == VAR_T)
+        _print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+                "label=\" {Type: variable | value: %s}\"] \n \n",
+                node, node->value);
+
+    else
+    {
+        _print ("Node%d[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+                "label=\" {Op type: %d | value: unknown type}\"] \n \n",
+                node, node->type);
+    }
+
     if (node->left) InitGraphvisNode (node->left, dot_file);
     if (node->right) InitGraphvisNode (node->right, dot_file);
 

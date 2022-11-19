@@ -46,14 +46,15 @@ const int OFFSET = 2;
 
 enum Types
 {
-    NUM,
-    VAR,
-    OP,
+    NUM_T,
+    VAR_T,
+    OP_T,
 };
 
 
 enum Operations
 {
+    UNKNOWN,
     ADD,
     SUB,
     DIV,
@@ -103,11 +104,9 @@ void DumpTree (TreeNode* root);
 
 void DrawTree (TreeNode* root);
 
-void PrintPreOrder (TreeNode* node, FILE* tree_data);
+void PrintInOrder (TreeNode* node, FILE* out_file);
 
-void PrintInOrder (TreeNode* node, FILE* tree_data);
-
-void PrintPostOrder (TreeNode* node, FILE* tree_data);
+void PrintPostOrder (TreeNode* node, FILE* out_file);
 
 void PrintObject (TreeNode* node_to_print);
 
@@ -131,6 +130,8 @@ int FillCurrNode(TreeNode* currnode, char* buffer);
 
 TreeNode* DestructTree (TreeNode* root);
 
+Operations GetOpType (const char str[]);
 
+void PrintInFile (TreeNode* root);
 
 #endif

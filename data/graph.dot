@@ -8,18 +8,24 @@
         graph[fillcolor = lightgreen, ranksep = 1.3, nodesep = 0.5,
         style = "rounded, filled",color = green, penwidth = 2]
 
-    Node000001a4ca2c1550[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="+"] 
+    Node0000027fd1111540[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: +}"] 
  
-Node000001a4ca2c15f0[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="bebra"] 
+Node0000027fd11115e0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: *}"] 
  
-Node000001a4ca2c1690[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="dick"] 
+Node0000027fd1111680[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 1}"] 
  
-Node000001a4ca2c1810[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="suck"] 
+Node0000027fd1111800[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 2}"] 
  
-Node000001a4ca2c1990[shape=rectangle, color="red", width=0.2, style="filled",fillcolor="lightblue", label="cock"] 
+Node0000027fd1111980[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: *}"] 
  
-Node000001a4ca2c1550->Node000001a4ca2c15f0
-Node000001a4ca2c15f0->Node000001a4ca2c1690
-Node000001a4ca2c15f0->Node000001a4ca2c1810
-Node000001a4ca2c1550->Node000001a4ca2c1990
+Node0000027fd1111a20[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: variable | value: X}"] 
+ 
+Node0000027fd1111ba0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 4}"] 
+ 
+Node0000027fd1111540->Node0000027fd11115e0
+Node0000027fd11115e0->Node0000027fd1111680
+Node0000027fd11115e0->Node0000027fd1111800
+Node0000027fd1111540->Node0000027fd1111980
+Node0000027fd1111980->Node0000027fd1111a20
+Node0000027fd1111980->Node0000027fd1111ba0
 }
