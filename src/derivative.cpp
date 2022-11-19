@@ -25,16 +25,6 @@ TreeNode* GetTreeRoot ()
 }
 
 
-TreeNode* InitTreeRoot (char name[])
-{
-    TreeNode* root = CreateNewNode();
-
-    root->name = name;
-
-    return root;
-}
-
-
 TreeNode* CreateNewNode ()
 {
     TreeNode* new_node = (TreeNode*) calloc (1, sizeof (TreeNode));
@@ -44,7 +34,7 @@ TreeNode* CreateNewNode ()
     new_node->right  = nullptr;
     new_node->parent = nullptr;
 
-    new_node->name = (char*) calloc (MAX_NAME_LEN, sizeof (char)); 
+    new_node->value.var_name = (char*) calloc (MAX_NAME_LEN, sizeof (char)); 
 
     return new_node;
 }
@@ -55,7 +45,7 @@ TreeNode* DestructTree (TreeNode* root)
     if (root->left)  DestructTree (root->left);
     if (root->right) DestructTree (root->right);
 
-    root->name = nullptr;
+    root->value.var_name = nullptr;
     
     free (root);
     root = nullptr;
@@ -69,7 +59,7 @@ TreeNode* InsertNode (char name[], TreeNode* parent, Positions position)
 {
     TreeNode* new_node = CreateNewNode();
     
-    new_node->name = name;
+    new_node->value.var_name = name;
     new_node->parent = parent;
 
     if (position == LEFT)
@@ -101,7 +91,7 @@ TreeNode* FindNode (TreeNode* cur_node, const char name[])
 {
     if (!cur_node) return nullptr;
 
-    if (strcmp (cur_node->value, name) == 0) return cur_node;
+    if (strcmp (cur_node->value.var_name, name) == 0) return cur_node;
 
     TreeNode* find_left = FindNode (cur_node->left, name);
     TreeNode* find_right = FindNode (cur_node->right, name);
@@ -208,7 +198,7 @@ int FillCurrNode(TreeNode* currnode, char* buffer)
         //     currnode->varvalue = str;
         // }
 
-        currnode->name = str;
+        currnode->value.var_name = str;
 
         return len - 1;
     }
@@ -268,8 +258,8 @@ void DumpTree (TreeNode* node)
 
     printf ("Ptr[%p] : \n", node);
     printf ("\t Node %s: left %p, right %p, parent %p, %s\n",
-            node->name, node->left,
-            node->right, node->parent, node->name);
+            node->value, node->left,
+            node->right, node->parent, node->value);
 
     if (node->left)  DumpTree (node->left);
     if (node->right) DumpTree (node->right);
@@ -278,7 +268,7 @@ void DumpTree (TreeNode* node)
 
 void PrintPreOrder (TreeNode* node, FILE* tree_data)
 {
-    fprintf (tree_data, "{\n%s\n", node->name);
+    fprintf (tree_data, "{\n%s\n", node->value);
     if (node->left)  PrintPreOrder (node->left,  tree_data);
     if (node->right) PrintPreOrder (node->right, tree_data);
     fprintf (tree_data, "}\n");
@@ -290,7 +280,7 @@ void PrintInOrder (TreeNode* node, FILE* tree_data)
     fprintf (tree_data, "{ ");
     if (node->left)  PrintPreOrder (node->left,  tree_data);
 
-    fprintf (tree_data, "%s ", node->name);
+    fprintf (tree_data, "%s ", node->value);
     
     if (node->right) PrintPreOrder (node->right, tree_data);
     fprintf (tree_data, "} ");
@@ -301,7 +291,7 @@ void PrintPostOrder (TreeNode* node, FILE* tree_data)
 {
     if (node->left)  PrintPreOrder (node->left,  tree_data);
     if (node->right) PrintPreOrder (node->right, tree_data);
-    fprintf (tree_data, "{\n%s\n", node->name);
+    fprintf (tree_data, "{\n%s\n", node->value);
     fprintf (tree_data, "}\n");
 } 
 
@@ -347,7 +337,7 @@ void InitGraphvisNode (TreeNode* node, FILE* dot_file)   // Recursivly initialis
 {
     _print ("Node%p[shape=rectangle, color=\"red\", width=0.2, style=\"filled\","
             "fillcolor=\"lightblue\", label=\"%s\"] \n \n",
-            node, node->name);
+            node, node->value);
     
     if (node->left) InitGraphvisNode (node->left, dot_file);
     if (node->right) InitGraphvisNode (node->right, dot_file);
