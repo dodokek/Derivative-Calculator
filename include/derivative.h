@@ -71,6 +71,7 @@ union Values
     const char* var_name;
 };
 
+
 struct TreeNode
 {
     Types type; 
@@ -133,5 +134,7 @@ TreeNode* DestructTree (TreeNode* root);
 Operations GetOpType (const char str[]);
 
 void PrintInFile (TreeNode* root);
+
+TreeNode* GetDerivative (TreeNode* cur_node);
 
 #endif

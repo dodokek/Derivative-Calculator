@@ -104,6 +104,18 @@ TreeNode* FindNode (TreeNode* cur_node, const char name[])
     return nullptr;
 }
 
+//--Derivatives----------------------------------------------
+
+
+TreeNode* GetDerivative (TreeNode* cur_node)
+{
+
+}
+
+
+//--Derivatives----------------------------------------------
+
+//--Parser---------------------------------------------------
 
 TreeNode* BuildTree (FILE* tree_info)
 {
@@ -193,6 +205,7 @@ int FillCurrNode(TreeNode* currnode, char* buffer)
 
         if (op_type = GetOpType (str))
         {
+            printf ("Got op type %d\n", op_type);
             currnode->type = OP_T;
             currnode->value.op_val = op_type;
         }
@@ -211,14 +224,17 @@ int FillCurrNode(TreeNode* currnode, char* buffer)
 }
 
 
+//--Parser---------------------------------------------------
+
+
 #define CMP(operation) strcmp (str, #operation) == 0
 
 Operations GetOpType (const char str[])
 {
     if      (CMP (+)) return ADD;
     else if (CMP (-)) return SUB;
-    else if (CMP (/)) return SUB;
-    else if (CMP (*)) return SUB;
+    else if (CMP (/)) return DIV;
+    else if (CMP (*)) return MUL;
     else if (CMP (^)) return POW;
     else if (CMP (sqr)) return SQR;
 
@@ -244,9 +260,6 @@ char* GetInput (char* buffer)
     
     return buffer;
 }
-
-
-//------------------------Guessing mode. End-----------------------
 
 
 //------------------------Object find mode----------------
@@ -330,10 +343,10 @@ void PrintInFile (TreeNode* root)
 
     fclose (out_file);
 
-    system ("xelatex -output-directory=data data/output.tex");
-    system ("del output.aux");
-    system ("del output.log");
-    system ("del output.out");
+    // system ("xelatex -output-directory=data data/output.tex");
+    // system ("del output.aux");
+    // system ("del output.log");
+    // system ("del output.out");
 
 }
 
@@ -341,15 +354,30 @@ void PrintInFile (TreeNode* root)
 void PrintInOrder (TreeNode* node, FILE* out_file)
 {
     fprintf (out_file, "{");
+    printf ("Type %d Val %d\n", node->type, node->value.op_val);
+    bool need_div = (node->type == OP_T && node->value.op_val == MUL);
+
+    if (need_div) printf ("Loooooooool");
+
+    if (need_div) fprintf (out_file, "(");
+
     if (node->left)  PrintInOrder (node->left,  out_file);
+
+    if (need_div) fprintf (out_file, ")");
+
 
     if (node->type == NUM_T)
         fprintf (out_file, "%lg", node->value);
     else
         fprintf (out_file, "%s", node->value);
     
+    if (need_div) fprintf (out_file, "(");
+
     if (node->right) PrintInOrder (node->right, out_file);
     fprintf (out_file, "}");
+
+    if (need_div) fprintf (out_file, ")");
+
 } 
 
 
@@ -380,7 +408,6 @@ void DrawTree (TreeNode* root)
         style = "rounded, filled",color = green, penwidth = 2]
 
     )";
-
 
     
     _print (header);
