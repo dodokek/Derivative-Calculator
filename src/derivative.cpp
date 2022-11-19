@@ -296,9 +296,46 @@ void DumpTree (TreeNode* node)
 
 void PrintInFile (TreeNode* root)
 {
-    FILE* out_file = get_file ("data/output.txt", "w+");
+    FILE* out_file = get_file ("data/output.tex", "w+");
+
+    const char header[] = R"(
+    \documentclass{article}
+    \usepackage[utf8]{inputenc}
+
+    %  Русский язык
+
+    \usepackage[T2A]{fontenc}			% кодировка
+    \usepackage[utf8]{inputenc}			% кодировка исходного текста
+    \usepackage[english,russian]{babel}	% локализация и переносы
+    \usepackage{unicode-math}
+
+    % Рисунки
+    \usepackage{graphicx, float}
+    \usepackage{wrapfig}
+
+    \usepackage{hyperref}
+    \usepackage[rgb]{xcolor}
+    \usepackage{float}
+    \usepackage{amsmath}
+    \usepackage{mathabx}
+    \hypersetup{				
+        colorlinks=true,       
+        urlcolor=blue          
+    }
+
+    \title{Домашнее задание 8}
+    \author{Александр Морозов}
+    \date{November 2022}
+
+    \begin{document}
+
+    )";
+
+    fprintf (out_file, header);
 
     PrintInOrder (root, out_file);
+
+    fprintf (out_file, "\n\n\t\\end{document}");
 
     fclose (out_file);
 }
@@ -346,6 +383,8 @@ void DrawTree (TreeNode* root)
         style = "rounded, filled",color = green, penwidth = 2]
 
     )";
+
+
     
     _print (header);
 
