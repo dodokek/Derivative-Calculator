@@ -300,7 +300,6 @@ void PrintInFile (TreeNode* root)
 
     const char header[] = R"(
     \documentclass{article}
-    \usepackage[utf8]{inputenc}
 
     %  Русский язык
 
@@ -313,37 +312,35 @@ void PrintInFile (TreeNode* root)
     \usepackage{graphicx, float}
     \usepackage{wrapfig}
 
-    \usepackage{hyperref}
-    \usepackage[rgb]{xcolor}
-    \usepackage{float}
-    \usepackage{amsmath}
-    \usepackage{mathabx}
-    \hypersetup{				
-        colorlinks=true,       
-        urlcolor=blue          
-    }
 
     \title{Домашнее задание 8}
     \author{Александр Морозов}
     \date{November 2022}
 
     \begin{document}
-
     )";
 
     fprintf (out_file, header);
 
+    fprintf (out_file, "\\[");
     PrintInOrder (root, out_file);
+    fprintf (out_file, "\\]");
 
     fprintf (out_file, "\n\n\t\\end{document}");
 
     fclose (out_file);
+
+    system ("xelatex data/output.tex");
+    system ("del output.aux");
+    system ("del output.log");
+    system ("del output.out");
+
 }
 
 
 void PrintInOrder (TreeNode* node, FILE* out_file)
 {
-    fprintf (out_file, "(");
+    fprintf (out_file, "{");
     if (node->left)  PrintInOrder (node->left,  out_file);
 
     if (node->type == NUM_T)
@@ -352,7 +349,7 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
         fprintf (out_file, "%s", node->value);
     
     if (node->right) PrintInOrder (node->right, out_file);
-    fprintf (out_file, ")");
+    fprintf (out_file, "}");
 } 
 
 
