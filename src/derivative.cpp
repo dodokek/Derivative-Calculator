@@ -330,7 +330,7 @@ void PrintInFile (TreeNode* root)
 
     fclose (out_file);
 
-    system ("xelatex data/output.tex");
+    system ("xelatex -output-directory=data data/output.tex");
     system ("del output.aux");
     system ("del output.log");
     system ("del output.out");
