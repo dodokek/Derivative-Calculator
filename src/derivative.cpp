@@ -199,7 +199,7 @@ int FillCurrNode(TreeNode* currnode, char* buffer)
         return len - 1;
     }
 
-    if (sscanf(buffer, "%[^() ]%n", str, &len) == 1)
+    else if (sscanf(buffer, "%[^() ]%n", str, &len) == 1)
     {
         Operations op_type = UNKNOWN;
 
@@ -215,8 +215,6 @@ int FillCurrNode(TreeNode* currnode, char* buffer)
             currnode->value.var_name = str;
         }
 
-        currnode->value.var_name = str;
-
         return len - 1;
     }
 
@@ -230,7 +228,7 @@ int FillCurrNode(TreeNode* currnode, char* buffer)
 #define CMP(operation) strcmp (str, #operation) == 0
 
 Operations GetOpType (const char str[])
-{
+{    
     if      (CMP (+)) return ADD;
     else if (CMP (-)) return SUB;
     else if (CMP (/)) return DIV;
@@ -343,10 +341,10 @@ void PrintInFile (TreeNode* root)
 
     fclose (out_file);
 
-    // system ("xelatex -output-directory=data data/output.tex");
-    // system ("del output.aux");
-    // system ("del output.log");
-    // system ("del output.out");
+    system ("xelatex -output-directory=data data/output.tex");
+    system ("del output.aux");
+    system ("del output.log");
+    system ("del output.out");
 
 }
 
@@ -357,7 +355,7 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
     printf ("Type %d Val %d\n", node->type, node->value.op_val);
     bool need_div = (node->type == OP_T && node->value.op_val == MUL);
 
-    if (need_div) printf ("Loooooooool");
+    if (need_div) printf ("Loooooooool\n");
 
     if (need_div) fprintf (out_file, "(");
 
@@ -365,11 +363,12 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
 
     if (need_div) fprintf (out_file, ")");
 
-
-    if (node->type == NUM_T)
-        fprintf (out_file, "%lg", node->value);
+    if  (node->type == NUM_T)
+        fprintf (out_file, "%lg", node->value.dbl_val);
+    else if (node->type == OP_T)
+        fprintf (out_file, "%s", GetOpSign (node->value.op_val));
     else
-        fprintf (out_file, "%s", node->value);
+        fprintf (out_file, "%s", node->value.var_name);
     
     if (need_div) fprintf (out_file, "(");
 
@@ -379,6 +378,35 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
     if (need_div) fprintf (out_file, ")");
 
 } 
+
+
+char* GetOpSign (Operations op)
+{
+    switch (op)
+    {
+    case ADD:
+        return "+";
+
+    case SUB:
+        return "-";
+
+    case DIV:
+        return "/";
+
+    case MUL:
+        return "\\cdot";
+    
+    case SQR:
+        return "№";
+
+    case POW:
+        return "^";
+
+    default:
+        return "?";
+    }
+}
+
 
 
 // void PrintPostOrder (TreeNode* node, FILE* out_file)
@@ -437,7 +465,7 @@ void InitGraphvisNode (TreeNode* node, FILE* dot_file)   // Recursivly initialis
 
     else if (node->type == OP_T)
         _print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
-                "label=\" {Type: operation | value: %s}\"] \n \n",
+                "label=\" {Type: operation | value: %d}\"] \n \n",
                 node, node->value);
 
     else if (node->type == VAR_T)

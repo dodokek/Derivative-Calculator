@@ -38,7 +38,6 @@ enum PlayMode
     COMPARISON = 3,
 };
 
-const int OFFSET = 2;
 
 
 
@@ -106,6 +105,8 @@ void DumpTree (TreeNode* root);
 void DrawTree (TreeNode* root);
 
 void PrintInOrder (TreeNode* node, FILE* out_file);
+
+char* GetOpSign (Operations op);
 
 void PrintPostOrder (TreeNode* node, FILE* out_file);
 
