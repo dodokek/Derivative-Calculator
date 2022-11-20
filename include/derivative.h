@@ -10,6 +10,7 @@
 #include "fileUtils.h"
 #include "stack.h"
 #include "stringUtils.h"
+#include "dsl.h"
 
 //-----------------------------------------------
 
@@ -96,6 +97,8 @@ TreeNode* InsertNode (char name[], TreeNode* parent, Positions position = LEFT);
 
 TreeNode* CreateNode (Types type, double dbl_val, Operations op_val, char* var_name,
                       TreeNode* left_child, TreeNode* right_child);
+
+TreeNode* CopyNode (const TreeNode* node_to_cpy);
 
 TreeNode* InitTreeRoot (char name[]);
 

@@ -51,6 +51,17 @@ TreeNode* CreateNode (Types type, double dbl_val, Operations op_val, char* var_n
 }
 
 
+TreeNode* CopyNode (const TreeNode* node_to_cpy)
+{
+    TreeNode* new_node = (TreeNode*) calloc (1, sizeof (TreeNode));
+    if (!new_node) return nullptr;
+
+    *new_node = *node_to_cpy;
+
+    return new_node;
+}
+
+
 TreeNode* DestructTree (TreeNode* root)
 {
     if (root->left)  DestructTree (root->left);
@@ -80,6 +91,12 @@ TreeNode* GetDerivative (const TreeNode* cur_node)
         case ADD:
             return CreateNode (OP_T, 0, ADD, nullptr, GetDerivative (cur_node->left), GetDerivative (cur_node->right));
         
+        case SUB:
+            return CreateNode (OP_T, 0, SUB, nullptr, GetDerivative (cur_node->left), GetDerivative (cur_node->right));
+
+        case MUL:
+            return ADD(MUL(DL, CR), MUL(CL, DR));
+
         default:
             break;
         }
