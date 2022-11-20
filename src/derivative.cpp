@@ -5,9 +5,12 @@ int main()
 {
     TreeNode* root = GetTreeRoot();
 
-    DrawTree (root);
+    TreeNode* d_root = GetDerivative (root);
 
-    PrintInFile (root);
+    DrawTree (root);
+    DrawTree (d_root);
+
+    PrintInFile (d_root);
 
     DestructTree (root);
 }
@@ -27,16 +30,22 @@ TreeNode* GetTreeRoot ()
 }
 
 
-TreeNode* CreateNewNode ()
+TreeNode* CreateNode (Types type, double dbl_val, Operations op_val, char* var_name,
+                      TreeNode* left_child, TreeNode* right_child)
 {
+    printf ("Creating node with type %d\n", type);
+
     TreeNode* new_node = (TreeNode*) calloc (1, sizeof (TreeNode));
     if (!new_node) return nullptr;
 
-    new_node->left   = nullptr;
-    new_node->right  = nullptr;
+    if      (type == NUM_T) new_node->value.dbl_val  = dbl_val;
+    else if (type == VAR_T) new_node->value.var_name = var_name;
+    else if (type == OP_T)  new_node->value.op_val   = op_val;
+    
+    new_node->left   = left_child;
+    new_node->right  = right_child;
     new_node->parent = nullptr;
-
-    new_node->value.var_name = (char*) calloc (MAX_NAME_LEN, sizeof (char)); 
+    new_node->type   = type;
 
     return new_node;
 }
@@ -56,61 +65,29 @@ TreeNode* DestructTree (TreeNode* root)
 }
 
 
-// Positions 
-TreeNode* InsertNode (char name[], TreeNode* parent, Positions position)
-{
-    TreeNode* new_node = CreateNewNode();
-    
-    new_node->value.var_name = name;
-    new_node->parent = parent;
-
-    if (position == LEFT)
-    {
-        if (parent->left == nullptr) parent->left = new_node;
-        else
-        {
-            new_node->left = parent->left;
-            parent->left->parent = new_node;
-            parent->left = new_node;
-        }
-    }
-    else if (position == RIGHT)
-    {
-        if (parent->right == nullptr) parent->right = new_node;
-        else
-        {
-            new_node->left = parent->right;
-            parent->right->parent = new_node;
-            parent->right = new_node;
-        }
-    }
-
-    return new_node;
-}
-
-
-TreeNode* FindNode (TreeNode* cur_node, const char name[])
-{
-    if (!cur_node) return nullptr;
-
-    if (strcmp (cur_node->value.var_name, name) == 0) return cur_node;
-
-    TreeNode* find_left = FindNode (cur_node->left, name);
-    TreeNode* find_right = FindNode (cur_node->right, name);
-
-    if (find_left) return find_left;
-    if (find_right) return find_right;
-
-    return nullptr;
-}
-
 //--Derivatives----------------------------------------------
 
 
-TreeNode* GetDerivative (TreeNode* cur_node)
+TreeNode* GetDerivative (const TreeNode* cur_node)
 {
-
+    if      (cur_node->type == NUM_T) return CreateNode (NUM_T, 0, UNKNOWN, nullptr, nullptr, nullptr);
+    else if (cur_node->type == VAR_T) return CreateNode (NUM_T, 1, UNKNOWN, nullptr, nullptr, nullptr);
+    else
+    {
+        printf ("Hey hey, operation time!\n");
+        switch (cur_node->value.op_val)
+        {
+        case ADD:
+            return CreateNode (OP_T, 0, ADD, nullptr, GetDerivative (cur_node->left), GetDerivative (cur_node->right));
+        
+        default:
+            break;
+        }
+    }
 }
+
+
+
 
 
 //--Derivatives----------------------------------------------
@@ -122,7 +99,7 @@ TreeNode* BuildTree (FILE* tree_info)
     char* buffer = GetTextBuffer (tree_info);
     int size     = (int)strlen(buffer);
 
-    TreeNode* root = CreateNewNode();
+    TreeNode* root = CreateNode(INIT_PARAMS);
 
     TreeNode* currnode = root;
 
@@ -167,7 +144,7 @@ TreeNode* BuildTree (FILE* tree_info)
 
 void AddRightChild (TreeNode* cur_node)
 {
-    TreeNode* new_node = CreateNewNode();
+    TreeNode* new_node = CreateNode(INIT_PARAMS);
 
     new_node->parent = cur_node;
 
@@ -177,7 +154,7 @@ void AddRightChild (TreeNode* cur_node)
 
 void AddLeftChild (TreeNode* cur_node)
 {
-    TreeNode* new_node = CreateNewNode();
+    TreeNode* new_node = CreateNode(INIT_PARAMS);
 
     new_node->parent = cur_node;
 
@@ -242,47 +219,8 @@ Operations GetOpType (const char str[])
 #undef CMP
 
 
-//------------------------Tree builder--------------------
-
-
-char* GetInput (char* buffer)
-{
-    fflush (stdin);
-
-    gets (buffer);
-
-    if (strlen (buffer) == 0)
-    {    
-        gets (buffer);
-    }
-    
-    return buffer;
-}
-
-
-//------------------------Object find mode----------------
-
-
-Stack BuildAncestorsStack (TreeNode* cur_node)
-{
-    Stack ancestors = {0};
-    StackCtor (&ancestors, 10);
-    StackPush (&ancestors, cur_node);
-    
-    AddAncestor (cur_node->parent, &ancestors);
-    
-    return ancestors;
-}
-
-
-void AddAncestor (TreeNode* cur_node, Stack* ancestors)
-{
-    StackPush (ancestors, cur_node);
-
-    if (cur_node->parent) AddAncestor (cur_node->parent, ancestors);
-}
-
 //------------------------Dump----------------------------
+
 
 void DumpTree (TreeNode* node)
 {
@@ -291,14 +229,23 @@ void DumpTree (TreeNode* node)
     printf ("Ptr[%p] : \n", node);
     
     if (node->type == NUM_T)
+    {
         printf ("\t Node %s: left %p, right %p, parent %p, %d\n",
                 node->value, node->left,
                 node->right, node->parent, node->value);
-
+    }
+    else if (node->type == OP_T)
+    {
+        printf ("\t Node %s: left %p, right %p, parent %p, %d\n",
+                node->value, node->left,
+                node->right, node->parent, GetOpSign (node->value.op_val));
+    }
     else
+    {
         printf ("\t Node %s: left %p, right %p, parent %p, %d\n",
                 node->value, node->left,
                 node->right, node->parent, node->value);
+    }
 
     if (node->left)  DumpTree (node->left);
     if (node->right) DumpTree (node->right);
@@ -341,11 +288,10 @@ void PrintInFile (TreeNode* root)
 
     fclose (out_file);
 
-    system ("xelatex -output-directory=data data/output.tex");
-    system ("del output.aux");
-    system ("del output.log");
-    system ("del output.out");
-
+    // system ("xelatex -output-directory=data data/output.tex");
+    // system ("del output.aux");
+    // system ("del output.log");
+    // system ("del output.out");
 }
 
 
@@ -358,9 +304,7 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
     if (need_div) printf ("Loooooooool\n");
 
     if (need_div) fprintf (out_file, "(");
-
     if (node->left)  PrintInOrder (node->left,  out_file);
-
     if (need_div) fprintf (out_file, ")");
 
     if  (node->type == NUM_T)
@@ -371,11 +315,9 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
         fprintf (out_file, "%s", node->value.var_name);
     
     if (need_div) fprintf (out_file, "(");
-
     if (node->right) PrintInOrder (node->right, out_file);
-    fprintf (out_file, "}");
-
     if (need_div) fprintf (out_file, ")");
+    fprintf (out_file, "}");
 
 } 
 
@@ -405,23 +347,15 @@ char* GetOpSign (Operations op)
     default:
         return "?";
     }
-}
-
-
-
-// void PrintPostOrder (TreeNode* node, FILE* out_file)
-// {
-//     if (node->left)  PrintPostOrder (node->left,  out_file);
-//     if (node->right) PrintPostOrder (node->right, out_file);
-//     fprintf (out_file, "{\n%s\n", node->value);
-//     fprintf (out_file, "}\n");
-// } 
+} 
 
 
 #define _print(...) fprintf (dot_file, __VA_ARGS__)
 
 void DrawTree (TreeNode* root)
 {
+    static int img_counter = 0;
+
     FILE* dot_file = get_file ("data/graph.dot", "w+");
     
     // Writing header info
@@ -450,7 +384,13 @@ void DrawTree (TreeNode* root)
 
     fclose (dot_file);
 
-    system ("dot -Tpng data/graph.dot -o data/pretty_tree.png");
+    char src[MAX_SRC_LEN] = "";
+
+    sprintf (src, "dot -Tpng data/graph.dot -o data/pretty_tree%d.png", img_counter);
+
+    system (src);
+
+    img_counter++;
 
     return;
 }
@@ -465,8 +405,8 @@ void InitGraphvisNode (TreeNode* node, FILE* dot_file)   // Recursivly initialis
 
     else if (node->type == OP_T)
         _print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
-                "label=\" {Type: operation | value: %d}\"] \n \n",
-                node, node->value);
+                "label=\" {Type: operation | value: %s}\"] \n \n",
+                node, GetOpSign(node->value.op_val));
 
     else if (node->type == VAR_T)
         _print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","

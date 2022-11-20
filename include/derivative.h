@@ -11,6 +11,10 @@
 #include "stack.h"
 #include "stringUtils.h"
 
+//-----------------------------------------------
+
+#define INIT_PARAMS OP_T, 0, UNKNOWN, nullptr, nullptr, nullptr
+
 
 //-----------------------------------------------
 
@@ -26,7 +30,7 @@ enum Sizes
     MAX_IMG_SRC_LEN = 100,
     STACK_INIT_CAP = 5,
     MAX_NAME_LEN = 100,
-    MAX_MESSAGE_LEN =1000,
+    MAX_SRC_LEN =500,
 };
 
 
@@ -37,8 +41,6 @@ enum PlayMode
     LISTING = 2,
     COMPARISON = 3,
 };
-
-
 
 
 //-----------------------------------------------
@@ -92,7 +94,8 @@ TreeNode* GetTreeRoot ();
 
 TreeNode* InsertNode (char name[], TreeNode* parent, Positions position = LEFT);
 
-TreeNode* CreateNewNode ();
+TreeNode* CreateNode (Types type, double dbl_val, Operations op_val, char* var_name,
+                      TreeNode* left_child, TreeNode* right_child);
 
 TreeNode* InitTreeRoot (char name[]);
 
@@ -136,6 +139,6 @@ Operations GetOpType (const char str[]);
 
 void PrintInFile (TreeNode* root);
 
-TreeNode* GetDerivative (TreeNode* cur_node);
+TreeNode* GetDerivative (const TreeNode* cur_node);
 
 #endif
