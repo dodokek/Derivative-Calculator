@@ -63,6 +63,12 @@ enum Operations
     MUL,
     SQR,
     POW,
+    SIN,
+    COS,
+    ARCCOS,
+    ARCSIN,
+    LN,
+    LOG,
 };
 
 
@@ -143,5 +149,7 @@ Operations GetOpType (const char str[]);
 void PrintInFile (TreeNode* root);
 
 TreeNode* GetDerivative (const TreeNode* cur_node);
+
+TreeNode* CreateDigitNode (double dbl_val);
 
 #endif

@@ -62,6 +62,22 @@ TreeNode* CopyNode (const TreeNode* node_to_cpy)
 }
 
 
+TreeNode* CreateDigitNode (double dbl_val)
+{
+    TreeNode* new_node = (TreeNode*) calloc (1, sizeof (TreeNode));
+    if (!new_node) return nullptr;
+
+    new_node->value.dbl_val  = dbl_val;
+    
+    new_node->left   = nullptr;
+    new_node->right  = nullptr;
+    new_node->parent = nullptr;
+    new_node->type   = NUM_T;
+
+    return new_node;
+}
+
+
 TreeNode* DestructTree (TreeNode* root)
 {
     if (root->left)  DestructTree (root->left);
@@ -85,17 +101,23 @@ TreeNode* GetDerivative (const TreeNode* cur_node)
     else if (cur_node->type == VAR_T) return CreateNode (NUM_T, 1, UNKNOWN, nullptr, nullptr, nullptr);
     else
     {
-        printf ("Hey hey, operation time!\n");
+        // printf ("Hey hey, operation time!\n");
         switch (cur_node->value.op_val)
         {
         case ADD:
-            return CreateNode (OP_T, 0, ADD, nullptr, GetDerivative (cur_node->left), GetDerivative (cur_node->right));
+            return ADD (DL, DR);
         
         case SUB:
-            return CreateNode (OP_T, 0, SUB, nullptr, GetDerivative (cur_node->left), GetDerivative (cur_node->right));
+            return SUB (DL, DR);
 
         case MUL:
             return ADD(MUL(DL, CR), MUL(CL, DR));
+        
+        case SIN:
+            return MUL(COS(nullptr, CR), DR);
+
+        case COS:
+            return MUL(MUL(GET_DIGIT (-1), SIN(nullptr, CR)), DR);
 
         default:
             break;
@@ -114,7 +136,7 @@ TreeNode* GetDerivative (const TreeNode* cur_node)
 TreeNode* BuildTree (FILE* tree_info)
 {
     char* buffer = GetTextBuffer (tree_info);
-    int size     = (int)strlen(buffer);
+    int size     = (int) strlen(buffer);
 
     TreeNode* root = CreateNode(INIT_PARAMS);
 
@@ -228,6 +250,8 @@ Operations GetOpType (const char str[])
     else if (CMP (/)) return DIV;
     else if (CMP (*)) return MUL;
     else if (CMP (^)) return POW;
+    else if (CMP (sin)) return SIN;
+    else if (CMP (cos)) return COS;
     else if (CMP (sqr)) return SQR;
 
     else return UNKNOWN;
@@ -305,10 +329,10 @@ void PrintInFile (TreeNode* root)
 
     fclose (out_file);
 
-    // system ("xelatex -output-directory=data data/output.tex");
-    // system ("del output.aux");
-    // system ("del output.log");
-    // system ("del output.out");
+    system ("xelatex -output-directory=data data/output.tex");
+    system ("del output.aux");
+    system ("del output.log");
+    system ("del output.out");
 }
 
 
@@ -318,7 +342,7 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
     printf ("Type %d Val %d\n", node->type, node->value.op_val);
     bool need_div = (node->type == OP_T && node->value.op_val == MUL);
 
-    if (need_div) printf ("Loooooooool\n");
+    // if (need_div) printf ("Loooooooool\n");
 
     if (need_div) fprintf (out_file, "(");
     if (node->left)  PrintInOrder (node->left,  out_file);
@@ -334,6 +358,7 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
     if (need_div) fprintf (out_file, "(");
     if (node->right) PrintInOrder (node->right, out_file);
     if (need_div) fprintf (out_file, ")");
+
     fprintf (out_file, "}");
 
 } 
@@ -360,6 +385,12 @@ char* GetOpSign (Operations op)
 
     case POW:
         return "^";
+
+    case SIN:
+        return "sin";
+    
+    case COS:
+        return "cos";
 
     default:
         return "?";
