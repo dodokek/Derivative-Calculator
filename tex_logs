@@ -1,0 +1,77 @@
+This is XeTeX, Version 3.141592653-2.6-0.999994 (MiKTeX 22.10) (preloaded format=xelatex.fmt)
+ restricted \write18 enabled.
+entering extended mode
+(data/output.tex
+LaTeX2e <2022-11-01>
+L3 programming layer <2022-11-02>
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo))
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/cyrillic\t2aenc.def)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/cyrillic\t2acmr.fd)
+
+LaTeX Font Warning: Font shape `T2A/lmr/m/n' undefined
+(Font)              using `T2A/cmr/m/n' instead on input line 112.
+
+) (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+
+Package inputenc Warning: inputenc package ignored with utf8 based engines.
+
+) (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/generic/babel\babel.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/generic/babel\xebabel.def
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/generic/babel\txtbabel.def))
+*************************************
+* Local config file bblopts.cfg used
+*
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/arabi\bblopts.cfg)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/babel-english\english.l
+df)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/babel-russian\russianb.
+ldf))
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/ru\babel
+-russian.tex)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/en\babel
+-english.tex)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/unicode-math\unicode-ma
+th.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-xet
+ex.def))
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/unicode-math\unicode-ma
+th-xetex.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xpars
+e.sty)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/l3keys2e\l3k
+eys2e.sty)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec-xetex
+.sty (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec.cfg))
+) (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/base\fix-cm.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1enc.def))
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+For additional information on amsmath, use the `?' option.
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty))
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty))
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/unicode-math\unicode-ma
+th-table.tex)))
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.c
+fg)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\xetex.def)
+)) (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty)
+(C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/wrapfig\wrapfig.sty)
+(C:\Projects\Derivative-Calculator\data\output.aux) [1]
+(C:\Projects\Derivative-Calculator\data\output.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ )
+Output written on C:\Projects\Derivative-Calculator\data\output.pdf (1 page).
+Transcript written on C:\Projects\Derivative-Calculator\data\output.log.

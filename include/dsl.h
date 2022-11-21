@@ -1,3 +1,6 @@
+#ifndef DSL_H
+#define DSL_H
+
 #define DL GetDerivative (cur_node->left)
 #define DR GetDerivative (cur_node->right)
 #define CL CopyNode (cur_node->left)
@@ -11,3 +14,7 @@
 #define SIN(L, R) CreateNode (OP_T, 0, SIN, nullptr, L, R)
 #define COS(L, R) CreateNode (OP_T, 0, COS, nullptr, L, R)
 #define LN(L, R) CreateNode (OP_T, 0, LN, nullptr, L, R)
+
+#define INIT_PARAMS OP_T, 0, UNKNOWN, nullptr, nullptr, nullptr
+
+#endif
