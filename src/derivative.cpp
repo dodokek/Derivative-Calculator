@@ -119,6 +119,9 @@ TreeNode* GetDerivative (const TreeNode* cur_node)
         case COS:
             return MUL(MUL(GET_DIGIT (-1), SIN(nullptr, CR)), DR);
 
+        case LN:
+            return MUL(DIV(GET_DIGIT (1), CR), DR);
+
         default:
             break;
         }
@@ -253,6 +256,7 @@ Operations GetOpType (const char str[])
     else if (CMP (sin)) return SIN;
     else if (CMP (cos)) return COS;
     else if (CMP (sqr)) return SQR;
+    else if (CMP (ln)) return LN;
 
     else return UNKNOWN;
 }
@@ -340,28 +344,56 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
 {
     fprintf (out_file, "{");
     printf ("Type %d Val %d\n", node->type, node->value.op_val);
-    bool need_div = (node->type == OP_T && node->value.op_val == MUL);
 
-    // if (need_div) printf ("Loooooooool\n");
+    bool need_div  = isNeedDivision (node);
+
+    bool need_frac = (node->type == OP_T && node->value.op_val == DIV);
+
+    if (need_frac) fprintf (out_file, "\\frac{");
 
     if (need_div) fprintf (out_file, "(");
     if (node->left)  PrintInOrder (node->left,  out_file);
     if (need_div) fprintf (out_file, ")");
 
-    if  (node->type == NUM_T)
-        fprintf (out_file, "%lg", node->value.dbl_val);
-    else if (node->type == OP_T)
-        fprintf (out_file, "%s", GetOpSign (node->value.op_val));
-    else
-        fprintf (out_file, "%s", node->value.var_name);
-    
+    if (!need_frac)
+    {
+        if  (node->type == NUM_T)
+            fprintf (out_file, "%lg", node->value.dbl_val);
+        else if (node->type == OP_T)
+            fprintf (out_file, "%s", GetOpSign (node->value.op_val));
+        else
+            fprintf (out_file, "%s", node->value.var_name);
+    }
+    else 
+    {
+        fprintf (out_file, "}{");
+    }
+
     if (need_div) fprintf (out_file, "(");
     if (node->right) PrintInOrder (node->right, out_file);
     if (need_div) fprintf (out_file, ")");
 
+    if (need_frac) fprintf (out_file, "}");
+
     fprintf (out_file, "}");
 
 } 
+
+
+bool isNeedDivision (TreeNode* op_node)
+{
+    if (op_node->type != OP_T) return false;
+    if (op_node->value.op_val != MUL) return false;
+    
+    TreeNode* left_child  = op_node->left;
+    TreeNode* right_child = op_node->right;
+
+    if (left_child->left || left_child->right ||
+        right_child->left || right_child->right) return true;
+    
+    return false;
+
+}
 
 
 char* GetOpSign (Operations op)
@@ -391,6 +423,9 @@ char* GetOpSign (Operations op)
     
     case COS:
         return "cos";
+    
+    case LN:
+        return "ln";
 
     default:
         return "?";
