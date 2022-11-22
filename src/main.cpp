@@ -8,13 +8,12 @@ int main()
     TreeNode* d_root = GetDerivative (root);
 
     DrawTree (root);
-    
-    SimplifyTree (root);
 
-    DrawTree (root);
+    DrawTree (d_root);
+    while(SimplifyTree(d_root)) ;
+    DrawTree (d_root);
 
-    PrintInFile (root);
-
+    PrintInFile (d_root);
 
     DestructTree (root);
 }

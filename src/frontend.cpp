@@ -76,7 +76,7 @@ void PrintInFile (TreeNode* root)
 void PrintInOrder (TreeNode* node, FILE* out_file)
 {
     fprintf (out_file, "{");
-    printf ("Type %d Val %d\n", node->type, node->value.op_val);
+    // printf ("Type %d Val %d\n", node->type, node->value.op_val);
 
     bool need_div  = isNeedDivision (node);
 

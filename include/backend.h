@@ -12,12 +12,6 @@
 
 //-----------------------------------------------
 
-enum Positions
-{
-    LEFT,
-    RIGHT,
-};
-
 
 enum Sizes
 {
@@ -87,6 +81,8 @@ TreeNode* CreateNode (Types type,           double dbl_val,
                       Operations op_val,    char* var_name,
                       TreeNode* left_child, TreeNode* right_child);
 
+TreeNode* TransformNode (TreeNode* node, Types type, double dbl_val, const char* var_name);
+
 TreeNode* CopyNode (const TreeNode* node_to_cpy);
 
 TreeNode* BuildTree (FILE* tree_info);
@@ -109,4 +105,5 @@ int SimplifyTree (TreeNode* cur_node);
 
 bool isZero (double num);
 
+bool isEqual (double num1, double num2);
 #endif

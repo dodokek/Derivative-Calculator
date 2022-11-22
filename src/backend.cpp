@@ -30,7 +30,14 @@ TreeNode* GetDerivative (const TreeNode* cur_node)
         case LN:
             return MUL(DIV(GET_DIGIT (1), CR), DR);
 
+        case UNKNOWN:
+            printf ("Unknown operation\n");
+            return nullptr;
+            break;
+            
         default:
+            printf ("No such case for operation\n");
+            return nullptr;
             break;
         }
     }
@@ -41,25 +48,60 @@ int SimplifyTree (TreeNode* cur_node)
 {
     int simpl_amount = 0;
 
-    if (cur_node->left) simpl_amount  += SimplifyTree (cur_node->left);
-    if (cur_node->right) simpl_amount += SimplifyTree (cur_node->right);
+    simpl_amount = 0;
+
+    if (cur_node->left)  simpl_amount  += SimplifyTree (cur_node->left);
+    if (cur_node->right) simpl_amount  += SimplifyTree (cur_node->right);
     
-    if (cur_node->type == OP_T)
+    if (cur_node->type == OP_T && cur_node->left->type != OP_T && cur_node->right->type != OP_T)
     {
         if (cur_node->value.op_val == MUL)
         {
-            if (cur_node->left->type == NUM_T  && isZero(cur_node->left->value.dbl_val))
+            if      (isZero (cur_node->left->value.dbl_val))
             {
-                cur_node = GET_DIGIT(0);
+                TransformNode (cur_node, NUM_T, 0, nullptr);
+                return 1;
             }
-            if (cur_node->right->type == NUM_T && isZero(cur_node->right->value.dbl_val)) cur_node = GET_DIGIT(0);
-            // must write free for elems
-            return 1;
+
+            else if (isZero (cur_node->right->value.dbl_val))
+            {
+                TransformNode (cur_node, NUM_T, 0, nullptr);
+                return 1;
+            }
+
+            else if (isEqual (cur_node->right->value.dbl_val, 1))
+            {
+                if (cur_node->left->type == NUM_T)
+                    TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val, nullptr);
+                
+                if (cur_node->left->type == VAR_T)
+                    TransformNode (cur_node, VAR_T, 0, cur_node->left->value.var_name);
+
+                return 1;
+            }
+
+            else if (isEqual(cur_node->left->value.dbl_val, 1))
+            {
+                if (cur_node->right->type == NUM_T)
+                    TransformNode (cur_node, NUM_T, cur_node->right->value.dbl_val, nullptr);
+                
+                if (cur_node->right->type == VAR_T)
+                    TransformNode (cur_node, VAR_T, 0, cur_node->right->value.var_name);
+
+                return 1;
+            }
+
+            else if (cur_node->left->type == NUM_T && cur_node->right->type == NUM_T)
+            {
+                TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val + cur_node->right->value.dbl_val, nullptr);
+                return 1;
+            }
         }
     }
 
     return simpl_amount;
 }
+
 
 
 bool isZero (double num)
@@ -69,6 +111,11 @@ bool isZero (double num)
     return false;
 }
 
+
+bool isEqual (double num1, double num2)
+{
+    return (abs (num1 - num2) < 0.00000001) ? 1 : 0;
+}
 
 
 //--Math----------------------------------------------
@@ -134,6 +181,25 @@ TreeNode* CreateDigitNode (double dbl_val)
 
     return new_node;
 }
+
+
+TreeNode* TransformNode (TreeNode* node, Types type, double dbl_val, const char* var_name)
+{
+    node->type = type;
+    
+    if (type == NUM_T)
+        node->value.dbl_val = dbl_val;
+    else
+        node->value.var_name = var_name;
+
+    if (node->left)  free (node->left);
+    if (node->right) free (node->right);
+
+    node->left = nullptr;
+    node->right = nullptr;
+
+}
+
 
 
 TreeNode* DestructTree (TreeNode* root)
