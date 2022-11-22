@@ -84,9 +84,12 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
 
     if (need_frac) fprintf (out_file, "\\frac{");
 
-    if (need_div) fprintf (out_file, "(");
-    if (node->left)  PrintInOrder (node->left,  out_file);
-    if (need_div) fprintf (out_file, ")");
+    if (node->left)
+    {
+        if (need_div) fprintf (out_file, "(");
+        PrintInOrder (node->left, out_file);
+        if (need_div) fprintf (out_file, ")");
+    }
 
     if (!need_frac)
     {
@@ -102,9 +105,12 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
         fprintf (out_file, "}{");
     }
 
-    if (need_div) fprintf (out_file, "(");
-    if (node->right) PrintInOrder (node->right, out_file);
-    if (need_div) fprintf (out_file, ")");
+    if (node->right)
+    {
+        if (need_div) fprintf (out_file, "(");
+        PrintInOrder (node->right, out_file);
+        if (need_div) fprintf (out_file, ")");
+    }
 
     if (need_frac) fprintf (out_file, "}");
 
@@ -115,8 +121,16 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
 
 bool isNeedDivision (TreeNode* op_node)
 {
+    Operations cur_op = op_node->value.op_val;
+
     if (op_node->type != OP_T) return false;
-    if (op_node->value.op_val != MUL) return false;
+
+    if (cur_op == ADD ||
+        cur_op == SUB) return false;
+
+    if (cur_op == SIN ||
+        cur_op == COS ||
+        cur_op == LN) return true;
     
     TreeNode* left_child  = op_node->left;
     TreeNode* right_child = op_node->right;

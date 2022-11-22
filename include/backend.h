@@ -105,4 +105,8 @@ TreeNode* GetDerivative (const TreeNode* cur_node);
 
 TreeNode* CreateDigitNode (double dbl_val);
 
+int SimplifyTree (TreeNode* cur_node);
+
+bool isZero (double num);
+
 #endif

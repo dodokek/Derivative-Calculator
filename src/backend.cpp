@@ -1,7 +1,7 @@
 #include "backend.h"
 #include "frontend.h"
 
-//--Derivatives----------------------------------------------
+//--<Math>----------------------------------------------
 
 
 TreeNode* GetDerivative (const TreeNode* cur_node)
@@ -37,7 +37,41 @@ TreeNode* GetDerivative (const TreeNode* cur_node)
 }
 
 
-//--Derivatives----------------------------------------------
+int SimplifyTree (TreeNode* cur_node)
+{
+    int simpl_amount = 0;
+
+    if (cur_node->left) simpl_amount  += SimplifyTree (cur_node->left);
+    if (cur_node->right) simpl_amount += SimplifyTree (cur_node->right);
+    
+    if (cur_node->type == OP_T)
+    {
+        if (cur_node->value.op_val == MUL)
+        {
+            if (cur_node->left->type == NUM_T  && isZero(cur_node->left->value.dbl_val))
+            {
+                cur_node = GET_DIGIT(0);
+            }
+            if (cur_node->right->type == NUM_T && isZero(cur_node->right->value.dbl_val)) cur_node = GET_DIGIT(0);
+            // must write free for elems
+            return 1;
+        }
+    }
+
+    return simpl_amount;
+}
+
+
+bool isZero (double num)
+{
+    if (num <= 0.0000001) return true;
+
+    return false;
+}
+
+
+
+//--Math----------------------------------------------
 
 
 TreeNode* GetTreeRoot ()

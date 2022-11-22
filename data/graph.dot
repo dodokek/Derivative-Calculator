@@ -1,0 +1,31 @@
+
+    digraph g {
+        dpi      = 200;
+        fontname = "Comic Sans MS";
+        fontsize = 20;
+        rankdir   =  TB;
+        edge [color = darkgrey, arrowhead = onormal, arrowsize = 1, penwidth = 1.2]
+        graph[fillcolor = lightgreen, ranksep = 1.3, nodesep = 0.5,
+        style = "rounded, filled",color = green, penwidth = 2]
+
+    Node0000026b32f414d0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: \cdot}"] 
+ 
+Node0000026b32f41500[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: \cdot}"] 
+ 
+Node0000026b32f41530[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 0}"] 
+ 
+Node0000026b32f41640[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: variable | value: X}"] 
+ 
+Node0000026b32f41750[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: \cdot}"] 
+ 
+Node0000026b32f41780[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 2}"] 
+ 
+Node0000026b32f41890[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 3}"] 
+ 
+Node0000026b32f414d0->Node0000026b32f41500
+Node0000026b32f41500->Node0000026b32f41530
+Node0000026b32f41500->Node0000026b32f41640
+Node0000026b32f414d0->Node0000026b32f41750
+Node0000026b32f41750->Node0000026b32f41780
+Node0000026b32f41750->Node0000026b32f41890
+}

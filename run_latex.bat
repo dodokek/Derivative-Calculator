@@ -3,4 +3,4 @@ cd data
 del output.aux
 del output.log
 del output.tex
-del graph.dot
+@REM del graph.dot
