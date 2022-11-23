@@ -57,6 +57,9 @@ int SimplifyTree (TreeNode* cur_node)
     {
         if (cur_node->value.op_val == MUL)
         {
+            printf ("Kek: ");
+            printf ("Now working with %lg and %lg\n", cur_node->left->value.dbl_val, cur_node->right->value.dbl_val);
+
             if      (isZero (cur_node->left->value.dbl_val))
             {
                 TransformNode (cur_node, NUM_T, 0, nullptr);
@@ -72,28 +75,43 @@ int SimplifyTree (TreeNode* cur_node)
             else if (isEqual (cur_node->right->value.dbl_val, 1))
             {
                 if (cur_node->left->type == NUM_T)
+                {
                     TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val, nullptr);
-                
+                    return 1;
+                }
                 if (cur_node->left->type == VAR_T)
+                {    
                     TransformNode (cur_node, VAR_T, 0, cur_node->left->value.var_name);
-
-                return 1;
+                    return 1;
+                }
             }
 
             else if (isEqual(cur_node->left->value.dbl_val, 1))
             {
                 if (cur_node->right->type == NUM_T)
+                {
                     TransformNode (cur_node, NUM_T, cur_node->right->value.dbl_val, nullptr);
-                
+                    return 1;
+                }
                 if (cur_node->right->type == VAR_T)
+                {   
                     TransformNode (cur_node, VAR_T, 0, cur_node->right->value.var_name);
-
+                    return 1;
+                }
+            }
+        }
+        if (cur_node->left->type == NUM_T && cur_node->right->type == NUM_T)
+        {
+            if (cur_node->value.op_val == ADD)
+            {
+                printf ("Oh, two numbers, ADD!\n");
+                TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val + cur_node->right->value.dbl_val, nullptr);
                 return 1;
             }
-
-            else if (cur_node->left->type == NUM_T && cur_node->right->type == NUM_T)
+            else if (cur_node->value.op_val == MUL)
             {
-                TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val + cur_node->right->value.dbl_val, nullptr);
+                printf ("Oh, two numbers, MUL!\n");
+                TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val * cur_node->right->value.dbl_val, nullptr);
                 return 1;
             }
         }
