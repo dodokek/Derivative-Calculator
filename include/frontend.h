@@ -2,12 +2,21 @@
 #define FRONT_H
 
 #include "backend.h"
+#include "dsl.h"
+
+
+enum PrintTypes
+{
+    ORIGIN,
+    DERIVATIVE,
+    INFO,
+};
 
 void InitLatexFile (TreeNode* root);
 
 void GeneratePdf ();
 
-void PrintBranch (TreeNode* root);
+void PrintBranch (TreeNode* root, PrintTypes mode);
 
 void DumpTree (TreeNode* root);
 

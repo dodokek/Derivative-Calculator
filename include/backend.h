@@ -85,7 +85,7 @@ TreeNode* CreateNode (Types type,           double dbl_val,
 
 TreeNode* TransformNode (TreeNode* node, Types type, double dbl_val, const char* var_name);
 
-TreeNode* CopyNode (const TreeNode* node_to_cpy);
+TreeNode* CopyNode (TreeNode* node_to_cpy);
 
 TreeNode* BuildTree (FILE* tree_info);
 
@@ -99,7 +99,7 @@ TreeNode* DestructTree (TreeNode* root);
 
 Operations GetOpType (const char str[]);
 
-TreeNode* GetDerivative (const TreeNode* cur_node, TreeNode* root);
+TreeNode* GetDerivative (TreeNode* cur_node, TreeNode* root);
 
 TreeNode* CreateDigitNode (double dbl_val);
 

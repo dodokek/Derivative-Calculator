@@ -13,16 +13,22 @@
 #define DIV(L, R) CreateNode (OP_T, 0, DIV, nullptr, L, R)
 #define SIN(L, R) CreateNode (OP_T, 0, SIN, nullptr, L, R)
 #define COS(L, R) CreateNode (OP_T, 0, COS, nullptr, L, R)
-#define LN(L, R) CreateNode (OP_T, 0, LN, nullptr, L, R)
-
+#define LN(L, R)  CreateNode (OP_T, 0, LN, nullptr,  L, R)
 
 #define INIT_PARAMS OP_T, 0, UNKNOWN, nullptr, nullptr, nullptr
 
-#define $PRINT_N_RETURN(X)       \
-    {                            \
-        TreeNode* tmp_node = X;  \
-        PrintBranch (tmp_node);  \
-        return tmp_node;         \
+#define $PRINT_N_RETURN(X)                   \
+    {                                        \
+        PrintBranch (cur_node, DERIVATIVE);  \
+        TreeNode* tmp_node = X;              \
+        PrintBranch (tmp_node, ORIGIN);      \
+        return tmp_node;                     \
     }
 
+#define _print(...) fprintf (out_file, __VA_ARGS__)
+
+#define _equation(X) _print ("\n\\begin{equation}\n"); X ; _print ("\n\\end{equation}\n")
+
+
+#define _SimplifyTree(X) while(SimplifyTree(X)) 
 #endif

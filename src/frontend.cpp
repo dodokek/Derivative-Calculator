@@ -59,7 +59,7 @@ void InitLatexFile (TreeNode* root)
     \maketitle
     )";
 
-    fprintf (out_file, header);
+    _print (header);
   
     char introduction[] = R"(
         Welcome to derivative calculator, here is the
@@ -69,11 +69,11 @@ void InitLatexFile (TreeNode* root)
 
     )";
 
-    fprintf (out_file, introduction);
+    _print (introduction);
 
-    fprintf (out_file, "\n\\begin{equation}\n");
+    _print ("\n\\begin{equation}\n");
     PrintInOrder (root, out_file);
-    fprintf (out_file, "\n\\end{equation}\n");
+    _print ("\n\\end{equation}\n");
     
     fclose (out_file);
 }
@@ -88,7 +88,7 @@ void GeneratePdf ()
         \end{document}
     )";
 
-    fprintf (out_file, ending_lines);
+    _print (ending_lines);
 
     fclose (out_file);
 
@@ -96,68 +96,76 @@ void GeneratePdf ()
 }
 
 
-void PrintBranch (TreeNode* root)
+
+
+void PrintBranch (TreeNode* root, PrintTypes mode)
 {
     FILE* out_file = get_file ("data/output.tex", "a");
 
-    fprintf (out_file, "Let's calculate a derivative of the one part\\\\");
+    if (mode == ORIGIN)
+    {
+        _print ("We finally calculated the derivative of this part, lets jump up:\n");   
+        
+        _equation(PrintInOrder (root, out_file));
+    }
+    else if (mode == DERIVATIVE)
+    {
+        _print ("Weare now working with this part:\\\\");
 
-    fprintf (out_file, "\n\\begin{equation}\n");
-    PrintInOrder (root, out_file);
-    fprintf (out_file, "\n\\end{equation}\n");
+        _equation(PrintInOrder (root, out_file));
 
-    fprintf (out_file, "Then let's simplify it\\\\");
+        _print ("Then let's simplify it\\\\");
 
-    fprintf (out_file, "\n\\begin{equation}\n");
-    SimplifyTree (root);
-    PrintInOrder (root, out_file);
-    fprintf (out_file, "\n\\end{equation}\n");
-
+        _SimplifyTree (root);
+        
+        _equation(PrintInOrder (root, out_file));
+    }
+    
     fclose (out_file);
 }
 
 
 void PrintInOrder (TreeNode* node, FILE* out_file)
 {
-    fprintf (out_file, "{");
+    _print ("{");
 
     bool need_div  = isNeedDivision (node);
 
     bool need_frac = (node->type == OP_T && node->value.op_val == DIV);
 
-    if (need_frac) fprintf (out_file, "\\frac{");
+    if (need_frac) _print ("\\frac{");
 
     if (node->left)
     {
-        if (need_div) fprintf (out_file, "(");
+        if (need_div) _print ("(");
         PrintInOrder (node->left, out_file);
-        if (need_div) fprintf (out_file, ")");
+        if (need_div) _print (")");
     }
 
     if (!need_frac)
     {
         if  (node->type == NUM_T)
-            fprintf (out_file, "%lg", node->value.dbl_val);
+            _print ("%lg", node->value.dbl_val);
         else if (node->type == OP_T)
-            fprintf (out_file, "%s", GetOpSign (node->value.op_val));
+            _print ("%s", GetOpSign (node->value.op_val));
         else
-            fprintf (out_file, "%s", node->value.var_name);
+            _print ("%s", node->value.var_name);
     }
     else 
     {
-        fprintf (out_file, "}{");
+        _print ("}{");
     }
 
     if (node->right)
     {
-        if (need_div) fprintf (out_file, "(");
+        if (need_div) _print ("(");
         PrintInOrder (node->right, out_file);
-        if (need_div) fprintf (out_file, ")");
+        if (need_div) _print (")");
     }
 
-    if (need_frac) fprintf (out_file, "}");
+    if (need_frac) _print ("}");
 
-    fprintf (out_file, "}");
+    _print ("}");
 
 } 
 
@@ -229,7 +237,7 @@ char* GetOpSign (Operations op)
 } 
 
 
-#define _print(...) fprintf (dot_file, __VA_ARGS__)
+#define __print(...) fprintf (dot_file, __VA_ARGS__)
 
 void DrawTree (TreeNode* root)
 {
@@ -251,13 +259,13 @@ void DrawTree (TreeNode* root)
     )";
 
     
-    _print (header);
+    __print (header);
 
     InitGraphvisNode (root, dot_file);
 
     RecursDrawConnections (root, dot_file);
 
-    _print ("}\n");
+    __print ("}\n");
     
     // Executing dotfile and printing an image
 
@@ -278,23 +286,23 @@ void DrawTree (TreeNode* root)
 void InitGraphvisNode (TreeNode* node, FILE* dot_file)   // Recursivly initialises every node 
 {
     if (node->type == NUM_T)
-        _print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+        __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
                 "label=\" {Type: number | value: %lg}\"] \n \n",
                 node, node->value.dbl_val);
 
     else if (node->type == OP_T)
-        _print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+        __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
                 "label=\" {Type: operation | value: %s}\"] \n \n",
                 node, GetOpSign(node->value.op_val));
 
     else if (node->type == VAR_T)
-        _print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+        __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
                 "label=\" {Type: variable | value: %s}\"] \n \n",
                 node, node->value);
 
     else
     {
-        _print ("Node%d[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+        __print ("Node%d[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
                 "label=\" {Op type: %d | value: unknown type}\"] \n \n",
                 node, node->type);
     }
@@ -310,12 +318,12 @@ void RecursDrawConnections (TreeNode* node, FILE* dot_file)
 {
     if (node->left)
     {
-        _print ("Node%p->Node%p\n", node, node->left);
+        __print ("Node%p->Node%p\n", node, node->left);
         RecursDrawConnections (node->left, dot_file);
     } 
     if (node->right)
     {
-        _print ("Node%p->Node%p\n", node, node->right);
+        __print ("Node%p->Node%p\n", node, node->right);
         RecursDrawConnections (node->right, dot_file);
     } 
 
@@ -323,5 +331,5 @@ void RecursDrawConnections (TreeNode* node, FILE* dot_file)
 }
 
 
-#undef _print
+#undef __print
 

@@ -4,7 +4,7 @@
 //--<Math>----------------------------------------------
 
 
-TreeNode* GetDerivative (const TreeNode* cur_node, TreeNode* root)
+TreeNode* GetDerivative (TreeNode* cur_node, TreeNode* root)
 {
     if      (cur_node->type == NUM_T) return CreateNode (NUM_T, 0, UNKNOWN, nullptr, nullptr, nullptr);
     else if (cur_node->type == VAR_T) return CreateNode (NUM_T, 1, UNKNOWN, nullptr, nullptr, nullptr);
@@ -21,6 +21,9 @@ TreeNode* GetDerivative (const TreeNode* cur_node, TreeNode* root)
         case MUL:
             $PRINT_N_RETURN(ADD(MUL(DL, CR), MUL(CL, DR)));
         
+        case DIV:
+            $PRINT_N_RETURN (DIV(SUB(MUL(DL, CR), MUL(CL, DR)), MUL(CR, CR)));
+
         case SIN:
             $PRINT_N_RETURN(MUL(COS(nullptr, CR), DR));
 
@@ -36,6 +39,7 @@ TreeNode* GetDerivative (const TreeNode* cur_node, TreeNode* root)
         case CTG: 
             $PRINT_N_RETURN(MUL(MUL(DIV(GET_DIGIT(1), SIN(nullptr, CR)), DR), GET_DIGIT(-1)));
 
+        
         case UNKNOWN:
             printf ("Unknown operation\n");
             return nullptr;
@@ -182,7 +186,7 @@ TreeNode* CreateNode (Types type, double dbl_val, Operations op_val, char* var_n
 }
 
 
-TreeNode* CopyNode (const TreeNode* node_to_cpy)
+TreeNode* CopyNode (TreeNode* node_to_cpy)
 {
     TreeNode* new_node = (TreeNode*) calloc (1, sizeof (TreeNode));
     if (!new_node) return nullptr;
