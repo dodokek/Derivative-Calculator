@@ -3,7 +3,11 @@
 
 #include "backend.h"
 
-void PrintInFile (TreeNode* root);
+void InitLatexFile (TreeNode* root);
+
+void GeneratePdf ();
+
+void PrintBranch (TreeNode* root);
 
 void DumpTree (TreeNode* root);
 

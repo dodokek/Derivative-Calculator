@@ -4,7 +4,7 @@
 //--<Math>----------------------------------------------
 
 
-TreeNode* GetDerivative (const TreeNode* cur_node)
+TreeNode* GetDerivative (const TreeNode* cur_node, TreeNode* root)
 {
     if      (cur_node->type == NUM_T) return CreateNode (NUM_T, 0, UNKNOWN, nullptr, nullptr, nullptr);
     else if (cur_node->type == VAR_T) return CreateNode (NUM_T, 1, UNKNOWN, nullptr, nullptr, nullptr);
@@ -13,28 +13,28 @@ TreeNode* GetDerivative (const TreeNode* cur_node)
         switch (cur_node->value.op_val)
         {
         case ADD:
-            return ADD (DL, DR);
+            $PRINT_N_RETURN(ADD (DL, DR));
         
         case SUB:
-            return SUB (DL, DR);
+            $PRINT_N_RETURN(SUB (DL, DR));
 
         case MUL:
-            return ADD(MUL(DL, CR), MUL(CL, DR));
+            $PRINT_N_RETURN(ADD(MUL(DL, CR), MUL(CL, DR)));
         
         case SIN:
-            return MUL(COS(nullptr, CR), DR);
+            $PRINT_N_RETURN(MUL(COS(nullptr, CR), DR));
 
         case COS:
-            return MUL(MUL(GET_DIGIT (-1), SIN(nullptr, CR)), DR);
+            $PRINT_N_RETURN(MUL(MUL(GET_DIGIT (-1), SIN(nullptr, CR)), DR));
 
         case LN:
-            return MUL(DIV(GET_DIGIT (1), CR), DR);
+            $PRINT_N_RETURN(MUL(DIV(GET_DIGIT (1), CR), DR));
 
         case TG: 
-            return MUL(DIV(GET_DIGIT(1), COS(nullptr, CR)), DR);
+            $PRINT_N_RETURN(MUL(DIV(GET_DIGIT(1), COS(nullptr, CR)), DR));
 
         case CTG: 
-            return MUL(MUL(DIV(GET_DIGIT(1), SIN(nullptr, CR)), DR), GET_DIGIT(-1));
+            $PRINT_N_RETURN(MUL(MUL(DIV(GET_DIGIT(1), SIN(nullptr, CR)), DR), GET_DIGIT(-1)));
 
         case UNKNOWN:
             printf ("Unknown operation\n");

@@ -99,7 +99,7 @@ TreeNode* DestructTree (TreeNode* root);
 
 Operations GetOpType (const char str[]);
 
-TreeNode* GetDerivative (const TreeNode* cur_node);
+TreeNode* GetDerivative (const TreeNode* cur_node, TreeNode* root);
 
 TreeNode* CreateDigitNode (double dbl_val);
 

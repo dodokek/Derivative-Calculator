@@ -1,8 +1,8 @@
 #ifndef DSL_H
 #define DSL_H
 
-#define DL GetDerivative (cur_node->left)
-#define DR GetDerivative (cur_node->right)
+#define DL GetDerivative (cur_node->left, root)
+#define DR GetDerivative (cur_node->right, root)
 #define CL CopyNode (cur_node->left)
 #define CR CopyNode (cur_node->right)
 #define GET_DIGIT(num) CreateDigitNode (num)
@@ -15,6 +15,14 @@
 #define COS(L, R) CreateNode (OP_T, 0, COS, nullptr, L, R)
 #define LN(L, R) CreateNode (OP_T, 0, LN, nullptr, L, R)
 
+
 #define INIT_PARAMS OP_T, 0, UNKNOWN, nullptr, nullptr, nullptr
+
+#define $PRINT_N_RETURN(X)       \
+    {                            \
+        TreeNode* tmp_node = X;  \
+        PrintBranch (tmp_node);  \
+        return tmp_node;         \
+    }
 
 #endif

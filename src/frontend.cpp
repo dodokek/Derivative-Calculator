@@ -31,7 +31,7 @@ void DumpTree (TreeNode* node)
 }
 
 
-void PrintInFile (TreeNode* root)
+void InitLatexFile (TreeNode* root)
 {
     FILE* out_file = get_file ("data/output.tex", "w+");
 
@@ -60,12 +60,35 @@ void PrintInFile (TreeNode* root)
     )";
 
     fprintf (out_file, header);
+  
+    char introduction[] = R"(
+        Welcome to derivative calculator, here is the
+        step by step results of the calculations.
 
-    fprintf (out_file, "\\[");
+        \textit{A programm was given an input expression}:
+
+    )";
+
+    fprintf (out_file, introduction);
+
+    fprintf (out_file, "\n\\begin{equation}\n");
     PrintInOrder (root, out_file);
-    fprintf (out_file, "\\]");
+    fprintf (out_file, "\n\\end{equation}\n");
+    
+    fclose (out_file);
+}
 
-    fprintf (out_file, "\n\n\t\\end{document}");
+
+void GeneratePdf ()
+{
+    FILE* out_file = get_file ("data/output.tex", "a");
+
+    char ending_lines[] = R"(
+        The solution is pretty simple and you definetely can do it \textbf{yourself}
+        \end{document}
+    )";
+
+    fprintf (out_file, ending_lines);
 
     fclose (out_file);
 
@@ -73,10 +96,30 @@ void PrintInFile (TreeNode* root)
 }
 
 
+void PrintBranch (TreeNode* root)
+{
+    FILE* out_file = get_file ("data/output.tex", "a");
+
+    fprintf (out_file, "Let's calculate a derivative of the one part\\\\");
+
+    fprintf (out_file, "\n\\begin{equation}\n");
+    PrintInOrder (root, out_file);
+    fprintf (out_file, "\n\\end{equation}\n");
+
+    fprintf (out_file, "Then let's simplify it\\\\");
+
+    fprintf (out_file, "\n\\begin{equation}\n");
+    SimplifyTree (root);
+    PrintInOrder (root, out_file);
+    fprintf (out_file, "\n\\end{equation}\n");
+
+    fclose (out_file);
+}
+
+
 void PrintInOrder (TreeNode* node, FILE* out_file)
 {
     fprintf (out_file, "{");
-    // printf ("Type %d Val %d\n", node->type, node->value.op_val);
 
     bool need_div  = isNeedDivision (node);
 
