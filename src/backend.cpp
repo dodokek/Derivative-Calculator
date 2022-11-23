@@ -30,6 +30,12 @@ TreeNode* GetDerivative (const TreeNode* cur_node)
         case LN:
             return MUL(DIV(GET_DIGIT (1), CR), DR);
 
+        case TG: 
+            return MUL(DIV(GET_DIGIT(1), COS(nullptr, CR)), DR);
+
+        case CTG: 
+            return MUL(MUL(DIV(GET_DIGIT(1), SIN(nullptr, CR)), DR), GET_DIGIT(-1));
+
         case UNKNOWN:
             printf ("Unknown operation\n");
             return nullptr;
@@ -53,6 +59,8 @@ int SimplifyTree (TreeNode* cur_node)
     if (cur_node->left)  simpl_amount  += SimplifyTree (cur_node->left);
     if (cur_node->right) simpl_amount  += SimplifyTree (cur_node->right);
     
+    if (!cur_node->left || !cur_node->right) return 0;
+
     if (cur_node->type == OP_T && cur_node->left->type != OP_T && cur_node->right->type != OP_T)
     {
         if (cur_node->value.op_val == MUL)
@@ -357,8 +365,11 @@ Operations GetOpType (const char str[])
     else if (CMP (^)) return POW;
     else if (CMP (sin)) return SIN;
     else if (CMP (cos)) return COS;
+    else if (CMP (tg))  return TG;
+    else if (CMP (ctg)) return CTG;
     else if (CMP (sqr)) return SQR;
     else if (CMP (ln)) return LN;
+    
 
     else return UNKNOWN;
 }

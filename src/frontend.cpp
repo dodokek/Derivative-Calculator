@@ -167,6 +167,12 @@ char* GetOpSign (Operations op)
 
     case SIN:
         return "sin";
+
+    case TG:
+        return "tg";
+
+    case CTG:
+        return "ctg";
     
     case COS:
         return "cos";

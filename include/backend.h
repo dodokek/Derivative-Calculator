@@ -41,6 +41,8 @@ enum Operations
     POW,
     SIN,
     COS,
+    TG,
+    CTG,
     ARCCOS,
     ARCSIN,
     LN,
