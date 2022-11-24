@@ -42,6 +42,9 @@ void InitLatexFile (TreeNode* root)
     )";
 
     _print (introduction);
+    
+    CalcFuncInPoint (out_file, root);
+
     fclose (out_file);
 
     
@@ -66,9 +69,6 @@ void GeneratePdf ()
 
     system ("run_latex.bat");
 }
-
-
-
 
 
 void PrintBranch (TreeNode* root, PrintTypes mode)
@@ -105,6 +105,27 @@ void PrintBranch (TreeNode* root, PrintTypes mode)
     _print ("\\begin{center} $\\clubsuit$~$\\clubsuit$~$\\clubsuit$ \\end{center}");
     
     fclose (out_file);
+}
+
+
+void CalcFuncInPoint (FILE* out_file, TreeNode* root)
+{
+    FILE* info_file = get_file ("data/additional_calculations.txt", "r");
+    double val = 0;
+
+    printf ("Where do you want to count you function fella?\n");
+    scanf ("%lg", &val);
+
+    _print ("Got to calculate function in point %lg\n", val);
+
+    double tmp =  CalcTree (root, val);
+    printf ("Got gpt got %lg\n", tmp);
+
+    _print ("The result is %lg", tmp);
+
+    _print ("\\begin{center} $\\clubsuit$~$\\clubsuit$~$\\clubsuit$ \\end{center}");
+
+    fclose (info_file);
 }
 
 

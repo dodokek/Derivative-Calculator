@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
+#include <math.h>
 
 #include "fileUtils.h"
 #include "dsl.h"
@@ -110,4 +111,9 @@ int SimplifyTree (TreeNode* cur_node);
 bool isZero (double num);
 
 bool isEqual (double num1, double num2);
+
+double CalcTree (TreeNode* node, double val);
+
+double CalcOneOp (double val1, double val2, Operations operation);
+
 #endif

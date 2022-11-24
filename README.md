@@ -17,7 +17,7 @@ Optional part, need to be executed in the top folder of the project.
 make
 ~~~
 ## Execution
-Right now the interface is not user-friendly, because i am a lazy ass. In order to compute a derivative, you need to write function in file "tree.txt".  
+Right now the interface is not user-friendly, because i am a lazy ass. In order to compute a derivative, you need to write function in file "input.txt".  
 ~~~
 ((0)ln((2)*(x)))
 ~~~

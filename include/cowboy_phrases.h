@@ -18,4 +18,5 @@ const char* UselessPhrases[] =
     "Well, no clue how to simplificate this shit",
     "Let's just shoot some niggers, running down the road",
     "I forgot to tell you, i don't know math, i am a fucking cowboy, fella",
+    "I am tired","I am tired","I am tired","I am tired","I am tired","I am tired","I am tired","I am tired","I am tired"
 };

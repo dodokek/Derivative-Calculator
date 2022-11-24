@@ -35,4 +35,6 @@ void RecursDrawConnections (TreeNode* node, FILE* dot_file);
 
 TreeNode* FindNode (TreeNode* cur_node, const char name[]);
 
+void CalcFuncInPoint (FILE* out_file, TreeNode* root);
+
 #endif

@@ -140,6 +140,85 @@ int SimplifyTree (TreeNode* cur_node)
 }
 
 
+double CalcTree (TreeNode* node, double val)
+{
+    double left_val = 0;
+    double right_val = 0;
+    if (node->type != OP_T) return 0;
+
+    if (node->left)
+    {
+        if (node->left->type = OP_T) left_val = CalcTree (node->left, val);
+        else
+        {
+            if (node->left->type == VAR_T) 
+                left_val = val;
+            else 
+                left_val = node->left->value.dbl_val;
+        }
+    }
+
+    if (node->right)
+    {
+        if (node->right->type = OP_T) right_val = CalcTree (node->right, val);
+        else
+        {
+            if (node->right->type == VAR_T) 
+                right_val = val;
+            else 
+                right_val = node->right->value.dbl_val;
+        }
+    }
+
+    return CalcOneOp (left_val, right_val, node->value.op_val);
+}
+
+
+double CalcOneOp (double val1, double val2, Operations operation)
+{
+    switch (operation)
+    {
+    case ADD:
+        return val1 + val2;
+
+    case SUB:
+        return val1 - val2;
+    
+    case DIV:
+        return val1 / val2;
+
+    case MUL:
+        return val1 * val2;
+
+    case POW:
+        return pow(val1, val2);
+
+    case SIN:
+        return sin(val2);
+
+    case COS:
+        return cos(val2);
+
+    case TG:
+        return sin(val2)/cos(val2);
+
+    case CTG:
+        return cos(val2)/sin(val2);
+
+    case LN:
+        return log(val2);
+
+    case LOG:
+        return log(val2)/log(val1);
+
+    default:
+        printf ("Fucking shit! %d\n", operation);
+        return 0;
+        break;
+
+    }
+}
+
 
 bool isZero (double num)
 {
@@ -156,12 +235,16 @@ bool isEqual (double num1, double num2)
 }
 
 
+
+
+
+
 //--Math----------------------------------------------
 
 
 TreeNode* GetTreeRoot ()
 {
-    FILE* tree_data = get_file ("data/tree.txt", "r");
+    FILE* tree_data = get_file ("data/input.txt", "r");
     
     TreeNode* root = BuildTree (tree_data);
 
