@@ -21,9 +21,9 @@
     {                                        \
         PrintBranch (cur_node, DERIVATIVE);  \
         TreeNode* tmp_node = X;              \
-        PrintBranch (tmp_node, ORIGIN);      \
         return tmp_node;                     \
     }
+        // PrintBranch (tmp_node, ORIGIN);   
 
 #define _print(...) fprintf (out_file, __VA_ARGS__)
 

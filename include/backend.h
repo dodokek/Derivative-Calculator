@@ -101,6 +101,8 @@ Operations GetOpType (const char str[]);
 
 TreeNode* GetDerivative (TreeNode* cur_node, TreeNode* root);
 
+bool IsFictiveZero (Operations op);
+
 TreeNode* CreateDigitNode (double dbl_val);
 
 int SimplifyTree (TreeNode* cur_node);

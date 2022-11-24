@@ -69,23 +69,29 @@ int SimplifyTree (TreeNode* cur_node)
     {
         if (cur_node->value.op_val == MUL)
         {
-            printf ("Kek: ");
-            printf ("Now working with %lg and %lg\n", cur_node->left->value.dbl_val, cur_node->right->value.dbl_val);
+            // printf ("Kek: ");
+            // printf ("Now working with %lg and %lg\n", cur_node->left->value.dbl_val, cur_node->right->value.dbl_val);
 
-            if      (isZero (cur_node->left->value.dbl_val))
+            if      (isZero (cur_node->left->value.dbl_val) && cur_node->left->type == NUM_T)
             {
+                printf ("Simplifying <Zero> case left\n");
+
                 TransformNode (cur_node, NUM_T, 0, nullptr);
                 return 1;
             }
 
-            else if (isZero (cur_node->right->value.dbl_val))
+            else if (isZero (cur_node->right->value.dbl_val) && cur_node->right->type == NUM_T)
             {
+                printf ("Simplifying <Zero> case right\n");
+
                 TransformNode (cur_node, NUM_T, 0, nullptr);
                 return 1;
             }
 
             else if (isEqual (cur_node->right->value.dbl_val, 1))
             {
+                printf ("Simplifying <one> case right\n");
+
                 if (cur_node->left->type == NUM_T)
                 {
                     TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val, nullptr);
@@ -98,8 +104,9 @@ int SimplifyTree (TreeNode* cur_node)
                 }
             }
 
-            else if (isEqual(cur_node->left->value.dbl_val, 1))
+            else if (isEqual (cur_node->left->value.dbl_val, 1))
             {
+                printf ("Simplifying <one> case left\n");
                 if (cur_node->right->type == NUM_T)
                 {
                     TransformNode (cur_node, NUM_T, cur_node->right->value.dbl_val, nullptr);
@@ -136,7 +143,8 @@ int SimplifyTree (TreeNode* cur_node)
 
 bool isZero (double num)
 {
-    if (num <= 0.0000001) return true;
+    printf ("recieved num %lg\n", num);
+    if (abs(num) <= 0.0000001) return true;
 
     return false;
 }

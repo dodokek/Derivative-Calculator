@@ -1,34 +1,5 @@
 #include "frontend.h"
-
-
-void DumpTree (TreeNode* node)
-{
-    assert (node);
-
-    printf ("Ptr[%p] : \n", node);
-    
-    if (node->type == NUM_T)
-    {
-        printf ("\t Node %s: left %p, right %p, parent %p, %d\n",
-                node->value, node->left,
-                node->right, node->parent, node->value);
-    }
-    else if (node->type == OP_T)
-    {
-        printf ("\t Node %s: left %p, right %p, parent %p, %d\n",
-                node->value, node->left,
-                node->right, node->parent, GetOpSign (node->value.op_val));
-    }
-    else
-    {
-        printf ("\t Node %s: left %p, right %p, parent %p, %d\n",
-                node->value, node->left,
-                node->right, node->parent, node->value);
-    }
-
-    if (node->left)  DumpTree (node->left);
-    if (node->right) DumpTree (node->right);
-}
+#include "cowboy_phrases.h"
 
 
 void InitLatexFile (TreeNode* root)
@@ -50,7 +21,7 @@ void InitLatexFile (TreeNode* root)
     \usepackage{wrapfig}
 
 
-    \title{The great derivative}
+    \title{Wild wild west derivative counter}
     \author{Dodo}
     \date{November 2022}
 
@@ -62,20 +33,21 @@ void InitLatexFile (TreeNode* root)
     _print (header);
   
     char introduction[] = R"(
-        Welcome to derivative calculator, here is the
-        step by step results of the calculations.
+        Welcome to derivative calculator fella, let's have a look at ya. God, what da hell is dis shit, fella?
+        Ok, ok, let's calculate this bullshit.
 
-        \textit{A programm was given an input expression}:
-
+        \begin{center}
+        $\clubsuit$~$\clubsuit$~$\clubsuit$
+        \end{center}
     )";
 
     _print (introduction);
-
-    _print ("\n\\begin{equation}\n");
-    PrintInOrder (root, out_file);
-    _print ("\n\\end{equation}\n");
-    
     fclose (out_file);
+
+    
+
+    PrintBranch (root, ORIGIN);
+    
 }
 
 
@@ -98,28 +70,39 @@ void GeneratePdf ()
 
 
 
+
 void PrintBranch (TreeNode* root, PrintTypes mode)
 {
     FILE* out_file = get_file ("data/output.tex", "a");
+    
+    static int useless_phrases_counter = 0;
+    static int simplification_phrases_counter = 0;
+
 
     if (mode == ORIGIN)
     {
-        _print ("We finally calculated the derivative of this part, lets jump up:\n");   
+        _print ("Alright fella, let's look wat we got:\n");   
         
         _equation(PrintInOrder (root, out_file));
     }
     else if (mode == DERIVATIVE)
     {
-        _print ("Weare now working with this part:\\\\");
+        _print (UselessPhrases[useless_phrases_counter++]);
 
         _equation(PrintInOrder (root, out_file));
-
-        _print ("Then let's simplify it\\\\");
 
         _SimplifyTree (root);
-        
-        _equation(PrintInOrder (root, out_file));
     }
+    else if (mode == RESULT)
+    {
+        SimplifyTree (root);
+
+        _print ("Here is whach you got, fella. Now let's drink some whiskey and shoot niggers.");
+
+        _equation (PrintInOrder (root, out_file));
+    }
+
+    _print ("\\begin{center} $\\clubsuit$~$\\clubsuit$~$\\clubsuit$ \\end{center}");
     
     fclose (out_file);
 }
@@ -135,7 +118,7 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
 
     if (need_frac) _print ("\\frac{");
 
-    if (node->left)
+    if (node->left && !IsFictiveZero (node->value.op_val))
     {
         if (need_div) _print ("(");
         PrintInOrder (node->left, out_file);
@@ -168,6 +151,18 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
     _print ("}");
 
 } 
+
+
+bool IsFictiveZero (Operations op)
+{
+    if (op == SIN ||
+        op == COS ||
+        op == TG  ||
+        op == CTG ||
+        op == LN) return true;
+
+    return false; 
+}
 
 
 bool isNeedDivision (TreeNode* op_node)

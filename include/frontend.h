@@ -10,6 +10,7 @@ enum PrintTypes
     ORIGIN,
     DERIVATIVE,
     INFO,
+    RESULT,
 };
 
 void InitLatexFile (TreeNode* root);
