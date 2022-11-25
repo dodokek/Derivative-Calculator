@@ -184,6 +184,7 @@ double CalcOneOp (double val1, double val2, Operations operation)
         return val1 - val2;
     
     case DIV:
+        if (isZero (val2)) return 0;
         return val1 / val2;
 
     case MUL:
@@ -202,9 +203,11 @@ double CalcOneOp (double val1, double val2, Operations operation)
         return sin(val2)/cos(val2);
 
     case CTG:
+        if (isZero (val2)) return 0;
         return cos(val2)/sin(val2);
 
     case LN:
+        if (val2 <= 0) return 0;
         return log(val2);
 
     case LOG:

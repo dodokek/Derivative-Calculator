@@ -7,19 +7,18 @@ int main()
     TreeNode* root = GetTreeRoot();
     DrawTree (root);
 
-    // SimplifyTree (root);
 
-    DrawTree (root);
+    // DrawTree (root);
 
-    InitLatexFile (root);
+    // InitLatexFile (root);
     
-    TreeNode* d_root = GetDerivative (root, root);
-    DrawTree (d_root);
+    // TreeNode* d_root = GetDerivative (root, root);
+    // DrawTree (d_root);
 
-    PrintBranch (d_root, RESULT);
+    // PrintBranch (d_root, RESULT);
 
     
-    GeneratePdf ();
+    // GeneratePdf ();
 
 
     DestructTree (root);
