@@ -1,1 +1,1 @@
-5+5+sin(X) + (cos(X)*ln(X))
+ln(sin(X)/cos(2*X-5))

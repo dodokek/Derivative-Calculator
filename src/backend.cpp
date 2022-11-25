@@ -303,6 +303,7 @@ int SimplifyTree (TreeNode* cur_node)
                 }
             }
         }
+        
         if (cur_node->left->type == NUM_T && cur_node->right->type == NUM_T)
         {
             if (cur_node->value.op_val == ADD)
@@ -316,6 +317,36 @@ int SimplifyTree (TreeNode* cur_node)
                 printf ("Oh, two numbers, MUL!\n");
                 TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val * cur_node->right->value.dbl_val, nullptr);
                 return 1;
+            }
+        }
+
+        if (cur_node->left->type == NUM_T || cur_node->right->type == NUM_T)
+        {
+            if (cur_node->value.op_val == SUB || cur_node->value.op_val == ADD)
+            {
+                if (cur_node->left->type == NUM_T && isZero(cur_node->left->value.dbl_val))
+                {
+                    cur_node = cur_node->right;
+                    return 1;
+                }
+                if (cur_node->right->type == NUM_T && isZero(cur_node->right->value.dbl_val))
+                {
+                    cur_node = cur_node->left;
+                    return 1;
+                }
+            }
+            else if (cur_node->value.op_val == MUL)
+            {
+                if (cur_node->left->type == NUM_T && isEqual(cur_node->left->value.dbl_val, 1))
+                {
+                    cur_node = cur_node->right;
+                    return 1;
+                }
+                if (cur_node->right->type == NUM_T && isEqual(cur_node->right->value.dbl_val, 1))
+                {
+                    cur_node = cur_node->left;
+                    return 1;
+                }
             }
         }
     }

@@ -41,15 +41,14 @@ void InitLatexFile (TreeNode* root)
         \end{center}
     )";
 
-    PrintGraphic (root, -100, 100, out_file);
 
     _print (introduction);
     
     CalcFuncInPoint (out_file, root);
 
-    fclose (out_file);
+    PrintGraphic (root, -100, 100, out_file);
 
-    
+    fclose (out_file);
 
     PrintBranch (root, ORIGIN);
     
