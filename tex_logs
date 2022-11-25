@@ -67,15 +67,10 @@ fg)
 (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\xetex.def)
 )) (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty)
 (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/wrapfig\wrapfig.sty)
-No file output.aux.
-[1]
-Overfull \hbox (135.12282pt too wide) detected at line 66
-[][]
-[2] (C:\Projects\Derivative-Calculator\data\output.aux)
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
- )
-(see the transcript file for additional information)
-Output written on C:\Projects\Derivative-Calculator\data\output.pdf (2 pages).
-Transcript written on C:\Projects\Derivative-Calculator\data\output.log.
+(C:\Projects\Derivative-Calculator\data\output.aux)
+! Undefined control sequence.
+<argument> C:Projects 
+                      Derivative -Calculatordata function _graph.png
+l.23 ...vative-Calculator\data\function_graph.png}
+                                                   \end{figure}
+? 

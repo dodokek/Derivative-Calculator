@@ -41,6 +41,8 @@ void InitLatexFile (TreeNode* root)
         \end{center}
     )";
 
+    PrintGraphic (root, -100, 100, out_file);
+
     _print (introduction);
     
     CalcFuncInPoint (out_file, root);
@@ -110,7 +112,6 @@ void PrintBranch (TreeNode* root, PrintTypes mode)
 
 void CalcFuncInPoint (FILE* out_file, TreeNode* root)
 {
-    FILE* info_file = get_file ("data/additional_calculations.txt", "r");
     double val = 0;
 
     printf ("Where do you want to count you function fella?\n");
@@ -119,13 +120,11 @@ void CalcFuncInPoint (FILE* out_file, TreeNode* root)
     _print ("Got to calculate function in point %lg\n", val);
 
     double tmp =  CalcTree (root, val);
-    printf ("Got gpt got %lg\n", tmp);
+    printf ("Calculated function in point, result: %lg\n", tmp);
 
     _print ("The result is %lg", tmp);
 
     _print ("\\begin{center} $\\clubsuit$~$\\clubsuit$~$\\clubsuit$ \\end{center}");
-
-    fclose (info_file);
 }
 
 
@@ -172,6 +171,24 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
     _print ("}");
 
 } 
+
+
+void PrintGraphic (TreeNode* root, int begin_x, int end_x, FILE* out_file)
+{
+    FILE* graph_data = get_file ("data/graphic_data.txt", "w+");
+
+    for (double x = begin_x; x <= end_x; x++)
+    {
+        double func_res = CalcTree (root, x);
+        fprintf (graph_data, "%lg %lg\n", x, func_res);
+    }
+
+    fclose (graph_data);
+
+    system ("src\\python_graphics\\draw_graph.py");
+
+    _print (R"(\begin{figure} \includegraphics[scale=0.6]{function_graph.png} \end{figure})");
+}
 
 
 bool IsFictiveZero (Operations op)

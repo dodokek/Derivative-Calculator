@@ -148,7 +148,7 @@ double CalcTree (TreeNode* node, double val)
 
     if (node->left)
     {
-        if (node->left->type = OP_T) left_val = CalcTree (node->left, val);
+        if (node->left->type == OP_T) left_val = CalcTree (node->left, val);
         else
         {
             if (node->left->type == VAR_T) 
@@ -157,10 +157,9 @@ double CalcTree (TreeNode* node, double val)
                 left_val = node->left->value.dbl_val;
         }
     }
-
     if (node->right)
     {
-        if (node->right->type = OP_T) right_val = CalcTree (node->right, val);
+        if (node->right->type == OP_T) right_val = CalcTree (node->right, val);
         else
         {
             if (node->right->type == VAR_T) 

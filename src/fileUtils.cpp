@@ -12,7 +12,7 @@ FILE* get_file (const char file_name[], const char* mode)
         return tmp_file;
     }
 
-    printf("Failed to open the file.\n");
+    printf("Failed to open the file %s.\n", file_name);
 
     return nullptr;
 }

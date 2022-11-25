@@ -37,4 +37,6 @@ TreeNode* FindNode (TreeNode* cur_node, const char name[]);
 
 void CalcFuncInPoint (FILE* out_file, TreeNode* root);
 
+void PrintGraphic (TreeNode* root, int begin_x, int end_x, FILE* out_file);
+
 #endif
