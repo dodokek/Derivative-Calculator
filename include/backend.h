@@ -77,6 +77,19 @@ struct TreeNode
 
 //----------------------------------------------------------
 
+char* GetInputLine ();
+
+double GetG ();
+
+double GetN ();
+
+double GetE ();
+
+double GetT ();
+
+double GetP ();
+
+void SkipSpaces ();
 
 TreeNode* GetTreeRoot ();
 

@@ -4,8 +4,13 @@
 int main()
 {
 
-    TreeNode* root = GetTreeRoot();
-    DrawTree (root);
+
+    double res = GetG();
+
+    printf ("Res: %lg\n", res);
+
+    // TreeNode* root = GetTreeRoot();
+    // DrawTree (root);
 
 
     // DrawTree (root);
@@ -21,5 +26,5 @@ int main()
     // GeneratePdf ();
 
 
-    DestructTree (root);
+    // DestructTree (root);
 }

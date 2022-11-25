@@ -1,6 +1,172 @@
 #include "backend.h"
 #include "frontend.h"
 
+//---<Parser>-------------------------------------------
+
+const char* string = NULL;
+
+
+double GetG () 
+{
+    string = GetInputLine();
+
+    SkipSpaces();
+
+    double val = GetE();
+
+    if (*string == '\0')
+    {
+        printf ("G: Got termination symbol, ending\n");
+        return val;
+    }
+    else
+    {
+        printf ("Compilation error at char %c\n", *string);
+    }
+
+
+    return val;
+}
+
+
+double  GetE ()
+{
+    SkipSpaces();
+
+    double val = GetT ();
+
+    while (*string == '+' || *string == '-')
+    {
+        int last_op = *string;
+        string++;
+        double  cur_val = GetT ();
+
+        if (last_op == '+')
+            val += cur_val;
+        else
+            val -= cur_val;
+    }   
+
+    return val;
+}
+
+
+double  GetT()
+{
+    SkipSpaces();
+
+    double val = GetP ();
+
+    while (*string == '*' || *string == '/')
+    {
+        int last_op = *string;
+        string++;
+        double  cur_val = GetP ();
+
+        if (last_op == '*')
+            val *= cur_val;
+        else
+            val /= cur_val;
+    }   
+
+    printf ("T: Passing up %c\n", *string);
+
+    return val;
+}
+
+
+double  GetP ()
+{
+    SkipSpaces();
+
+    double val = 0;
+    Operations operation = UNKNOWN;
+
+    if (isalpha (*string))
+    {
+        if (*string == 'X')
+        {
+            string++;
+            return 0;
+        }
+        int n = 0;
+        char op_name[100] = "";
+
+        sscanf (string, "%[^( ]%n", op_name, &n);
+        printf ("Got argument %s and %d\n", op_name, n);
+
+        operation = GetOpType (op_name);
+
+        string += n;
+    }
+    
+    if (*string == '(')
+    {
+        string++;
+
+        val = GetE ();
+        if (*string != ')') printf ("Missing \')\' - end of subexpression\n");
+        
+        string++;
+
+        SkipSpaces ();
+    }
+    else
+    {
+        val = GetN ();
+    }
+
+    if (operation == UNKNOWN) return val;
+
+    return CalcOneOp (NULL, val, operation);
+}
+
+
+double  GetN ()
+{
+    SkipSpaces();
+
+    int val = 0;
+    
+    const char* OldString = string;
+
+    while ('0' <= *string && *string <= '9')
+    {
+        val = val*10 + (*string - '0');
+        string++;
+
+        SkipSpaces();
+    }
+
+    printf ("N: Passing up %c\n", *string);
+
+    return val;
+}
+
+
+char* GetInputLine ()
+{
+    char* buffer = (char*) calloc (MAX_SRC_LEN, sizeof (char));
+
+    FILE* input_file = get_file ("data/input.txt", "r");
+
+    fgets (buffer, MAX_SRC_LEN, input_file);
+
+    fclose (input_file);
+
+    return buffer;   
+}
+
+
+void SkipSpaces ()
+{
+    while (isspace (*string)) string++;
+}
+
+
+//---<Parser>-------------------------------------------
+
+
 //--<Math>----------------------------------------------
 
 
