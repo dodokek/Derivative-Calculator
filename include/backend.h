@@ -81,15 +81,15 @@ char* GetInputLine ();
 
 double GetG ();
 
-double GetN ();
+double GetN (char** string);
 
-double GetE ();
+double GetE (char** string);
 
-double GetT ();
+double GetT (char** string);
 
-double GetP ();
+double GetP (char** string);
 
-void SkipSpaces ();
+void SkipSpaces (char** string);
 
 TreeNode* GetTreeRoot ();
 

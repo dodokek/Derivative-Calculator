@@ -3,16 +3,14 @@
 
 //---<Parser>-------------------------------------------
 
-const char* string = NULL;
-
 
 double GetG () 
 {
-    string = GetInputLine();
+    char* string = GetInputLine();
 
-    SkipSpaces();
+    SkipSpaces (&string);
 
-    double val = GetE();
+    double val = GetE(&string);
 
     if (*string == '\0')
     {
@@ -29,17 +27,17 @@ double GetG ()
 }
 
 
-double  GetE ()
+double  GetE (char** string)
 {
-    SkipSpaces();
+    SkipSpaces (string);
 
-    double val = GetT ();
+    double val = GetT (string);
 
-    while (*string == '+' || *string == '-')
+    while (**string == '+' || **string == '-')
     {
-        int last_op = *string;
-        string++;
-        double  cur_val = GetT ();
+        int last_op = **string;
+        (*string)++;
+        double  cur_val = GetT (string);
 
         if (last_op == '+')
             val += cur_val;
@@ -51,17 +49,17 @@ double  GetE ()
 }
 
 
-double  GetT()
+double  GetT(char** string)
 {
-    SkipSpaces();
+    SkipSpaces (string);
 
-    double val = GetP ();
+    double val = GetP (string);
 
-    while (*string == '*' || *string == '/')
+    while (**string == '*' || **string == '/')
     {
-        int last_op = *string;
-        string++;
-        double  cur_val = GetP ();
+        int last_op = **string;
+        (*string)++;
+        double  cur_val = GetP (string);
 
         if (last_op == '*')
             val *= cur_val;
@@ -69,51 +67,52 @@ double  GetT()
             val /= cur_val;
     }   
 
-    printf ("T: Passing up %c\n", *string);
+    printf ("T: Passing up %c\n", **string);
 
     return val;
 }
 
 
-double  GetP ()
+double  GetP (char** string)
 {
-    SkipSpaces();
+    printf ("now working with char %c\n", **string);
+    SkipSpaces (string);
 
     double val = 0;
     Operations operation = UNKNOWN;
 
-    if (isalpha (*string))
+    if (isalpha (**string))
     {
-        if (*string == 'X')
+        if (**string == 'X')
         {
-            string++;
+            (*string)++;
             return 0;
         }
         int n = 0;
         char op_name[100] = "";
 
-        sscanf (string, "%[^( ]%n", op_name, &n);
+        sscanf (*string, "%[^( ]%n", op_name, &n);
         printf ("Got argument %s and %d\n", op_name, n);
 
         operation = GetOpType (op_name);
 
-        string += n;
+        *string += n;
     }
     
-    if (*string == '(')
+    if (**string == '(')
     {
-        string++;
+        (*string)++;
 
-        val = GetE ();
-        if (*string != ')') printf ("Missing \')\' - end of subexpression\n");
+        val = GetE (string);
+        if (**string != ')') printf ("Missing \')\' - end of subexpression\n");
         
-        string++;
+        (*string)++;
 
-        SkipSpaces ();
+        SkipSpaces (string);
     }
     else
     {
-        val = GetN ();
+        val = GetN (string);
     }
 
     if (operation == UNKNOWN) return val;
@@ -122,23 +121,23 @@ double  GetP ()
 }
 
 
-double  GetN ()
+double  GetN (char** string)
 {
-    SkipSpaces();
+    SkipSpaces (string);
 
     int val = 0;
     
-    const char* OldString = string;
+    char** OldString = string;
 
-    while ('0' <= *string && *string <= '9')
+    while ('0' <= **string && **string <= '9')
     {
-        val = val*10 + (*string - '0');
-        string++;
+        val = val*10 + (**string - '0');
+        (*string)++;
 
-        SkipSpaces();
+        SkipSpaces (string);
     }
 
-    printf ("N: Passing up %c\n", *string);
+    printf ("N: Passing up %c\n", **string);
 
     return val;
 }
@@ -158,9 +157,9 @@ char* GetInputLine ()
 }
 
 
-void SkipSpaces ()
+void SkipSpaces (char** string)
 {
-    while (isspace (*string)) string++;
+    while (isspace (**string)) (*string)++;
 }
 
 
