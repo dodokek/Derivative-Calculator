@@ -17,9 +17,9 @@ Optional part, need to be executed in the top folder of the project.
 make
 ~~~
 ## Execution
-Right now the interface is not user-friendly, because i am a lazy ass. In order to compute a derivative, you need to write function in file "input.txt".  
+Right now you can write any expression without additional brackets thanks to recursive descend algorithm. In order to compute a derivative, you need to write function in file "input.txt".  
 ~~~
-((0)ln((2)*(x)))
+5*sin(ln(x+5))+2
 ~~~
 This format represents ln(2x), you might have notice that all unary operations such as sin, cos, ln etc. need to have fictive zero at the beginning. All operations have to be written like ("expression")operation("another expression"), only like this, don't try to write anyhow different.
 
