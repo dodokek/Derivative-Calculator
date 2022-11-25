@@ -4,90 +4,88 @@
 //---<Parser>-------------------------------------------
 
 
-double GetG () 
+TreeNode* GetG () 
 {
     char* string = GetInputLine();
 
     SkipSpaces (&string);
 
-    double val = GetE(&string);
+    TreeNode* root = GetE(&string); 
 
     if (*string == '\0')
-    {
         printf ("G: Got termination symbol, ending\n");
-        return val;
-    }
     else
-    {
         printf ("Compilation error at char %c\n", *string);
-    }
 
-
-    return val;
+    return root;
 }
 
 
-double  GetE (char** string)
+TreeNode*  GetE (char** string)
 {
     SkipSpaces (string);
 
-    double val = GetT (string);
+    TreeNode* top_operation_node = GetT (string);
 
     while (**string == '+' || **string == '-')
     {
         int last_op = **string;
         (*string)++;
-        double  cur_val = GetT (string);
+        TreeNode* right_node = GetT (string);
 
         if (last_op == '+')
-            val += cur_val;
+            top_operation_node = ADD (top_operation_node, right_node);
         else
-            val -= cur_val;
+            top_operation_node = SUB (top_operation_node, right_node);
     }   
 
-    return val;
+    return top_operation_node;
 }
 
 
-double  GetT(char** string)
+TreeNode*  GetT(char** string)
 {
     SkipSpaces (string);
 
-    double val = GetP (string);
+    TreeNode* top_operation_node = GetP (string);
 
     while (**string == '*' || **string == '/')
     {
         int last_op = **string;
         (*string)++;
-        double  cur_val = GetP (string);
+
+        TreeNode* right_node = GetP (string);
 
         if (last_op == '*')
-            val *= cur_val;
+            top_operation_node = MUL (top_operation_node, right_node);
         else
-            val /= cur_val;
-    }   
+            top_operation_node = DIV (top_operation_node, right_node);
+
+    }       
 
     printf ("T: Passing up %c\n", **string);
 
-    return val;
+    return top_operation_node;
 }
 
 
-double  GetP (char** string)
+TreeNode*  GetP (char** string)
 {
     printf ("now working with char %c\n", **string);
     SkipSpaces (string);
 
     double val = 0;
     Operations operation = UNKNOWN;
+    TreeNode* sub_node = nullptr;
 
     if (isalpha (**string))
     {
         if (**string == 'X')
         {
             (*string)++;
-            return 0;
+            return CreateNode (VAR_PARAMS(X));
         }
+
         int n = 0;
         char op_name[100] = "";
 
@@ -103,7 +101,8 @@ double  GetP (char** string)
     {
         (*string)++;
 
-        val = GetE (string);
+        sub_node = GetE (string);
+
         if (**string != ')') printf ("Missing \')\' - end of subexpression\n");
         
         (*string)++;
@@ -112,23 +111,21 @@ double  GetP (char** string)
     }
     else
     {
-        val = GetN (string);
+        sub_node = GetN (string);
     }
 
-    if (operation == UNKNOWN) return val;
+    if (operation == UNKNOWN) return sub_node;
 
-    return CalcOneOp (NULL, val, operation);
+    return GetOperationNode (sub_node, operation);
 }
 
 
-double  GetN (char** string)
+TreeNode*  GetN (char** string)
 {
     SkipSpaces (string);
 
     int val = 0;
     
-    char** OldString = string;
-
     while ('0' <= **string && **string <= '9')
     {
         val = val*10 + (**string - '0');
@@ -139,7 +136,29 @@ double  GetN (char** string)
 
     printf ("N: Passing up %c\n", **string);
 
-    return val;
+    return CreateDigitNode (val);
+}
+
+
+TreeNode* GetOperationNode (TreeNode* child_node, Operations op)
+{
+    switch (op)
+    {
+    case SIN:
+        return SIN (nullptr, child_node);
+    
+    case COS:
+        return COS (nullptr, child_node);
+
+    case LN:
+        return LN (nullptr, child_node);
+    
+    default:
+        printf ("While getting operation nodes, error occured: %d\n", op);
+        break;
+    }
+
+    return 0;
 }
 
 

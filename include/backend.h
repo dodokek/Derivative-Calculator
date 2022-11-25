@@ -79,15 +79,15 @@ struct TreeNode
 
 char* GetInputLine ();
 
-double GetG ();
+TreeNode* GetG ();
 
-double GetN (char** string);
+TreeNode* GetN (char** string);
 
-double GetE (char** string);
+TreeNode* GetE (char** string);
 
-double GetT (char** string);
+TreeNode* GetT (char** string);
 
-double GetP (char** string);
+TreeNode* GetP (char** string);
 
 void SkipSpaces (char** string);
 
@@ -128,5 +128,7 @@ bool isEqual (double num1, double num2);
 double CalcTree (TreeNode* node, double val);
 
 double CalcOneOp (double val1, double val2, Operations operation);
+
+TreeNode* GetOperationNode (TreeNode* child_node, Operations op);
 
 #endif

@@ -5,12 +5,9 @@ int main()
 {
 
 
-    double res = GetG();
+    TreeNode* root = GetG();
 
-    printf ("Res: %lg\n", res);
-
-    // TreeNode* root = GetTreeRoot();
-    // DrawTree (root);
+    DrawTree (root);
 
 
     // DrawTree (root);

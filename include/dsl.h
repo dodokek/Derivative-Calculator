@@ -16,6 +16,7 @@
 #define LN(L, R)  CreateNode (OP_T, 0, LN, nullptr,  L, R)
 
 #define INIT_PARAMS OP_T, 0, UNKNOWN, nullptr, nullptr, nullptr
+#define VAR_PARAMS(V)  VAR_T, 0, UNKNOWN, #V, nullptr, nullptr
 
 #define $PRINT_N_RETURN(X)                   \
     {                                        \
