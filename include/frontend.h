@@ -39,4 +39,6 @@ void CalcFuncInPoint (FILE* out_file, TreeNode* root);
 
 void PrintGraphic (TreeNode* root, int begin_x, int end_x, FILE* out_file);
 
+void PrintMacloren (TreeNode* root, int steps);
+
 #endif

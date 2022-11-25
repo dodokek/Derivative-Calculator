@@ -113,7 +113,7 @@ TreeNode* DestructTree (TreeNode* root);
 
 Operations GetOpType (const char str[]);
 
-TreeNode* GetDerivative (TreeNode* cur_node, TreeNode* root);
+TreeNode* GetDerivative (TreeNode* cur_node, bool print_in_pdf);
 
 bool IsFictiveZero (Operations op);
 

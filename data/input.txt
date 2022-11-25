@@ -1,1 +1,1 @@
-ln(sin(X)/cos(2*X-5))
+cos(X)*1

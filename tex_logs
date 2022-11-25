@@ -68,14 +68,10 @@ fg)
 )) (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty)
 (C:\Users\alexm\AppData\Local\Programs\MiKTeX\tex/latex/wrapfig\wrapfig.sty)
 No file output.aux.
-[1]
-Overfull \hbox (92.99684pt too wide) detected at line 63
-[][]
-[2] (C:\Projects\Derivative-Calculator\data\output.aux)
+[1] [2] (C:\Projects\Derivative-Calculator\data\output.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  )
-(see the transcript file for additional information)
 Output written on C:\Projects\Derivative-Calculator\data\output.pdf (2 pages).
 Transcript written on C:\Projects\Derivative-Calculator\data\output.log.

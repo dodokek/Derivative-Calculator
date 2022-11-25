@@ -44,7 +44,7 @@ void InitLatexFile (TreeNode* root)
 
     _print (introduction);
     
-    CalcFuncInPoint (out_file, root);
+    // CalcFuncInPoint (out_file, root);
 
     PrintGraphic (root, -100, 100, out_file);
 
@@ -129,6 +129,8 @@ void CalcFuncInPoint (FILE* out_file, TreeNode* root)
 
 void PrintInOrder (TreeNode* node, FILE* out_file)
 {
+    assert (node != nullptr);
+
     _print ("{");
 
     bool need_div  = isNeedDivision (node);
@@ -187,6 +189,41 @@ void PrintGraphic (TreeNode* root, int begin_x, int end_x, FILE* out_file)
     system ("src\\python_graphics\\draw_graph.py");
 
     _print (R"(\begin{figure}[H] \includegraphics[scale=0.6]{function_graph.png} \end{figure})");
+}
+
+
+void PrintMacloren (TreeNode* root, int steps)
+{
+    FILE* out_file = get_file ("data/output.tex", "a");
+
+    _print ("Alright fella, let's make this shit called <Macloren>,"
+            "there will be only %d steps, cause i don't know how to count more.", steps);
+
+    _print ("Basicly the main formula will look like that\n \\[ f(x) = ");
+    for (int i = 1; i <= steps; i++)
+    {
+        _print("\\frac{f^{(%d)}(0)}{%d!}\\cdot X + ", i, i);
+    }
+    _print ("\\text{...}\\]\n");
+
+    TreeNode* cur_der = GetDerivative (root, false);
+    DrawTree (cur_der);
+
+    for (int i = 1; i <= steps; i++)
+    {
+        _print("\\[ f^{(%d)} = ", i);
+
+        PrintInOrder (cur_der, out_file);
+
+        _print("\\]");
+
+        TreeNode* cur_der = GetDerivative (cur_der, false);
+        printf ("==================Bebra!==================\n");
+
+        DrawTree (cur_der);
+    }
+
+    fclose (out_file);
 }
 
 
@@ -273,6 +310,8 @@ char* GetOpSign (Operations op)
 
 void DrawTree (TreeNode* root)
 {
+    assert (root != nullptr);
+
     static int img_counter = 0;
 
     FILE* dot_file = get_file ("data/graph.dot", "w+");
@@ -317,6 +356,8 @@ void DrawTree (TreeNode* root)
 
 void InitGraphvisNode (TreeNode* node, FILE* dot_file)   // Recursivly initialises every node 
 {
+    assert (node != nullptr);
+
     if (node->type == NUM_T)
         __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
                 "label=\" {Type: number | value: %lg}\"] \n \n",

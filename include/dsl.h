@@ -1,8 +1,8 @@
 #ifndef DSL_H
 #define DSL_H
 
-#define DL GetDerivative (cur_node->left, root)
-#define DR GetDerivative (cur_node->right, root)
+#define DL GetDerivative (cur_node->left, print_in_pdf)
+#define DR GetDerivative (cur_node->right, print_in_pdf)
 #define CL CopyNode (cur_node->left)
 #define CR CopyNode (cur_node->right)
 #define GET_DIGIT(num) CreateDigitNode (num)
@@ -18,11 +18,14 @@
 #define INIT_PARAMS OP_T, 0, UNKNOWN, nullptr, nullptr, nullptr
 #define VAR_PARAMS(V)  VAR_T, 0, UNKNOWN, #V, nullptr, nullptr
 
-#define $PRINT_N_RETURN(X)                   \
-    {                                        \
-        PrintBranch (cur_node, DERIVATIVE);  \
-        TreeNode* tmp_node = X;              \
-        return tmp_node;                     \
+#define $PRINT_N_RETURN(X)                       \
+    {                                            \
+        if (print_in_pdf)                        \
+        {                                        \
+            PrintBranch (cur_node, DERIVATIVE);  \
+        }                                        \
+        TreeNode* tmp_node = X;                  \
+        return tmp_node;                         \
     }
         // PrintBranch (tmp_node, ORIGIN);   
 
