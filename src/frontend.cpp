@@ -187,7 +187,7 @@ void PrintGraphic (TreeNode* root, int begin_x, int end_x, FILE* out_file)
 
     system ("src\\python_graphics\\draw_graph.py");
 
-    _print (R"(\begin{figure} \includegraphics[scale=0.6]{function_graph.png} \end{figure})");
+    _print (R"(\begin{figure}[H] \includegraphics[scale=0.6]{function_graph.png} \end{figure})");
 }
 
 
