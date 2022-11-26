@@ -14,6 +14,7 @@
 #define SIN(L, R) CreateNode (OP_T, 0, SIN, nullptr, L, R)
 #define COS(L, R) CreateNode (OP_T, 0, COS, nullptr, L, R)
 #define LN(L, R)  CreateNode (OP_T, 0, LN,  nullptr,  L, R)
+#define POW(L, R) CreateNode (OP_T, 0, POW,  nullptr,  L, R)
 
 #define INIT_PARAMS OP_T, 0, UNKNOWN, nullptr, nullptr, nullptr
 #define VAR_PARAMS(V)  VAR_T, 0, UNKNOWN, #V, nullptr, nullptr

@@ -145,9 +145,9 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
 
     if (node->left && !IsFictiveZero (node->value.op_val))
     {
-        if (need_div) _print ("(");
+        if (need_div) _print ("{(");
         PrintInOrder (node->left, out_file);
-        if (need_div) _print (")");
+        if (need_div) _print (")}");
     }
 
     if (!need_frac)
@@ -166,9 +166,9 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
 
     if (node->right)
     {
-        if (need_div) _print ("(");
+        if (need_div) _print ("{(");
         PrintInOrder (node->right, out_file);
-        if (need_div) _print (")");
+        if (need_div) _print (")}");
     }
 
     if (need_frac) _print ("}");
@@ -282,9 +282,6 @@ char* GetOpSign (Operations op)
 
     case MUL:
         return "\\cdot";
-    
-    case SQR:
-        return "№";
 
     case POW:
         return "^";
@@ -303,6 +300,15 @@ char* GetOpSign (Operations op)
     
     case LN:
         return "ln";
+
+    case LOG:
+        return "log";
+
+    case ARCCOS:
+        return "arccos";
+
+    case ARCSIN:
+        return "ARCSIN";
 
     default:
         return "?";

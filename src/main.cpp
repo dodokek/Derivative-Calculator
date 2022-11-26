@@ -10,8 +10,6 @@ int main()
 
     DrawTree (root);
 
-    // SimplifyTree (root);
-    // DrawTree (root);
 
     InitLatexFile (root);
     

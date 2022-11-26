@@ -41,7 +41,13 @@ TreeNode* GetDerivative (TreeNode* cur_node, bool print_in_pdf)
 
         case CTG: 
             $PRINT_N_RETURN(MUL(MUL(DIV(GET_DIGIT(1), SIN(nullptr, CR)), DR), GET_DIGIT(-1)));
-
+        
+        case POW:
+            if (cur_node->right->type == NUM_T) $PRINT_N_RETURN (MUL(MUL(GET_DIGIT(cur_node->right->value.dbl_val), POW (CL, GET_DIGIT (cur_node->right->value.dbl_val - 1))), DL));
+            // else
+            // {
+            //     $PRINT_N_RETURN (POW (GET_DIGIT (2,7), MUL ()));
+            // }
         
         case UNKNOWN:
             printf ("Unknown operation\n");
@@ -371,18 +377,18 @@ TreeNode*  GetE (char** string)
 }
 
 
-TreeNode*  GetT(char** string)
+TreeNode* GetT (char** string)
 {
     SkipSpaces (string);
 
-    TreeNode* top_operation_node = GetP (string);
+    TreeNode* top_operation_node = GetK (string);
 
     while (**string == '*' || **string == '/')
     {
         int last_op = **string;
         (*string)++;
 
-        TreeNode* right_node = GetP (string);
+        TreeNode* right_node = GetK (string);
 
         if (last_op == '*')
             top_operation_node = MUL (top_operation_node, right_node);
@@ -392,6 +398,27 @@ TreeNode*  GetT(char** string)
     }       
 
     printf ("T: Passing up %c\n", **string);
+
+    return top_operation_node;
+}
+
+
+TreeNode* GetK (char** string)
+{
+    SkipSpaces (string);
+    
+    TreeNode* top_operation_node = GetP (string);
+
+    while (**string == '^')
+    {
+        (*string)++;
+
+        TreeNode* right_node = GetP (string);
+
+        top_operation_node = POW (top_operation_node, right_node);
+    }       
+
+    printf ("K: Passing up %c\n", **string);
 
     return top_operation_node;
 }
@@ -583,9 +610,9 @@ Operations GetOpType (const char str[])
     else if (CMP (cos)) return COS;
     else if (CMP (tg))  return TG;
     else if (CMP (ctg)) return CTG;
-    else if (CMP (sqr)) return SQR;
     else if (CMP (ln)) return LN;
-    
+    else if (CMP (arccos)) return ARCCOS;
+    else if (CMP (arcsin)) return ARCSIN;
 
     else return UNKNOWN;
 }

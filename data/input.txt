@@ -1,1 +1,1 @@
-sin(X)+cos(X+5)/ln(5+2*X)
+sin(X^5) + (cos(10*X))^3

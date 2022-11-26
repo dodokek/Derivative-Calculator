@@ -94,6 +94,8 @@ TreeNode* GetE (char** string);
 
 TreeNode* GetT (char** string);
 
+TreeNode* GetK (char** string);
+
 TreeNode* GetP (char** string);
 
 void SkipSpaces (char** string);
