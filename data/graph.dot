@@ -8,30 +8,48 @@
         graph[fillcolor = lightgreen, ranksep = 1.3, nodesep = 0.5,
         style = "rounded, filled",color = green, penwidth = 2]
 
-    Node000002541c071890[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: \cdot}"] 
+    Node000001e5be151a90[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: +}"] 
  
-Node000002541c071860[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: /}"] 
+Node000001e5be151cd0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: \cdot}"] 
  
-Node000002541c071830[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 1}"] 
+Node000001e5be151ca0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: cos}"] 
  
-Node000002541c071800[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: +}"] 
+Node000001e5be151be0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: variable | value: X}"] 
  
-Node000002541c071680[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 5}"] 
+Node000001e5be151a60[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 1}"] 
  
-Node000002541c0716b0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: variable | value: X}"] 
+Node000001e5be1519d0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: \cdot}"] 
  
-Node000002541c0717d0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: +}"] 
+Node000001e5be151b20[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: \cdot}"] 
  
-Node000002541c0717a0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 0}"] 
+Node000001e5be1518f0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: -1}"] 
  
-Node000002541c071770[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 1}"] 
+Node000001e5be1518c0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: sin}"] 
  
-Node000002541c071890->Node000002541c071860
-Node000002541c071860->Node000002541c071830
-Node000002541c071860->Node000002541c071800
-Node000002541c071800->Node000002541c071680
-Node000002541c071800->Node000002541c0716b0
-Node000002541c071890->Node000002541c0717d0
-Node000002541c0717d0->Node000002541c0717a0
-Node000002541c0717d0->Node000002541c071770
+Node000001e5be151890[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: +}"] 
+ 
+Node000001e5be1516e0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: variable | value: X}"] 
+ 
+Node000001e5be151710[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 5}"] 
+ 
+Node000001e5be151860[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: +}"] 
+ 
+Node000001e5be151830[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 1}"] 
+ 
+Node000001e5be151800[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 0}"] 
+ 
+Node000001e5be151a90->Node000001e5be151cd0
+Node000001e5be151cd0->Node000001e5be151ca0
+Node000001e5be151ca0->Node000001e5be151be0
+Node000001e5be151cd0->Node000001e5be151a60
+Node000001e5be151a90->Node000001e5be1519d0
+Node000001e5be1519d0->Node000001e5be151b20
+Node000001e5be151b20->Node000001e5be1518f0
+Node000001e5be151b20->Node000001e5be1518c0
+Node000001e5be1518c0->Node000001e5be151890
+Node000001e5be151890->Node000001e5be1516e0
+Node000001e5be151890->Node000001e5be151710
+Node000001e5be1519d0->Node000001e5be151860
+Node000001e5be151860->Node000001e5be151830
+Node000001e5be151860->Node000001e5be151800
 }

@@ -37,14 +37,16 @@ void InitLatexFile (TreeNode* root)
         Welcome to derivative calculator fella, let's have a look at ya. God, what da hell is dis shit, fella?
         Ok, ok, let's calculate this bullshit.
 
+        \begin{center}\begin{figure}[H] \includegraphics[scale=0.6]{funny_pics/cowboy.jpg} \end{figure}\end{center}
         \begin{center}
         $\clubsuit$~$\clubsuit$~$\clubsuit$
         \end{center}
+
     )";
 
 
     _print (introduction);
-    
+
     // CalcFuncInPoint (out_file, root);
 
     PrintGraphic (root, -100, 100, out_file);
@@ -80,8 +82,6 @@ void PrintBranch (TreeNode* root, PrintTypes mode)
     FILE* out_file = get_file ("data/output.tex", "a");
     
     static int useless_phrases_counter = 0;
-    static int simplification_phrases_counter = 0;
-
 
     if (mode == ORIGIN)
     {
@@ -95,14 +95,14 @@ void PrintBranch (TreeNode* root, PrintTypes mode)
 
         _equation(PrintInOrder (root, out_file));
 
-        // _SimplifyTree (root);
+        _SimplifyTree (root);
     }
     else if (mode == RESULT)
     {
-        // SimplifyTree (root);
+        SimplifyTree (root);
 
         _print ("Here is whach you got, fella. Now let's drink some whiskey and shoot niggers.");
-
+        _print (R"(\begin{figure}[H] \includegraphics[scale=0.6]{funny_pics/slave.jpg} \end{figure})");
         _equation (PrintInOrder (root, out_file));
     }
 
@@ -120,7 +120,7 @@ void CalcFuncInPoint (FILE* out_file, TreeNode* root)
     printf ("Where do you want to count you function fella?\n");
     scanf ("%lg", &val);
 
-    _print ("Got to calculate function in point %lg\n", val);
+    _print ("\\textbf{Got to calculate function in point} %lg\n", val);
 
     double tmp =  CalcTree (root, val);
     printf ("Calculated function in point, result: %lg\n", tmp);
