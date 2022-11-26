@@ -1,3 +1,4 @@
+// #include "TXLib.h"
 #include "backend.h"
 #include "frontend.h"
 
@@ -11,12 +12,10 @@ int main()
 
     InitLatexFile (root);
     
-    // TreeNode* d_root = GetDerivative (root, root);
-    // DrawTree (d_root);
+    TreeNode* d_root = GetDerivative (root, TEX_OUT);
+    DrawTree (d_root);
 
-    // PrintBranch (d_root, RESULT);
-
-    PrintMacloren (root, 1);
+    PrintMacloren (root, 3);
     
     GeneratePdf ();
 

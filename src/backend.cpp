@@ -2,12 +2,13 @@
 #include "frontend.h"
 
 
-
 //--<Math>----------------------------------------------
 
 
 TreeNode* GetDerivative (TreeNode* cur_node, bool print_in_pdf)
 {
+    assert (cur_node != nullptr);
+
     if      (cur_node->type == NUM_T) return CreateNode (NUM_T, 0, UNKNOWN, nullptr, nullptr, nullptr);
     else if (cur_node->type == VAR_T) return CreateNode (NUM_T, 1, UNKNOWN, nullptr, nullptr, nullptr);
     else
@@ -58,6 +59,8 @@ TreeNode* GetDerivative (TreeNode* cur_node, bool print_in_pdf)
 
 int SimplifyTree (TreeNode* cur_node)
 {
+    assert (cur_node != nullptr);
+
     int simpl_amount = 0;
 
     simpl_amount = 0;
@@ -175,6 +178,8 @@ int SimplifyTree (TreeNode* cur_node)
 
 double CalcTree (TreeNode* node, double val)
 {
+    assert (node != nullptr);
+
     double left_val = 0;
     double right_val = 0;
     if (node->type != OP_T) return 0;
@@ -270,17 +275,13 @@ bool isEqual (double num1, double num2)
 }
 
 
-
-
-
-
 //--Math----------------------------------------------
 
 
 TreeNode* CreateNode (Types type, double dbl_val, Operations op_val, char* var_name,
                       TreeNode* left_child, TreeNode* right_child)
 {
-    printf ("Creating node with type %d\n", type);
+    // printf ("Creating node with type %d\n", type);
 
     TreeNode* new_node = (TreeNode*) calloc (1, sizeof (TreeNode));
     if (!new_node) return nullptr;
@@ -426,7 +427,7 @@ TreeNode*  GetT(char** string)
 }
 
 
-TreeNode*  GetP (char** string)
+TreeNode* GetP (char** string)
 {
     printf ("now working with char %c\n", **string);
     SkipSpaces (string);

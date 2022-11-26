@@ -4,6 +4,7 @@
 
 void InitLatexFile (TreeNode* root)
 {
+    assert (root != nullptr);
     FILE* out_file = get_file ("data/output.tex", "w+");
 
     const char header[] = R"(
@@ -74,6 +75,8 @@ void GeneratePdf ()
 
 void PrintBranch (TreeNode* root, PrintTypes mode)
 {
+    assert (root != nullptr);
+
     FILE* out_file = get_file ("data/output.tex", "a");
     
     static int useless_phrases_counter = 0;
@@ -92,11 +95,11 @@ void PrintBranch (TreeNode* root, PrintTypes mode)
 
         _equation(PrintInOrder (root, out_file));
 
-        _SimplifyTree (root);
+        // _SimplifyTree (root);
     }
     else if (mode == RESULT)
     {
-        SimplifyTree (root);
+        // SimplifyTree (root);
 
         _print ("Here is whach you got, fella. Now let's drink some whiskey and shoot niggers.");
 
@@ -111,6 +114,7 @@ void PrintBranch (TreeNode* root, PrintTypes mode)
 
 void CalcFuncInPoint (FILE* out_file, TreeNode* root)
 {
+    assert (root != nullptr);
     double val = 0;
 
     printf ("Where do you want to count you function fella?\n");
@@ -176,6 +180,7 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
 
 void PrintGraphic (TreeNode* root, int begin_x, int end_x, FILE* out_file)
 {
+    assert (root != nullptr);
     FILE* graph_data = get_file ("data/graphic_data.txt", "w+");
 
     for (double x = begin_x; x <= end_x; x++)
@@ -194,33 +199,32 @@ void PrintGraphic (TreeNode* root, int begin_x, int end_x, FILE* out_file)
 
 void PrintMacloren (TreeNode* root, int steps)
 {
+    assert (root != nullptr);
+
     FILE* out_file = get_file ("data/output.tex", "a");
 
     _print ("Alright fella, let's make this shit called <Macloren>,"
             "there will be only %d steps, cause i don't know how to count more.", steps);
 
     _print ("Basicly the main formula will look like that\n \\[ f(x) = ");
-    for (int i = 1; i <= steps; i++)
+    for (int i = 0; i <= steps; i++)
     {
-        _print("\\frac{f^{(%d)}(0)}{%d!}\\cdot X + ", i, i);
+        if (i == 0) _print("f(0) + ");
+        else        _print("\\frac{f^{(%d)}(0)}{%d!}\\cdot X + ", i, i);
     }
     _print ("\\text{...}\\]\n");
 
-    TreeNode* cur_der = GetDerivative (root, false);
-    DrawTree (cur_der);
+    TreeNode* cur_der = root;
 
-    for (int i = 1; i <= steps; i++)
+    for (int i = 0; i <= steps; i++)
     {
-        _print("\\[ f^{(%d)} = ", i);
+        _print("\\[ f^{(%d)}(0) = ", i);
 
-        PrintInOrder (cur_der, out_file);
+        _print ("%lg", CalcTree (cur_der, 0));
 
         _print("\\]");
 
-        TreeNode* cur_der = GetDerivative (cur_der, false);
-        printf ("==================Bebra!==================\n");
-
-        DrawTree (cur_der);
+        cur_der = GetDerivative (cur_der, false);
     }
 
     fclose (out_file);
@@ -340,6 +344,7 @@ void DrawTree (TreeNode* root)
     
     // Executing dotfile and printing an image
 
+    printf ("Closing the dot file");
     fclose (dot_file);
 
     char src[MAX_SRC_LEN] = "";
@@ -389,6 +394,8 @@ void InitGraphvisNode (TreeNode* node, FILE* dot_file)   // Recursivly initialis
 
 void RecursDrawConnections (TreeNode* node, FILE* dot_file)
 {
+    assert (node != nullptr);
+
     if (node->left)
     {
         __print ("Node%p->Node%p\n", node, node->left);

@@ -13,7 +13,7 @@
 #define DIV(L, R) CreateNode (OP_T, 0, DIV, nullptr, L, R)
 #define SIN(L, R) CreateNode (OP_T, 0, SIN, nullptr, L, R)
 #define COS(L, R) CreateNode (OP_T, 0, COS, nullptr, L, R)
-#define LN(L, R)  CreateNode (OP_T, 0, LN, nullptr,  L, R)
+#define LN(L, R)  CreateNode (OP_T, 0, LN,  nullptr,  L, R)
 
 #define INIT_PARAMS OP_T, 0, UNKNOWN, nullptr, nullptr, nullptr
 #define VAR_PARAMS(V)  VAR_T, 0, UNKNOWN, #V, nullptr, nullptr
@@ -33,6 +33,6 @@
 
 #define _equation(X) _print ("\n\\begin{equation}\n"); X ; _print ("\n\\end{equation}\n")
 
-
 #define _SimplifyTree(X) while(SimplifyTree(X)) 
+
 #endif

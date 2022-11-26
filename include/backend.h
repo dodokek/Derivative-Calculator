@@ -31,6 +31,13 @@ enum Types
 };
 
 
+enum OutputType
+{
+    NO_TEX_OUT,
+    TEX_OUT,
+};
+
+
 enum Operations
 {
     UNKNOWN,
