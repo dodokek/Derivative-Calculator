@@ -103,17 +103,17 @@ struct ConfigParams
 
 char* GetInputLine ();
 
-TreeNode* GetG ();
+TreeNode* GetGrammar ();
 
-TreeNode* GetN (char** string);
+TreeNode* GetNumber (char** string);
 
-TreeNode* GetE (char** string);
+TreeNode* GetExpression (char** string);
 
 TreeNode* GetT (char** string);
 
-TreeNode* GetK (char** string);
+TreeNode* GetBracketExpower (char** string);
 
-TreeNode* GetP (char** string);
+TreeNode* GetBracketExp (char** string);
 
 void SkipSpaces (char** string);
 

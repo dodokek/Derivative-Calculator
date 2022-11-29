@@ -6,7 +6,7 @@ int main()
 {
     // GetConfigParams ("data/config_params.txt");
 
-    TreeNode* root = GetG();
+    TreeNode* root = GetGrammar();
 
     DrawTree (root);
 

@@ -44,10 +44,6 @@ TreeNode* GetDerivative (TreeNode* cur_node, bool print_in_pdf)
         
         case POW:
             if (cur_node->right->type == NUM_T) $PRINT_N_RETURN (MUL(MUL(GET_DIGIT(cur_node->right->value.dbl_val), POW (CL, GET_DIGIT (cur_node->right->value.dbl_val - 1))), DL));
-            // else
-            // {
-            //     $PRINT_N_RETURN (POW (GET_DIGIT (2,7), MUL ()));
-            // }
         
         case UNKNOWN:
             printf ("Unknown operation\n");
@@ -337,13 +333,13 @@ TreeNode* DestructTree (TreeNode* root)
 //---<Parser>-------------------------------------------
 
 
-TreeNode* GetG () 
+TreeNode* GetGrammar () 
 {
     char* string = GetInputLine();
 
     SkipSpaces (&string);
 
-    TreeNode* root = GetE(&string); 
+    TreeNode* root = GetExpression(&string); 
 
     if (*string == '\0')
         printf ("G: Got termination symbol, ending\n");
@@ -354,7 +350,7 @@ TreeNode* GetG ()
 }
 
 
-TreeNode*  GetE (char** string)
+TreeNode*  GetExpression (char** string)
 {
     SkipSpaces (string);
 
@@ -380,14 +376,14 @@ TreeNode* GetT (char** string)
 {
     SkipSpaces (string);
 
-    TreeNode* top_operation_node = GetK (string);
+    TreeNode* top_operation_node = GetBracketExpower (string);
 
     while (**string == '*' || **string == '/')
     {
         int last_op = **string;
         (*string)++;
 
-        TreeNode* right_node = GetK (string);
+        TreeNode* right_node = GetBracketExpower (string);
 
         if (last_op == '*')
             top_operation_node = MUL (top_operation_node, right_node);
@@ -402,17 +398,17 @@ TreeNode* GetT (char** string)
 }
 
 
-TreeNode* GetK (char** string)
+TreeNode* GetBracketExpower (char** string)
 {
     SkipSpaces (string);
     
-    TreeNode* top_operation_node = GetP (string);
+    TreeNode* top_operation_node = GetBracketExp (string);
 
     while (**string == '^')
     {
         (*string)++;
 
-        TreeNode* right_node = GetP (string);
+        TreeNode* right_node = GetBracketExp (string);
 
         top_operation_node = POW (top_operation_node, right_node);
     }       
@@ -423,7 +419,7 @@ TreeNode* GetK (char** string)
 }
 
 
-TreeNode* GetP (char** string)
+TreeNode* GetBracketExp (char** string)
 {
     printf ("now working with char %c\n", **string);
     SkipSpaces (string);
@@ -455,7 +451,7 @@ TreeNode* GetP (char** string)
     {
         (*string)++;
 
-        sub_node = GetE (string);
+        sub_node = GetExpression (string);
 
         if (**string != ')') printf ("Missing \')\' - end of subexpression\n");
         
@@ -465,7 +461,7 @@ TreeNode* GetP (char** string)
     }
     else
     {
-        sub_node = GetN (string);
+        sub_node = GetNumber (string);
     }
 
     if (operation == UNKNOWN) return sub_node;
@@ -474,7 +470,7 @@ TreeNode* GetP (char** string)
 }
 
 
-TreeNode*  GetN (char** string)
+TreeNode*  GetNumber (char** string)
 {
     SkipSpaces (string);
 
