@@ -8,36 +8,36 @@
         graph[fillcolor = lightgreen, ranksep = 1.3, nodesep = 0.5,
         style = "rounded, filled",color = green, penwidth = 2]
 
-    Node000001e846b21860[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: +}"] 
+    Node0000029f20811860[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: +}"] 
  
-Node000001e846b21710[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: sin}"] 
+Node0000029f20811710[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: sin}"] 
  
-Node000001e846b216e0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: ^}"] 
+Node0000029f208116e0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: ^}"] 
  
-Node000001e846b21680[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: variable | value: X}"] 
+Node0000029f20811680[shape=record, width=0.2, style="filled", color="red", fillcolor="#19DB27",label=" {Type: variable | value: X}"] 
  
-Node000001e846b216b0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 5}"] 
+Node0000029f208116b0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DB8E21",label=" {Type: number | value: 5}"] 
  
-Node000001e846b21830[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: ^}"] 
+Node0000029f20811830[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: ^}"] 
  
-Node000001e846b217d0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: cos}"] 
+Node0000029f208117d0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: cos}"] 
  
-Node000001e846b217a0[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: operation | value: \cdot}"] 
+Node0000029f208117a0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: \cdot}"] 
  
-Node000001e846b21740[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 10}"] 
+Node0000029f20811740[shape=record, width=0.2, style="filled", color="red", fillcolor="#DB8E21",label=" {Type: number | value: 10}"] 
  
-Node000001e846b21770[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: variable | value: X}"] 
+Node0000029f20811770[shape=record, width=0.2, style="filled", color="red", fillcolor="#19DB27",label=" {Type: variable | value: X}"] 
  
-Node000001e846b21800[shape=record, width=0.2, style="filled", color="red", fillcolor="lightblue",label=" {Type: number | value: 3}"] 
+Node0000029f20811800[shape=record, width=0.2, style="filled", color="red", fillcolor="#DB8E21",label=" {Type: number | value: 3}"] 
  
-Node000001e846b21860->Node000001e846b21710
-Node000001e846b21710->Node000001e846b216e0
-Node000001e846b216e0->Node000001e846b21680
-Node000001e846b216e0->Node000001e846b216b0
-Node000001e846b21860->Node000001e846b21830
-Node000001e846b21830->Node000001e846b217d0
-Node000001e846b217d0->Node000001e846b217a0
-Node000001e846b217a0->Node000001e846b21740
-Node000001e846b217a0->Node000001e846b21770
-Node000001e846b21830->Node000001e846b21800
+Node0000029f20811860->Node0000029f20811710
+Node0000029f20811710->Node0000029f208116e0
+Node0000029f208116e0->Node0000029f20811680
+Node0000029f208116e0->Node0000029f208116b0
+Node0000029f20811860->Node0000029f20811830
+Node0000029f20811830->Node0000029f208117d0
+Node0000029f208117d0->Node0000029f208117a0
+Node0000029f208117a0->Node0000029f20811740
+Node0000029f208117a0->Node0000029f20811770
+Node0000029f20811830->Node0000029f20811800
 }

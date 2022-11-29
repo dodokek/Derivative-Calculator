@@ -387,23 +387,23 @@ void InitGraphvisNode (TreeNode* node, FILE* dot_file)   // Recursivly initialis
     assert (node != nullptr);
 
     if (node->type == NUM_T)
-        __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+        __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"#DB8E21\","
                 "label=\" {Type: number | value: %lg}\"] \n \n",
                 node, node->value.dbl_val);
 
     else if (node->type == OP_T)
-        __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+        __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"#DBB585\","
                 "label=\" {Type: operation | value: %s}\"] \n \n",
                 node, GetOpSign(node->value.op_val));
 
     else if (node->type == VAR_T)
-        __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+        __print ("Node%p[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"#19DB27\","
                 "label=\" {Type: variable | value: %s}\"] \n \n",
                 node, node->value);
 
     else
     {
-        __print ("Node%d[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"lightblue\","
+        __print ("Node%d[shape=record, width=0.2, style=\"filled\", color=\"red\", fillcolor=\"red\","
                 "label=\" {Op type: %d | value: unknown type}\"] \n \n",
                 node, node->type);
     }
