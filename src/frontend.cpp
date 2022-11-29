@@ -85,8 +85,12 @@ void PrintBranch (TreeNode* root, PrintTypes mode)
 
     if (mode == ORIGIN)
     {
-        _print ("Alright fella, let's look wat we got:\n");   
+        DrawTree (root);
+
+        _print ("Alright fella, let's look wat we got, i haven't seen so beautiful trees for ages:\n");   
         
+        _print (R"(\begin{center} \includegraphics[scale=0.2]{pretty_tree0.png} \end{center})");
+
         _equation(PrintInOrder (root, out_file));
     }
     else if (mode == DERIVATIVE)
