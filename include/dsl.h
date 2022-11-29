@@ -21,18 +21,17 @@
 
 #define $PRINT_N_RETURN(X)                       \
     {                                            \
+        TreeNode* tmp_node = X;                  \
         if (print_in_pdf)                        \
         {                                        \
-            PrintBranch (cur_node, DERIVATIVE);  \
+            PrintBranch (tmp_node, DERIVATIVE);  \
         }                                        \
-        TreeNode* tmp_node = X;                  \
         return tmp_node;                         \
     }
-        // PrintBranch (tmp_node, ORIGIN);   
 
 #define _print(...) fprintf (out_file, __VA_ARGS__)
 
-#define _equation(X) _print ("\n\\begin{equation}\n"); X ; _print ("\n\\end{equation}\n")
+#define _equation(X) _print ("\n\\begin{center}$\n"); X ; _print ("\n$\\end{center}\n")
 
 #define _SimplifyTree(X) while(SimplifyTree(X)) 
 

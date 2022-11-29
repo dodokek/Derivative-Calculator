@@ -37,7 +37,7 @@ void InitLatexFile (TreeNode* root)
         Welcome to derivative calculator fella, let's have a look at ya. God, what da hell is dis shit, fella?
         Ok, ok, let's calculate this bullshit.
 
-        \begin{center}\begin{figure}[H] \includegraphics[scale=0.6]{funny_pics/cowboy.jpg} \end{figure}\end{center}
+        \begin{center}\begin{center} \includegraphics[scale=0.6]{funny_pics/cowboy.jpg} \end{center}\end{center}
         \begin{center}
         $\clubsuit$~$\clubsuit$~$\clubsuit$
         \end{center}
@@ -49,7 +49,7 @@ void InitLatexFile (TreeNode* root)
 
     // CalcFuncInPoint (out_file, root);
 
-    PrintGraphic (root, -100, 100, out_file);
+    PrintGraphic (root, -50, 50, out_file);
 
     fclose (out_file);
 
@@ -102,7 +102,7 @@ void PrintBranch (TreeNode* root, PrintTypes mode)
         SimplifyTree (root);
 
         _print ("Here is whach you got, fella. Now let's drink some whiskey and shoot niggers.");
-        _print (R"(\begin{figure}[H] \includegraphics[scale=0.6]{funny_pics/slave.jpg} \end{figure})");
+        _print (R"(\begin{center} \includegraphics[scale=0.6]{funny_pics/slave.jpg} \end{center})");
         _equation (PrintInOrder (root, out_file));
     }
 
@@ -135,6 +135,9 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
 {
     assert (node != nullptr);
 
+    static int node_counter = 0;
+
+
     _print ("{");
 
     bool need_div  = isNeedDivision (node);
@@ -153,11 +156,22 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
     if (!need_frac)
     {
         if  (node->type == NUM_T)
+        {
             _print ("%lg", node->value.dbl_val);
+        }
         else if (node->type == OP_T)
+        {    
             _print ("%s", GetOpSign (node->value.op_val));
+            // if (++node_counter > 10 && node->value.op_val == ADD)
+            // {
+            //     _print ("\\\\");
+            //     node_counter = 0;
+            // }
+        }
         else
+        {
             _print ("%s", node->value.var_name);
+        }
     }
     else 
     {
@@ -174,7 +188,6 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
     if (need_frac) _print ("}");
 
     _print ("}");
-
 } 
 
 
@@ -193,7 +206,7 @@ void PrintGraphic (TreeNode* root, int begin_x, int end_x, FILE* out_file)
 
     system ("src\\python_graphics\\draw_graph.py");
 
-    _print (R"(\begin{figure}[H] \includegraphics[scale=0.6]{function_graph.png} \end{figure})");
+    _print (R"(\begin{center} \includegraphics[scale=0.6]{function_graph.png} \end{center})");
 }
 
 

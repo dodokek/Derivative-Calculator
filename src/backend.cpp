@@ -37,10 +37,10 @@ TreeNode* GetDerivative (TreeNode* cur_node, bool print_in_pdf)
             $PRINT_N_RETURN(MUL(DIV(GET_DIGIT (1), CR), DR));
 
         case TG: 
-            $PRINT_N_RETURN(MUL(DIV(GET_DIGIT(1), COS(nullptr, CR)), DR));
+            $PRINT_N_RETURN(MUL(DIV(GET_DIGIT(1), POW(COS(nullptr, CR), GET_DIGIT(2))), DR));
 
         case CTG: 
-            $PRINT_N_RETURN(MUL(MUL(DIV(GET_DIGIT(1), SIN(nullptr, CR)), DR), GET_DIGIT(-1)));
+            $PRINT_N_RETURN(MUL(MUL(DIV(GET_DIGIT(1), POW(SIN(nullptr, CR), GET_DIGIT(2))), DR), GET_DIGIT(-1)));
         
         case POW:
             if (cur_node->right->type == NUM_T) $PRINT_N_RETURN (MUL(MUL(GET_DIGIT(cur_node->right->value.dbl_val), POW (CL, GET_DIGIT (cur_node->right->value.dbl_val - 1))), DL));
@@ -320,7 +320,6 @@ TreeNode* TransformNode (TreeNode* node, Types type, double dbl_val, const char*
 }
 
 
-
 TreeNode* DestructTree (TreeNode* root)
 {
     if (root->left)  DestructTree (root->left);
@@ -591,6 +590,21 @@ int FillCurrNode(TreeNode* currnode, char* buffer)
     }
 
     return len;
+}
+
+
+ConfigParams GetConfigParams (char* file_name)
+{
+    FILE* conf_file = get_file (file_name, "r");
+
+    char tmp_line[MAX_IMG_SRC_LEN] = "";
+    fgets (tmp_line, MAX_SRC_LEN, conf_file);
+    char str[MAX_IMG_SRC_LEN] = "";
+
+    printf ("%s %d\n", tmp_line, atoi(tmp_line));
+    printf ("Derivatives up to %d\n", atoi(tmp_line));
+
+    fclose (conf_file);
 }
 
 

@@ -4,7 +4,7 @@
 
 int main()
 {
-
+    // GetConfigParams ("data/config_params.txt");
 
     TreeNode* root = GetG();
 

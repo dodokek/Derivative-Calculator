@@ -20,6 +20,7 @@ enum Sizes
     STACK_INIT_CAP = 5,
     MAX_NAME_LEN = 100,
     MAX_SRC_LEN = 500,
+    MAX_VARIABLES = 10,
 };
 
 
@@ -82,6 +83,22 @@ struct TreeNode
 };
 
 
+struct Variable
+{
+    double value;
+    char name[MAX_NAME_LEN];
+};
+
+
+struct ConfigParams
+{
+    int derivative_rang;
+    int macloren_rang;
+    Variable variables[MAX_VARIABLES];
+};
+
+
+
 //----------------------------------------------------------
 
 char* GetInputLine ();
@@ -99,6 +116,8 @@ TreeNode* GetK (char** string);
 TreeNode* GetP (char** string);
 
 void SkipSpaces (char** string);
+
+ConfigParams GetConfigParams (char* file_name);
 
 TreeNode* GetTreeRoot ();
 

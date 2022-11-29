@@ -1,0 +1,5 @@
+I want to take such many derivatives as: 1
+I want Macloren up to : 3
+X 1
+Y 2
+Z 3
