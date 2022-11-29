@@ -19,7 +19,7 @@
 #define INIT_PARAMS OP_T, 0, UNKNOWN, nullptr, nullptr, nullptr
 #define VAR_PARAMS(V)  VAR_T, 0, UNKNOWN, #V, nullptr, nullptr
 
-#define $PRINT_N_RETURN(X)                       \
+#define $PRINT_PLUS_RETURN(X)                       \
     {                                            \
         TreeNode* tmp_node = X;                  \
         if (print_in_pdf)                        \
@@ -33,6 +33,23 @@
 
 #define _equation(X) _print ("\n\\begin{center}$\n"); X ; _print ("\n$\\end{center}\n")
 
+//--Simplifier
+
 #define _SimplifyTree(X) while(SimplifyTree(X)) 
+
+#define L_DBL cur_node->left->value.dbl_val
+#define R_DBL cur_node->right->value.dbl_val
+
+#define L_TYPE cur_node->left->type
+#define R_TYPE cur_node->right->type
+
+#define L_VAR cur_node->left->value.var_name
+#define R_VAR cur_node->right->value.var_name
+
+#define CUR_OP cur_node->value.op_val
+#define CUR_T  cur_node->type
+
+
+//-----------
 
 #endif

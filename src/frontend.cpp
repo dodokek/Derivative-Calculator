@@ -216,7 +216,7 @@ void PrintMacloren (TreeNode* root, int steps)
 
     FILE* out_file = get_file ("data/output.tex", "a");
 
-    _print ("Alright fella, let's make this shit called <Macloren>,"
+    _print ("Alright fella, let's make this shit called Macloren,"
             "there will be only %d steps, cause i don't know how to count more.", steps);
 
     _print ("Basicly the main formula will look like that\n \\[ f(x) = ");

@@ -9,41 +9,41 @@ TreeNode* GetDerivative (TreeNode* cur_node, bool print_in_pdf)
 {
     assert (cur_node != nullptr);
 
-    if      (cur_node->type == NUM_T) return CreateNode (NUM_T, 0, UNKNOWN, nullptr, nullptr, nullptr);
-    else if (cur_node->type == VAR_T) return CreateNode (NUM_T, 1, UNKNOWN, nullptr, nullptr, nullptr);
+    if      (CUR_T == NUM_T) return CreateNode (NUM_T, 0, UNKNOWN, nullptr, nullptr, nullptr);
+    else if (CUR_T == VAR_T) return CreateNode (NUM_T, 1, UNKNOWN, nullptr, nullptr, nullptr);
     else
     {
-        switch (cur_node->value.op_val)
+        switch (CUR_OP)
         {
         case ADD:
-            $PRINT_N_RETURN(ADD (DL, DR));
+            $PRINT_PLUS_RETURN(ADD (DL, DR));
         
         case SUB:
-            $PRINT_N_RETURN(SUB (DL, DR));
+            $PRINT_PLUS_RETURN(SUB (DL, DR));
 
         case MUL:
-            $PRINT_N_RETURN(ADD(MUL(DL, CR), MUL(CL, DR)));
+            $PRINT_PLUS_RETURN(ADD(MUL(DL, CR), MUL(CL, DR)));
         
         case DIV:
-            $PRINT_N_RETURN (DIV(SUB(MUL(DL, CR), MUL(CL, DR)), MUL(CR, CR)));
+            $PRINT_PLUS_RETURN (DIV(SUB(MUL(DL, CR), MUL(CL, DR)), MUL(CR, CR)));
 
         case SIN:
-            $PRINT_N_RETURN(MUL(COS(nullptr, CR), DR));
+            $PRINT_PLUS_RETURN(MUL(COS(nullptr, CR), DR));
 
         case COS:
-            $PRINT_N_RETURN(MUL(MUL(GET_DIGIT (-1), SIN(nullptr, CR)), DR));
+            $PRINT_PLUS_RETURN(MUL(MUL(GET_DIGIT (-1), SIN(nullptr, CR)), DR));
 
         case LN:
-            $PRINT_N_RETURN(MUL(DIV(GET_DIGIT (1), CR), DR));
+            $PRINT_PLUS_RETURN(MUL(DIV(GET_DIGIT (1), CR), DR));
 
         case TG: 
-            $PRINT_N_RETURN(MUL(DIV(GET_DIGIT(1), POW(COS(nullptr, CR), GET_DIGIT(2))), DR));
+            $PRINT_PLUS_RETURN(MUL(DIV(GET_DIGIT(1), POW(COS(nullptr, CR), GET_DIGIT(2))), DR));
 
         case CTG: 
-            $PRINT_N_RETURN(MUL(MUL(DIV(GET_DIGIT(1), POW(SIN(nullptr, CR), GET_DIGIT(2))), DR), GET_DIGIT(-1)));
+            $PRINT_PLUS_RETURN(MUL(MUL(DIV(GET_DIGIT(1), POW(SIN(nullptr, CR), GET_DIGIT(2))), DR), GET_DIGIT(-1)));
         
         case POW:
-            if (cur_node->right->type == NUM_T) $PRINT_N_RETURN (MUL(MUL(GET_DIGIT(cur_node->right->value.dbl_val), POW (CL, GET_DIGIT (cur_node->right->value.dbl_val - 1))), DL));
+            if (R_TYPE == NUM_T) $PRINT_PLUS_RETURN (MUL(MUL(GET_DIGIT(R_DBL), POW (CL, GET_DIGIT (R_DBL - 1))), DL));
         
         case UNKNOWN:
             printf ("Unknown operation\n");
@@ -65,21 +65,16 @@ int SimplifyTree (TreeNode* cur_node)
 
     int simpl_amount = 0;
 
-    simpl_amount = 0;
-
     if (cur_node->left)  simpl_amount  += SimplifyTree (cur_node->left);
     if (cur_node->right) simpl_amount  += SimplifyTree (cur_node->right);
     
     if (!cur_node->left || !cur_node->right) return 0;
 
-    if (cur_node->type == OP_T && cur_node->left->type != OP_T && cur_node->right->type != OP_T)
+    if (CUR_T == OP_T && L_TYPE != OP_T && R_TYPE != OP_T)
     {
-        if (cur_node->value.op_val == MUL)
+        if (CUR_OP == MUL)
         {
-            // printf ("Kek: ");
-            // printf ("Now working with %lg and %lg\n", cur_node->left->value.dbl_val, cur_node->right->value.dbl_val);
-
-            if      (isZero (cur_node->left->value.dbl_val) && cur_node->left->type == NUM_T)
+            if      (isZero (L_DBL) && L_TYPE == NUM_T)
             {
                 printf ("Simplifying <Zero> case left\n");
 
@@ -87,7 +82,7 @@ int SimplifyTree (TreeNode* cur_node)
                 return 1;
             }
 
-            else if (isZero (cur_node->right->value.dbl_val) && cur_node->right->type == NUM_T)
+            else if (isZero (R_DBL) && R_TYPE == NUM_T)
             {
                 printf ("Simplifying <Zero> case right\n");
 
@@ -95,50 +90,50 @@ int SimplifyTree (TreeNode* cur_node)
                 return 1;
             }
 
-            else if (isEqual (cur_node->right->value.dbl_val, 1))
+            else if (isEqual (R_DBL, 1))
             {
                 printf ("Simplifying <one> case right\n");
 
-                if (cur_node->left->type == NUM_T)
+                if (L_TYPE == NUM_T)
                 {
-                    TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val, nullptr);
+                    TransformNode (cur_node, NUM_T, L_DBL, nullptr);
                     return 1;
                 }
-                if (cur_node->left->type == VAR_T)
+                if (L_TYPE == VAR_T)
                 {    
-                    TransformNode (cur_node, VAR_T, 0, cur_node->left->value.var_name);
+                    TransformNode (cur_node, VAR_T, 0, L_VAR);
                     return 1;
                 }
             }
 
-            else if (isEqual (cur_node->left->value.dbl_val, 1))
+            else if (isEqual (L_DBL, 1))
             {
                 printf ("Simplifying <one> case left\n");
-                if (cur_node->right->type == NUM_T)
+                if (R_TYPE == NUM_T)
                 {
-                    TransformNode (cur_node, NUM_T, cur_node->right->value.dbl_val, nullptr);
+                    TransformNode (cur_node, NUM_T, R_DBL, nullptr);
                     return 1;
                 }
-                if (cur_node->right->type == VAR_T)
+                if (R_TYPE == VAR_T)
                 {   
-                    TransformNode (cur_node, VAR_T, 0, cur_node->right->value.var_name);
+                    TransformNode (cur_node, VAR_T, 0, R_VAR);
                     return 1;
                 }
             }
         }
         
-        if (cur_node->left->type == NUM_T && cur_node->right->type == NUM_T)
+        if (L_TYPE == NUM_T && R_TYPE == NUM_T)
         {
-            if (cur_node->value.op_val == ADD)
+            if (CUR_OP == ADD)
             {
                 printf ("Oh, two numbers, ADD!\n");
-                TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val + cur_node->right->value.dbl_val, nullptr);
+                TransformNode (cur_node, NUM_T, L_DBL + R_DBL, nullptr);
                 return 1;
             }
-            else if (cur_node->value.op_val == MUL)
+            else if (CUR_OP == MUL)
             {
                 printf ("Oh, two numbers, MUL!\n");
-                TransformNode (cur_node, NUM_T, cur_node->left->value.dbl_val * cur_node->right->value.dbl_val, nullptr);
+                TransformNode (cur_node, NUM_T, L_DBL * R_DBL, nullptr);
                 return 1;
             }
         }
