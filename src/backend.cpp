@@ -599,18 +599,134 @@ ConfigParams GetConfigParams (char* file_name)
 }
 
 
+//-------Parser->Lecsical analysis----------------------------------
+
+void FillTokensArray (Token* token_array)
+{
+    char* input = GetInputLine();
+    int arr_size = 0;
+
+    printf ("Started to parse tokens\n");
+
+    for (int i = 0; i <= strlen (input);)
+    {
+        if (isalpha(input[i]))
+        {
+            char* tmp_line = (input + i);
+            while (isalpha (*tmp_line)) tmp_line++;
+
+            if (*tmp_line == ')')
+            {
+                token_array[arr_size] = CreateToken (VAR_T, 0, UNKNOWN, i);
+                i += sscanf (input + i, "%[^) ]", token_array[arr_size].value.var_name);
+                arr_size++;
+            }
+            else if (*tmp_line == '(')
+            {
+                char op_name[100] = "";
+
+                i += sscanf (input + i, "%[^( ]%n", op_name);
+                printf ("Got argument %s\n", op_name);
+
+                Operations operation = GetOpType (op_name);
+
+                token_array[arr_size] = CreateToken (OP_T, 0, operation, i); 
+            }
+        }
+        else if (isdigit (input[i]))
+        {
+            printf ("Proccessing digit %c\n", input[i]);
+
+            double num = 0;
+            i += sscanf (input + i, "%lg", &num);
+            printf ("\tGot num %lg\n", num);
+
+            token_array[arr_size] = CreateToken (NUM_T, num, UNKNOWN, i);
+            arr_size++;
+
+        }
+        else
+        {
+            printf ("Proccessing operation %c\n", input[i]);
+
+            if (input[i] == '(')
+            {
+                token_array[arr_size] = CreateToken (OP_T, 0, OPEN_BR, i);
+            }
+            else if (input[i] == ')')
+            {
+                token_array[arr_size] = CreateToken (OP_T, 0, CLOSE_BR, i);
+            }
+            else if (input[i] == '\0')
+            {
+                token_array[arr_size] = CreateToken (OP_T, 0, TERMINATION_SYM, i);
+            }
+            else
+            {
+                Operations operation = UNKNOWN;
+                operation = GetOpType (input + i);
+                printf ("Input: %c, Op type: %d\n", input[i], operation);
+            
+                token_array[arr_size] = CreateToken (OP_T, 0, operation, i);
+            }
+
+            arr_size++;
+            i++;
+        }
+    } 
+
+}
+
+
+Token CreateToken (Types type, double dbl_val, Operations op_t, int line_number)
+{
+    printf ("Creating token\n");
+
+    Token* new_token = (Token*) calloc (1, sizeof (Token));
+
+    if      (type == NUM_T) new_token->value.dbl_val  = dbl_val;
+    else if (type == VAR_T) new_token->value.var_name = (char*) calloc (MAX_TOKEN_LEN, sizeof (char));
+    else if (type == OP_T)  new_token->value.op_val   = op_t;
+    
+    new_token->type = type;
+    new_token->line_number = line_number;
+
+    return *new_token;
+}
+
+
+void PrintTokens (Token* token_array)
+{
+    int token_counter = 0;
+
+    while (token_array[token_counter].value.op_val != TERMINATION_SYM)
+    {
+
+        printf ("Token. Type: %d, Dbl value: %lg. Line number %d. Op type: %d\n",
+               (*token_array).type, (*token_array).value.dbl_val, (*token_array).line_number, (*token_array).value.op_val);
+
+        token_array++;
+    }
+}
+
+
+//-------Parser->Lecsical analysis----------------------------------
+
+
 //--Parser---------------------------------------------------
 
 
 #define CMP(operation) strcmp (str, #operation) == 0
 
-Operations GetOpType (const char str[])
+Operations GetOpType (char str[])
 {    
-    if      (CMP (+)) return ADD;
-    else if (CMP (-)) return SUB;
-    else if (CMP (/)) return DIV;
-    else if (CMP (*)) return MUL;
-    else if (CMP (^)) return POW;
+    printf ("recieved %s\n", str);
+
+    if      (str[0] == '+') return ADD;
+    else if (str[0] == '-') return SUB;
+    else if (str[0] == '*') return DIV;
+    else if (str[0] == '/') return MUL;
+    else if (str[0] == '^') return POW;
     else if (CMP (sin)) return SIN;
     else if (CMP (cos)) return COS;
     else if (CMP (tg))  return TG;

@@ -21,6 +21,8 @@ enum Sizes
     MAX_NAME_LEN = 100,
     MAX_SRC_LEN = 500,
     MAX_VARIABLES = 10,
+    MAX_TOKEN_LEN = 10,
+    MAX_TOKENS = 200,
 };
 
 
@@ -56,6 +58,9 @@ enum Operations
     ARCSIN,
     LN,
     LOG,
+    OPEN_BR,
+    CLOSE_BR,
+    TERMINATION_SYM,
 };
 
 
@@ -101,6 +106,14 @@ struct ConfigParams
 };
 
 
+struct Token
+{
+    Types type;
+    Values value;
+
+    int line_number;
+};
+
 
 //----------------------------------------------------------
 
@@ -142,7 +155,7 @@ int FillCurrNode(TreeNode* currnode, char* buffer);
 
 TreeNode* DestructTree (TreeNode* root);
 
-Operations GetOpType (const char str[]);
+Operations GetOpType (char str[]);
 
 TreeNode* GetDerivative (TreeNode* cur_node, bool print_in_pdf);
 
@@ -161,5 +174,11 @@ double CalcTree (TreeNode* node, double val);
 double CalcOneOp (double val1, double val2, Operations operation);
 
 TreeNode* GetOperationNode (TreeNode* child_node, Operations op);
+
+void FillTokensArray (Token* token_array);
+
+Token CreateToken (Types type, double dbl_val, Operations op_t, int line_number);
+
+void PrintTokens (Token token_array[]);
 
 #endif

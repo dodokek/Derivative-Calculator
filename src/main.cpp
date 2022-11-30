@@ -4,19 +4,24 @@
 
 int main()
 {
-    // GetConfigParams ("data/config_params.txt");
+    Token token_array[MAX_TOKENS];
 
-    TreeNode* root = GetGrammar();
+    FillTokensArray (token_array);
 
-    InitLatexFile (root);
+    PrintTokens (token_array);
+
+
+    // TreeNode* root = GetGrammar();
+
+    // InitLatexFile (root);
     
-    TreeNode* d_root = GetDerivative (root, TEX_OUT);
-    PrintBranch (d_root, RESULT);
+    // TreeNode* d_root = GetDerivative (root, TEX_OUT);
+    // PrintBranch (d_root, RESULT);
 
-    PrintMacloren (root, 3);
+    // PrintMacloren (root, 3);
     
-    GeneratePdf ();
+    // GeneratePdf ();
 
 
-    DestructTree (root);
+    // DestructTree (root);
 }
