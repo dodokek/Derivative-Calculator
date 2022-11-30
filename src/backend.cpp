@@ -230,7 +230,7 @@ double CalcOneOp (double val1, double val2, Operations operation)
 bool isZero (double num)
 {
     printf ("recieved num %lg\n", num);
-    if (abs(num) <= 0.0000001) return true;
+    if (abs(num) <= ACCURACY) return true;
 
     return false;
 }
@@ -238,7 +238,7 @@ bool isZero (double num)
 
 bool isEqual (double num1, double num2)
 {
-    return (abs (num1 - num2) < 0.00000001) ? 1 : 0;
+    return (abs (num1 - num2) < ACCURACY) ? 1 : 0;
 }
 
 
@@ -345,7 +345,7 @@ TreeNode* GetGrammar ()
 }
 
 
-TreeNode*  GetExpression (char** string)
+TreeNode* GetExpression (char** string)
 {
     SkipSpaces (string);
 
