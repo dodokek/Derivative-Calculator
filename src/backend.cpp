@@ -245,7 +245,7 @@ bool isEqual (double num1, double num2)
 //--Math----------------------------------------------
 
 
-TreeNode* CreateNode (Types type, double dbl_val, Operations op_val, char* var_name,
+TreeNode* CreateNode (Types type, double dbl_val, Operations op_val, const char* var_name,
                       TreeNode* left_child, TreeNode* right_child)
 {
     // printf ("Creating node with type %d\n", type);
@@ -330,34 +330,34 @@ TreeNode* DestructTree (TreeNode* root)
 
 TreeNode* GetGrammar () 
 {
-    char* string = GetInputLine();
+    Token token_array[MAX_TOKENS];
+    FillTokensArray (token_array);
+    PrintTokens (token_array);
+    int cur_token_id = 0;
 
-    SkipSpaces (&string);
+    TreeNode* root = GetExpression(token_array, &cur_token_id); 
 
-    TreeNode* root = GetExpression(&string); 
-
-    if (*string == '\0')
+    if (token_array[cur_token_id].value.op_val == TERMINATION_SYM)
         printf ("G: Got termination symbol, ending\n");
     else
-        printf ("Compilation error at char %c\n", *string);
-
+        printf ("!!!Compilation error, cur Token: Type: %d, Dbl value: %lg. Line number %d. Op type: %d\n",
+               token_array[cur_token_id].type, token_array[cur_token_id].value.dbl_val, token_array[cur_token_id].line_number, token_array[cur_token_id].value.op_val);
     return root;
 }
 
 
-TreeNode* GetExpression (char** string)
+TreeNode* GetExpression (Token token_array[], int* cur_token_id)
 {
-    SkipSpaces (string);
+    TreeNode* top_operation_node = GetMlt (token_array, cur_token_id);
 
-    TreeNode* top_operation_node = GetT (string);
-
-    while (**string == '+' || **string == '-')
+    while (token_array[*cur_token_id].value.op_val == ADD || token_array[*cur_token_id].value.op_val == SUB)
     {
-        int last_op = **string;
-        (*string)++;
-        TreeNode* right_node = GetT (string);
+        Operations last_op = token_array[*cur_token_id].value.op_val;
+        *cur_token_id += 1;
 
-        if (last_op == '+')
+        TreeNode* right_node = GetMlt (token_array, cur_token_id);
+
+        if (last_op == ADD)
             top_operation_node = ADD (top_operation_node, right_node);
         else
             top_operation_node = SUB (top_operation_node, right_node);
@@ -367,121 +367,107 @@ TreeNode* GetExpression (char** string)
 }
 
 
-TreeNode* GetT (char** string)
+TreeNode* GetMlt (Token token_array[], int* cur_token_id)
 {
-    SkipSpaces (string);
+    TreeNode* top_operation_node = GetPower (token_array, cur_token_id);
 
-    TreeNode* top_operation_node = GetBracketExpower (string);
-
-    while (**string == '*' || **string == '/')
+    while (token_array[*cur_token_id].value.op_val == MUL || token_array[*cur_token_id].value.op_val == DIV)
     {
-        int last_op = **string;
-        (*string)++;
+        Operations last_op = token_array[*cur_token_id].value.op_val;
+        *cur_token_id += 1;
 
-        TreeNode* right_node = GetBracketExpower (string);
+        TreeNode* right_node = GetPower (token_array, cur_token_id);
 
-        if (last_op == '*')
+        if (last_op == MUL)
             top_operation_node = MUL (top_operation_node, right_node);
         else
             top_operation_node = DIV (top_operation_node, right_node);
 
     }       
 
-    printf ("T: Passing up %c\n", **string);
-
     return top_operation_node;
 }
 
 
-TreeNode* GetBracketExpower (char** string)
+TreeNode* GetPower (Token token_array[], int* cur_token_id)
 {
-    SkipSpaces (string);
-    
-    TreeNode* top_operation_node = GetBracketExp (string);
+    TreeNode* top_operation_node = GetBracketExp (token_array, cur_token_id);
 
-    while (**string == '^')
+    while (token_array[*cur_token_id].value.op_val == POW)
     {
-        (*string)++;
+        *cur_token_id += 1;
 
-        TreeNode* right_node = GetBracketExp (string);
+        TreeNode* right_node = GetBracketExp (token_array, cur_token_id);
 
         top_operation_node = POW (top_operation_node, right_node);
     }       
 
-    printf ("K: Passing up %c\n", **string);
-
     return top_operation_node;
 }
 
 
-TreeNode* GetBracketExp (char** string)
+TreeNode* GetBracketExp (Token token_array[], int* cur_token_id)
 {
-    printf ("now working with char %c\n", **string);
-    SkipSpaces (string);
-
-    double val = 0;
-    Operations operation = UNKNOWN;
-    TreeNode* sub_node = nullptr;
-
-    if (isalpha (**string))
-    {
-        if (**string == 'X')
-        {
-            (*string)++;
-            return CreateNode (VAR_PARAMS(X));
-        }
-
-        int n = 0;
-        char op_name[100] = "";
-
-        sscanf (*string, "%[^( ]%n", op_name, &n);
-        printf ("Got argument %s and %d\n", op_name, n);
-
-        operation = GetOpType (op_name);
-
-        *string += n;
-    }
     
-    if (**string == '(')
+    if (token_array[*cur_token_id].value.op_val == OPEN_BR)
     {
-        (*string)++;
+        *cur_token_id += 1;
+        TreeNode* sub_node = GetExpression (token_array, cur_token_id);
 
-        sub_node = GetExpression (string);
+        if (token_array[*cur_token_id].value.op_val == CLOSE_BR)
+        {
+            *cur_token_id += 1;
+            return sub_node;
+        }
+        else 
+        {
+            printf ("Wrong brackets sequence\n");  
+        }        
+    }
 
-        if (**string != ')') printf ("Missing \')\' - end of subexpression\n");
-        
-        (*string)++;
+    else if (token_array[*cur_token_id].type == OP_T)
+    {
+        Operations cur_op = token_array[*cur_token_id].value.op_val;
 
-        SkipSpaces (string);
+        *cur_token_id += 2; // Skipping operation + bracket
+        TreeNode* sub_node = GetExpression (token_array, cur_token_id);
+
+        if (token_array[*cur_token_id].value.op_val == CLOSE_BR)
+        {
+            *cur_token_id += 1;
+            return GetOperationNode (sub_node, cur_op);
+        }
+        else 
+        {
+            printf ("Wrong brackets sequence\n");  
+        }
     }
     else
     {
-        sub_node = GetNumber (string);
+        return GetNumber (token_array, cur_token_id);
     }
-
-    if (operation == UNKNOWN) return sub_node;
-
-    return GetOperationNode (sub_node, operation);
 }
 
 
-TreeNode*  GetNumber (char** string)
+TreeNode* GetNumber (Token token_array[], int* cur_token_id)
 {
-    SkipSpaces (string);
-
-    int val = 0;
-    
-    while ('0' <= **string && **string <= '9')
+    if      (token_array[*cur_token_id].type == NUM_T)
     {
-        val = val*10 + (**string - '0');
-        (*string)++;
-
-        SkipSpaces (string);
+        *cur_token_id += 1;
+        return CreateDigitNode (token_array[*cur_token_id - 1].value.dbl_val);
     }
 
-    printf ("N: Passing up %c\n", **string);
-
-    return CreateDigitNode (val);
+    else if (token_array[*cur_token_id].type == VAR_T)
+    {
+        *cur_token_id += 1;
+        return CreateNode (VAR_T, 0, UNKNOWN, token_array[*cur_token_id - 1].value.var_name, nullptr, nullptr);
+    }
+    else 
+    {
+        *cur_token_id += 1;
+        printf ("Unexpected token, returning null\n");
+        return nullptr;
+    }
 }
 
 
@@ -499,7 +485,7 @@ TreeNode* GetOperationNode (TreeNode* child_node, Operations op)
         return LN (nullptr, child_node);
     
     default:
-        printf ("While getting operation nodes, error occured: %d\n", op);
+        printf ("While GetMlting operation nodes, error occured: %d\n", op);
         break;
     }
 

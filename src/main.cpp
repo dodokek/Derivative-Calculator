@@ -4,15 +4,9 @@
 
 int main()
 {
-    Token token_array[MAX_TOKENS];
-
-    FillTokensArray (token_array);
-
-    PrintTokens (token_array);
-
-
-    // TreeNode* root = GetGrammar();
-
+    
+    TreeNode* root = GetGrammar();
+    DrawTree (root);
     // InitLatexFile (root);
     
     // TreeNode* d_root = GetDerivative (root, TEX_OUT);

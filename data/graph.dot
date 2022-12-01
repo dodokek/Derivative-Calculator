@@ -8,36 +8,18 @@
         graph[fillcolor = lightgreen, ranksep = 1.3, nodesep = 0.5,
         style = "rounded, filled",color = green, penwidth = 2]
 
-    Node0000029f20811860[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: +}"] 
+    Node000001eb58741840[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: -}"] 
  
-Node0000029f20811710[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: sin}"] 
+Node000001eb58741780[shape=record, width=0.2, style="filled", color="red", fillcolor="#DB8E21",label=" {Type: number | value: 5}"] 
  
-Node0000029f208116e0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: ^}"] 
+Node000001eb58741810[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: +}"] 
  
-Node0000029f20811680[shape=record, width=0.2, style="filled", color="red", fillcolor="#19DB27",label=" {Type: variable | value: X}"] 
+Node000001eb587417b0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DB8E21",label=" {Type: number | value: 1}"] 
  
-Node0000029f208116b0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DB8E21",label=" {Type: number | value: 5}"] 
+Node000001eb587417e0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DB8E21",label=" {Type: number | value: 2}"] 
  
-Node0000029f20811830[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: ^}"] 
- 
-Node0000029f208117d0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: cos}"] 
- 
-Node0000029f208117a0[shape=record, width=0.2, style="filled", color="red", fillcolor="#DBB585",label=" {Type: operation | value: \cdot}"] 
- 
-Node0000029f20811740[shape=record, width=0.2, style="filled", color="red", fillcolor="#DB8E21",label=" {Type: number | value: 10}"] 
- 
-Node0000029f20811770[shape=record, width=0.2, style="filled", color="red", fillcolor="#19DB27",label=" {Type: variable | value: X}"] 
- 
-Node0000029f20811800[shape=record, width=0.2, style="filled", color="red", fillcolor="#DB8E21",label=" {Type: number | value: 3}"] 
- 
-Node0000029f20811860->Node0000029f20811710
-Node0000029f20811710->Node0000029f208116e0
-Node0000029f208116e0->Node0000029f20811680
-Node0000029f208116e0->Node0000029f208116b0
-Node0000029f20811860->Node0000029f20811830
-Node0000029f20811830->Node0000029f208117d0
-Node0000029f208117d0->Node0000029f208117a0
-Node0000029f208117a0->Node0000029f20811740
-Node0000029f208117a0->Node0000029f20811770
-Node0000029f20811830->Node0000029f20811800
+Node000001eb58741840->Node000001eb58741780
+Node000001eb58741840->Node000001eb58741810
+Node000001eb58741810->Node000001eb587417b0
+Node000001eb58741810->Node000001eb587417e0
 }

@@ -121,24 +121,24 @@ char* GetInputLine ();
 
 TreeNode* GetGrammar ();
 
-TreeNode* GetNumber (char** string);
+TreeNode* GetExpression (Token token_array[], int* cur_token_id);
 
-TreeNode* GetExpression (char** string);
+TreeNode* GetMlt (Token token_array[], int* cur_token_id);
 
-TreeNode* GetT (char** string);
+TreeNode* GetPower (Token token_array[], int* cur_token_id);
 
-TreeNode* GetBracketExpower (char** string);
+TreeNode* GetNumber (Token token_array[], int* cur_token_id);
 
-TreeNode* GetBracketExp (char** string);
+TreeNode* GetBracketExp (Token token_array[], int* cur_token_id);
 
 void SkipSpaces (char** string);
 
 ConfigParams GetConfigParams (char* file_name);
 
-TreeNode* GetTreeRoot ();
+TreeNode* GetMltreeRoot ();
 
 TreeNode* CreateNode (Types type,           double dbl_val,
-                      Operations op_val,    char* var_name,
+                      Operations op_val,    const char* var_name,
                       TreeNode* left_child, TreeNode* right_child);
 
 TreeNode* TransformNode (TreeNode* node, Types type, double dbl_val, const char* var_name);
