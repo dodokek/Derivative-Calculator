@@ -722,8 +722,8 @@ Operations GetOpType (char str[])
 
     if      (str[0] == '+') return ADD;
     else if (str[0] == '-') return SUB;
-    else if (str[0] == '*') return DIV;
-    else if (str[0] == '/') return MUL;
+    else if (str[0] == '*') return MUL;
+    else if (str[0] == '/') return DIV;
     else if (str[0] == '^') return POW;
     else if (CMP (sin)) return SIN;
     else if (CMP (cos)) return COS;
