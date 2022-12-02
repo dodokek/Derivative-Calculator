@@ -385,7 +385,6 @@ TreeNode* GetMlt (Token token_array[], int* cur_token_id)
             top_operation_node = MUL (top_operation_node, right_node);
         else
             top_operation_node = DIV (top_operation_node, right_node);
-
     }       
 
     return top_operation_node;
@@ -509,21 +508,6 @@ char* GetInputLine ()
 }
 
 
-ConfigParams GetConfigParams (char* file_name)
-{
-    FILE* conf_file = get_file (file_name, "r");
-
-    char tmp_line[MAX_IMG_SRC_LEN] = "";
-    fgets (tmp_line, MAX_SRC_LEN, conf_file);
-    char str[MAX_IMG_SRC_LEN] = "";
-
-    printf ("%s %d\n", tmp_line, atoi(tmp_line));
-    printf ("Derivatives up to %d\n", atoi(tmp_line));
-
-    fclose (conf_file);
-}
-
-
 //-------Parser->Lecsical analysis----------------------------------
 
 void FillTokensArray (Token* token_array)
@@ -603,7 +587,7 @@ void SkipSpaces (char* string, int* i)
 
 Token CreateToken (Types type, double dbl_val, Operations op_t, int line_number)
 {
-    printf ("====Creating token with type %d and op val %d\n", type, op_t);
+    printf ("====Creating token with type %d and op val %d====\n", type, op_t);
 
     Token* new_token = (Token*) calloc (1, sizeof (Token));
 
@@ -634,7 +618,7 @@ void PrintTokens (Token* token_array)
 //-------Parser->Lecsical analysis----------------------------------
 
 
-//--Parser---------------------------------------------------
+//--Parser.End---------------------------------------------------
 
 
 #define CMP(operation) strcmp (str, #operation) == 0
