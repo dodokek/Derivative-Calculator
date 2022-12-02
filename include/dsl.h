@@ -49,6 +49,14 @@
 #define CUR_OP cur_node->value.op_val
 #define CUR_T  cur_node->type
 
+//--Tokenizer
+
+#define CUR_TOKEN token_array[*cur_token_id]
+#define PREV_TOKEN token_array[*cur_token_id - 1]
+
+#define TOP_TOKEN token_array[tokens_amount]
+
+#define OP_PARAMS(X) OP_T, 0, X, i
 
 //-----------
 

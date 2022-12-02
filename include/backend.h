@@ -147,12 +147,6 @@ TreeNode* CopyNode (TreeNode* node_to_cpy);
 
 TreeNode* BuildTree (FILE* tree_info);
 
-void AddRightChild (TreeNode* cur_node);
-
-void AddLeftChild (TreeNode* cur_node);
-
-int FillCurrNode(TreeNode* currnode, char* buffer);
-
 TreeNode* DestructTree (TreeNode* root);
 
 Operations GetOpType (char str[]);
