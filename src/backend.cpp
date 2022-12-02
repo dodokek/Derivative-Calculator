@@ -507,10 +507,7 @@ char* GetInputLine ()
 }
 
 
-void SkipSpaces (char** string)
-{
-    while (isspace (**string)) (*string)++;
-}
+
     
 
 void AddRightChild (TreeNode* cur_node)
@@ -592,10 +589,10 @@ void FillTokensArray (Token* token_array)
     char* input = GetInputLine();
     int arr_size = 0;
 
-    printf ("Started to parse tokens\n");
-
     for (int i = 0; i <= strlen (input);)
     {
+        SkipSpaces (input, &i);
+
         if (isalpha(input[i]))
         {
             char* tmp_line = (input + i);
@@ -604,17 +601,15 @@ void FillTokensArray (Token* token_array)
             if (*tmp_line == '(')
             {
                 char op_name[100] = "";
-                
                 int len = 0;
+
                 sscanf (input + i, "%[^( ]%n", op_name, &len);
                 i += len;
                 
                 printf ("Got argument %s\n", op_name);
 
                 Operations operation = GetOpType (op_name);
-
                 token_array[arr_size] = CreateToken (OP_T, 0, operation, i); 
-
                 arr_size++;
             }   
             else // variavle handler
@@ -676,6 +671,12 @@ void FillTokensArray (Token* token_array)
 }
 
 
+void SkipSpaces (char* string, int* i)
+{
+    while (isspace (string[*i])) (*i)++;
+}
+
+
 Token CreateToken (Types type, double dbl_val, Operations op_t, int line_number)
 {
     printf ("====Creating token with type %d and op val %d\n", type, op_t);
@@ -696,10 +697,8 @@ Token CreateToken (Types type, double dbl_val, Operations op_t, int line_number)
 void PrintTokens (Token* token_array)
 {
     int i = 0;
-
     while (token_array[i].value.op_val != TERMINATION_SYM)
     {
-
         printf ("Token. Type: %d, Dbl value: %lg. Line number %d. Op type: %d\n",
                token_array[i].type, token_array[i].value.dbl_val, token_array[i].line_number, token_array[i].value.op_val);
 
@@ -718,8 +717,6 @@ void PrintTokens (Token* token_array)
 
 Operations GetOpType (char str[])
 {    
-    printf ("recieved %s\n", str);
-
     if      (str[0] == '+') return ADD;
     else if (str[0] == '-') return SUB;
     else if (str[0] == '*') return MUL;

@@ -131,7 +131,7 @@ TreeNode* GetNumber (Token token_array[], int* cur_token_id);
 
 TreeNode* GetBracketExp (Token token_array[], int* cur_token_id);
 
-void SkipSpaces (char** string);
+void SkipSpaces (char* string, int* i);
 
 ConfigParams GetConfigParams (char* file_name);
 
