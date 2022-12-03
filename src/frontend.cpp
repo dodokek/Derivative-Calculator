@@ -16,25 +16,47 @@ void InitLatexFile (TreeNode* root)
     \usepackage[utf8]{inputenc}			% кодировка исходного текста
     \usepackage[english,russian]{babel}	% локализация и переносы
     \usepackage{unicode-math}
+    \usepackage[top=3in]{geometry}
 
     % Рисунки
     \usepackage{graphicx, float}
     \usepackage{wrapfig}
 
+    \usepackage{eso-pic,graphicx}   
+
+    \usepackage{xcolor}
+
+    \makeatletter
+    \newcommand{\globalcolor}[1]{%
+    \color{#1}\global\let\default@color\current@color
+    }
+    \makeatother
+
+    \AtBeginDocument{\globalcolor{black}}
 
     \title{Wild wild west derivative counter}
-    \author{Dodo}
-    \date{November 2022}
-
+    \author{Marty Bebrou Smith}
+    \date{November 1897}
 
     \begin{document}
     \maketitle
+    \AddToShipoutPictureBG{\includegraphics[width=\paperwidth,height=\paperheight]{funny_pics/back5.png}}
     )";
 
     _print (header);
   
     char introduction[] = R"(
-        Welcome to derivative calculator fella, let's have a look at ya. God, what da hell is dis shit, fella?
+
+        You've been slepping so long, that Calculus anigilated all humanity and whole modern civilization was vanished.
+        The humanity had to start over to restore all knowledge we lost. Unfortunately, everyone decided to become stupid cowboys and
+        live in the world of Wild Wild West.
+
+        I fucking like this live, you can bang as many hot chicks as you want, despite sometimes fuckers like you come to me
+        to solve this boring equations and take derivatives.
+
+        Oh look, a nigger is running down the hill *bang* *bang*
+        
+        
         Ok, ok, let's calculate this bullshit.
 
         \begin{center}\begin{center} \includegraphics[scale=0.6]{funny_pics/cowboy.jpg} \end{center}\end{center}
@@ -89,8 +111,6 @@ void PrintBranch (TreeNode* root, PrintTypes mode)
 
         _print ("Alright fella, let's look wat we got, i haven't seen so beautiful trees for ages:\n");   
         
-        _print (R"(\begin{center} \includegraphics[scale=0.2]{pretty_tree0.png} \end{center})");
-
         _equation(PrintInOrder (root, out_file));
     }
     else if (mode == DERIVATIVE)
@@ -166,11 +186,6 @@ void PrintInOrder (TreeNode* node, FILE* out_file)
         else if (node->type == OP_T)
         {    
             _print ("%s", GetOpSign (node->value.op_val));
-            // if (++node_counter > 10 && node->value.op_val == ADD)
-            // {
-            //     _print ("\\\\");
-            //     node_counter = 0;
-            // }
         }
         else
         {
@@ -304,7 +319,7 @@ char* GetOpSign (Operations op)
         return "^";
 
     case SIN:
-        return "sin";
+        return "\\sin";
 
     case TG:
         return "tg";
@@ -313,7 +328,7 @@ char* GetOpSign (Operations op)
         return "ctg";
     
     case COS:
-        return "cos";
+        return "\\cos";
     
     case LN:
         return "ln";

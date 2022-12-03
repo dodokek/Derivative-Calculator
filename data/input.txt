@@ -1,1 +1,1 @@
-sin(2*x)^5 - cos(x) + x^4 + 5
+sin(2*x)^5 - cos(x) + x ^ 5

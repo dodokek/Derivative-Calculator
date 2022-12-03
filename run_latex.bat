@@ -1,4 +1,4 @@
-xelatex -output-directory=data data/output.tex > tex_logs
+xelatex -output-directory=data data/output.tex
 cd data
 del output.aux
 del output.log

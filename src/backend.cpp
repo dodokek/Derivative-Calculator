@@ -514,8 +514,9 @@ void FillTokensArray (Token* token_array)
 {
     char* input = GetInputLine();
     int tokens_amount = 0;
+    int input_len = strlen(input);
 
-    for (int i = 0; i <= strlen (input);)
+    for (int i = 0; i <= input_len;)
     {
         SkipSpaces (input, &i);
 
